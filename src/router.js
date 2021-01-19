@@ -1,7 +1,8 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Home from './pages/Home.vue';
-import About from './pages/About.vue';
+import Login from './pages/Login.vue';
+import E404 from './pages/404.vue';
 
 Vue.use(VueRouter);
 
@@ -14,9 +15,14 @@ export default new VueRouter({
             component: Home
         },
         {
-            path: "/about",
-            name: 'about',
-            component: About
+            path: "/login",
+            name: 'login',
+            component: Login
+        },
+        {
+            path: "/*",
+            name: '404',
+            component: E404
         },
     ]
 })
