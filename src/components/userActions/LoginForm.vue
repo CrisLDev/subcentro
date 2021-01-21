@@ -13,7 +13,9 @@
                     <v-text-field v-model="message2" solo label="Password" clearable></v-text-field>
                     <v-btn block color="primary" elevation="2">Enviar</v-btn>
                     <v-divider class="mt-6 mb-6 grey"></v-divider>
-                    <v-btn block color="secondary" elevation="2">Registrarse</v-btn>
+                    <router-link to="/register" class="text-decoration-none" style="color: white;">
+                        <v-btn block color="secondary" elevation="2">Registrarse</v-btn>
+                    </router-link>
                 </v-col>
             </v-row>
         </v-container>

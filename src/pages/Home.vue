@@ -93,12 +93,16 @@
                 </v-col>
               </v-row>
             </v-col>
+            <v-col cols="12" class="mt-10 mb-16">
+              <div>{{info}}</div>
+            </v-col>
         </v-row>
     </v-container>
 </template>
 
 <script>
 import { mdiAccountClock, mdiAccountDetails, mdiAccountGroup, mdiAlertCircle, mdiAllInclusive, mdiChatQuestion} from '@mdi/js';
+import {getDates} from '../services/DateService';
 export default {
   name: 'home',
   components: {
@@ -110,7 +114,13 @@ export default {
       alertCircle: mdiAlertCircle,
       allInclusive: mdiAllInclusive,
       chatQuestion: mdiChatQuestion,
+      info: null
   }),
+  async mounted() {
+    const books = await getDates();
+    console.log(books);
+    this.info = books.data;
+  },
 }
 </script>
 
