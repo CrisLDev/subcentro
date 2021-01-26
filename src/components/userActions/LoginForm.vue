@@ -9,8 +9,8 @@
                 src="../../assets/images/login.svg"
                 ></v-img>
                 <v-col cols="12">
-                    <v-text-field v-model="message2" solo label="Username" clearable></v-text-field>
-                    <v-text-field v-model="message2" solo label="Password" clearable></v-text-field>
+                    <v-text-field v-model="userName" solo label="Username" clearable></v-text-field>
+                    <v-text-field v-model="password" solo label="Password" clearable></v-text-field>
                     <v-btn block color="primary" elevation="2">Enviar</v-btn>
                     <v-divider class="mt-6 mb-6 grey"></v-divider>
                     <router-link to="/register" class="text-decoration-none" style="color: white;">
@@ -31,6 +31,8 @@ export default {
   data: () => ({
       accountArrowRight: mdiAccountArrowRight,
       keyVariant: mdiKeyVariant,
+      userName: '',
+      password: ''
   }),
 }
 </script>

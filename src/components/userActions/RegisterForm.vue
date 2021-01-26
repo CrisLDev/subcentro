@@ -57,6 +57,7 @@
                         <v-btn block color="error" elevation="2" @click="clear">Limpiar</v-btn>
                 </v-col>
             </v-row>
+            <SnackBar :timeout="timeout" :text="text" :snackbar="snackbar" @update-data="update" />
         </v-container>
     </v-form>
 </template>
@@ -65,16 +66,19 @@
 import { mdiAccountArrowRight, mdiKeyVariant} from '@mdi/js';
 import { validationMixin } from 'vuelidate';
 import { required, maxLength, email} from 'vuelidate/lib/validators';
+import { createUser } from '../../services/AuthService';
+import SnackBar from '../SnackBar.vue';
 export default {
   name: 'home',
   components: {
+      SnackBar
   },
   mixins: [validationMixin],
   validations:{
       userName: {required, maxLength: maxLength(10)},
       password: {required, maxLength: maxLength(10)},
       password2: {required, maxLength: maxLength(10)},
-      email: { required, email },
+      email: { required, email, maxLength: maxLength(50) },
   },
   data: () => ({
       accountArrowRight: mdiAccountArrowRight,
@@ -82,7 +86,10 @@ export default {
       userName: '',
       email: '',
       password:'',
-      password2: ''
+      password2: '',
+      timeout: 2000,
+      snackbar: false,
+      text: '',
   }),
   computed:{
       userNameErrors (){
@@ -116,8 +123,36 @@ export default {
       }
   },
   methods: {
-      submit () {
-          this.$v.touch()
+        update(timeout, text, snackbar) {
+            this.timeout = timeout;
+            this.text = text;
+            this.snackbar = snackbar;
+        },
+      async submit () {
+        //this.$v.touch();
+
+        if(this.password !== this.password2){
+            this.snackbar = true;
+            return this.text = 'Las contraseñas deben ser iguales.';
+        }
+
+          const dataToSend = {
+              userName: this.userName,
+              email: this.email,
+              password: this.password
+          }
+
+        try {
+            await createUser(dataToSend);
+            this.snackbar = true;
+            this.text = 'Usuario registrado correctamente.';
+        } catch(err){
+            this.snackbar = true;
+            return this.text = err.response.data.msg;
+        }
+
+        return this.$router.push('/');
+
       },
       clear () {
         this.$v.$reset()

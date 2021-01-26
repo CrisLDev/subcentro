@@ -94,7 +94,7 @@
               </v-row>
             </v-col>
             <v-col cols="12" class="mt-10 mb-16">
-              <div>{{info}}</div>
+              <div v-if="info">{{info.length > 0 ? info : 'No hay nada'}}</div>
             </v-col>
         </v-row>
     </v-container>
