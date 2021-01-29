@@ -11,7 +11,7 @@
                 <v-col cols="12">
                     <v-text-field v-model="userName" solo label="Username" clearable></v-text-field>
                     <v-text-field v-model="password" solo label="Password" clearable></v-text-field>
-                    <v-btn block color="primary" elevation="2">Enviar</v-btn>
+                    <v-btn block color="primary" elevation="2" @click="submit">Enviar</v-btn>
                     <v-divider class="mt-6 mb-6 grey"></v-divider>
                     <router-link to="/register" class="text-decoration-none" style="color: white;">
                         <v-btn block color="secondary" elevation="2">Registrarse</v-btn>
@@ -24,6 +24,7 @@
 
 <script>
 import { mdiAccountArrowRight, mdiKeyVariant} from '@mdi/js';
+import {mapActions} from 'vuex';
 export default {
   name: 'home',
   components: {
@@ -34,6 +35,16 @@ export default {
       userName: '',
       password: ''
   }),
+  methods:{
+      ...mapActions(["loginUser"]),
+      async submit() {
+        const dataToSend = {
+            userName: this.userName,
+            password: this.password
+        }
+        this.loginUser(dataToSend);
+      }
+  }
 }
 </script>
 

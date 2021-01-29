@@ -1,57 +1,47 @@
 <template>
-    <v-snackbar
-          v-model="snackbar"
-          :timeout="timeout"
+    <div>
+      <v-snackbar
+          v-model="snackbarUpdated.snackbar"
+          :timeout="snackbarUpdated.timeout"
         >
-          {{ text }}
+            {{ snackbarUpdated.text }}
 
-        <template v-slot:action="{ attrs }">
-            <v-btn
-                color="blue"
-                text
-                v-bind="attrs"
-                @click="snackbar = false"
-            >
-                Close
-            </v-btn>
-        </template>
-    </v-snackbar>
+          <template v-slot:action="{ attrs }">
+              <v-btn
+                  color="blue"
+                  text
+                  v-bind="attrs"
+                  @click="snackbarUpdated.snackbar = false"
+              >
+                  Close
+              </v-btn>
+          </template>
+      </v-snackbar>
+    </div>
 </template>
 
 <script>
+import {mapGetters, mapActions} from 'vuex';
 export default {
 name: 'SnackBar',
 data: function () {
-   return {
-     timeout2: '',
-      snackbar2: '',
-      text2: ''
-   }
-},
-  props: {
-      timeout: {
-            type: Number,
-            default () {
-            return ''
-            }
-      },
-      snackbar: {
-            type: Boolean,
-            default () {
-            return ''
-            }
-      },
-      text: {
-            type: String,
-            default () {
-            return ''
-            }
+      return {
+        timeout2: 2000,
+        snackbar2: false,
+        text2: '',
       }
-  },
-  beforeMount () {
-    this.timeout2 = this.timeout;
-    this.snackbar2 = this.snackbar;
-    this.text2 = this.text;
-    }
+},
+methods:{
+  ...mapActions(["getUltimateSnackbarState"])
+},
+computed:{
+  ...mapGetters(["snackbarUpdated"])
+},
+created(){
+  const data = {timeout2: 2000,
+        snackbar2: false,
+        text2: ''}
+  this.getUltimateSnackbarState(data);
+}
 }
 </script>
