@@ -9,3 +9,7 @@ export const createUser = async (dataToSend) => {
 export const loginUser = async (dataToSend) => {
     return await axios.post(`${API}/login`, dataToSend)
 }
+
+export const reloginUserInReload = async () => {
+    return await axios.get(`${API}/me`);
+}

@@ -4,10 +4,12 @@ import Home from './pages/Home.vue';
 import Login from './pages/Login.vue';
 import E404 from './pages/404.vue';
 import Register from './pages/Register.vue';
+import Dashboard from './pages/Dashboard.vue';
+import {isLogged} from './utils/auth';
 
 Vue.use(VueRouter);
 
-export default new VueRouter({
+const router = new VueRouter({
     mode:'history',
     routes: [
         {
@@ -18,12 +20,23 @@ export default new VueRouter({
         {
             path: "/login",
             name: 'login',
-            component: Login
+            component: Login,
+            meta: {
+                isLogged: true
+            }
         },
         {
             path: "/register",
-            name: 'Register',
+            name: 'register',
             component: Register
+        },
+        {
+            path: "/dashboard",
+            name: 'dashboard',
+            component: Dashboard,
+            meta: {
+                requiresAuth: true
+            }
         },
         {
             path: "/*",
@@ -31,4 +44,16 @@ export default new VueRouter({
             component: E404
         },
     ]
-})
+});
+
+router.beforeEach((to, from, next) => {
+    if(to.meta.requiresAuth && !isLogged())
+    next({name: 'login'})
+    else next();
+
+    if(to.meta.isLogged && isLogged())
+    next({name: 'dashboard'})
+    else next()
+});
+
+export default router;

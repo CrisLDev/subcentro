@@ -1,5 +1,6 @@
-import { loginUser } from '../../services/AuthService';
+import { loginUser, reloginUserInReload } from '../../services/AuthService';
 import router from '../../router';
+import {logout, setAuthToken} from '../../utils/auth';
 
 const state = {
     user: {}
@@ -23,16 +24,31 @@ const actions = {
             commit('UserLogedSuccessfully', response.data)
             snackbarData.text = 'Usuario logeado correctamente';
             dispatch('getUltimateSnackbarState', snackbarData)
-            return router.push('/');
+            localStorage.setItem('token', response.data.token);
+            return router.push('/dashboard');
         } catch (err) {
             if(err)snackbarData.text = err.response.data.msg;
             return dispatch('getUltimateSnackbarState', snackbarData)
+        }
+    },
+    async reloginUser({commit}){
+        try {
+            setAuthToken();
+            const response = await reloginUserInReload();
+            const token = localStorage.getItem('token');
+            const userData = {...response.data};
+            const tokenValue = {token: token};
+            Object.assign(userData, tokenValue);
+            commit('UserRelogedSuccessfully', userData)
+        } catch (err) {
+            return logout()
         }
     }
 }
 
 const mutations = {
-    UserLogedSuccessfully:(state, addUser) => (state.user = addUser)
+    UserLogedSuccessfully:(state, addUser) => (state.user = addUser),
+    UserRelogedSuccessfully:(state, reAddUser) => (state.user = reAddUser)
 }
 
 export default {

@@ -37,6 +37,7 @@
 <script>
 import Navbar from './components/Navbar.vue';
 import SnackBar from './components/SnackBar.vue';
+import {mapActions} from 'vuex';
 
 export default {
   components: {
@@ -44,6 +45,12 @@ export default {
     SnackBar
   },
   data: () => ({ value: 'recent' }),
+  methods:{
+  ...mapActions(["reloginUser"])
+},
+  created(){
+    this.reloginUser();
+}
 }
 </script>
 
