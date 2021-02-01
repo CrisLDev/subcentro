@@ -43,12 +43,25 @@ const actions = {
         } catch (err) {
             return logout()
         }
+    },
+    async logoutUser({commit, dispatch}){
+        const snackbarData = {
+            timeout: 2000,
+            text: '',
+            snackbar: true
+        }
+        logout();
+        commit('UserDeslogedSuccessfylly');
+        snackbarData.text = 'Usuario deslogeado correctamente';
+        dispatch('getUltimateSnackbarState', snackbarData)
+        return router.push('/');
     }
 }
 
 const mutations = {
     UserLogedSuccessfully:(state, addUser) => (state.user = addUser),
-    UserRelogedSuccessfully:(state, reAddUser) => (state.user = reAddUser)
+    UserRelogedSuccessfully:(state, reAddUser) => (state.user = reAddUser),
+    UserDeslogedSuccessfylly:(state) => (state.user = {})
 }
 
 export default {
