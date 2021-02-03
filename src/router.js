@@ -28,7 +28,10 @@ const router = new VueRouter({
         {
             path: "/register",
             name: 'register',
-            component: Register
+            component: Register,
+            meta: {
+                isLogged: true
+            }
         },
         {
             path: "/dashboard",

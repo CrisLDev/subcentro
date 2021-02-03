@@ -3,14 +3,38 @@
         <router-link to="/" class="text-decoration-none" style="color: white;"><v-icon medium color="white">{{ charity }}</v-icon> INICIO</router-link>
         <v-spacer></v-spacer>
         <router-link to="/login" class="text-decoration-none" style="color: white;" v-if="!this.$store.getters.userLoged.token"><v-icon medium color="white">{{ accountArrowRight }}</v-icon> USUARIO</router-link>
-        <v-btn text class="text-decoration-none" style="color: white;" v-if="this.$store.getters.userLoged.token" @click="logout()"><v-icon medium color="white">{{ accountArrowRight }}</v-icon> {{this.$store.getters.userLoged.userName}}</v-btn>
+        <v-menu offset-y v-if="userLoged.token" bottom
+      origin="center center"
+      transition="scale-transition">
+      <template v-slot:activator="{ on, attrs }">
+        <v-btn
+          text
+          style="color: white"
+          v-bind="attrs"
+          v-on="on"
+        >
+        <v-avatar class="mr-2" size="35">
+          <v-img src="https://cdn.vuetifyjs.com/images/lists/2.jpg"></v-img>
+        </v-avatar>
+          {{userLoged.userName}}
+        </v-btn>
+      </template>
+      <v-list>
+        <v-list-item style="cursor: pointer">
+          <v-list-item-title>Citas</v-list-item-title>
+        </v-list-item>
+        <v-list-item style="cursor: pointer">
+          <v-list-item-title @click="logout()">Salir</v-list-item-title>
+        </v-list-item>
+      </v-list>
+    </v-menu>
     </v-container>
 </template>
 
 <script>
 import { mdiCharity, mdiAccountArrowRight } from '@mdi/js';
 import {logout} from '../utils/auth';
-import {mapActions} from 'vuex';
+import {mapGetters,mapActions} from 'vuex';
 export default {
   name: 'navbar',
   components: {
@@ -25,6 +49,9 @@ export default {
           this.logoutUser();
           return logout()
       }
-  }
+  },
+  computed:{
+  ...mapGetters(["userLoged"])
+},
 }
 </script>
