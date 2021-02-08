@@ -1,9 +1,7 @@
 <template>
-  <div>
-    <v-container class="lighten-5">
-      <RegisterForm/>
-    </v-container>
-  </div>
+  <v-container class="lighten-5 mb-16">
+    <RegisterForm/>
+  </v-container>
 </template>
 
 <script>

@@ -21,7 +21,7 @@
       </template>
       <v-list>
         <v-list-item style="cursor: pointer">
-          <v-list-item-title>Citas</v-list-item-title>
+          <v-list-item-title><router-link to="/dashboard" class="text-decoration-none" style="color: black">Citas</router-link></v-list-item-title>
         </v-list-item>
         <v-list-item style="cursor: pointer">
           <v-list-item-title @click="logout()">Salir</v-list-item-title>
