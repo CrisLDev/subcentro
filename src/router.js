@@ -6,6 +6,7 @@ import E404 from './pages/404.vue';
 import Register from './pages/Register.vue';
 import Dashboard from './pages/Dashboard.vue';
 import {isLogged} from './utils/auth';
+import DatesForm from './pages/DatesForm.vue';
 
 Vue.use(VueRouter);
 
@@ -37,6 +38,14 @@ const router = new VueRouter({
             path: "/dashboard",
             name: 'dashboard',
             component: Dashboard,
+            meta: {
+                requiresAuth: true
+            }
+        },
+        {
+            path: "/dates",
+            name: 'dates',
+            component: DatesForm,
             meta: {
                 requiresAuth: true
             }
