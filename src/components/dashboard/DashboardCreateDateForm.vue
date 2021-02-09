@@ -1,0 +1,156 @@
+<template>
+    <v-dialog
+      v-model="dialog"
+      persistent
+      max-width="600px"
+    >
+      <template v-slot:activator="{ on, attrs }">
+        <div class="text-center">
+          <v-overlay :absolute="absolute" :z-index="zIndex" :value="overlay">
+            <v-progress-circular
+              :size="50"
+              style="color: white"
+              :width="7"
+              indeterminate
+            ></v-progress-circular>
+          </v-overlay>
+        </div>
+                  <v-card class="pt-3 pb-3" v-bind="attrs" v-on="on">
+                    <v-icon x-large color="primary">{{ accountClock }}</v-icon>
+                    <p class="font-weight-bold mb-0" style="color:#6c63ff">
+                      Agendar una cita.
+                    </p>
+                    <p class="font-weight-bold mb-0 text--primary">
+                      ¡Click Aquí!
+                    </p>
+                  </v-card>
+                  
+      </template>
+      <v-card>
+        <v-card-title>
+          <span class="headline">Crear cita</span>
+        </v-card-title>
+        <v-card-text>
+          <v-form>
+            <v-container>
+              <v-row>
+                <v-col sm="6" cols="12">
+                  <v-menu
+                    ref="menu"
+                    v-model="menu"
+                    :close-on-content-click="false"
+                    transition="scale-transition"
+                    offset-y
+                    min-width="auto"
+                  >
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-text-field
+                        v-model="dateForSearch"
+                        label="Dia a consultar"
+                        readonly
+                        v-bind="attrs"
+                        v-on="on"
+                      ></v-text-field>
+                    </template>
+                    <v-date-picker
+                      ref="picker"
+                      v-model="dateForSearch"
+                      :max="new Date().toISOString().substr(0, 10)"
+                      min="1950-01-01"
+                      @change="save"
+                    ></v-date-picker>
+                  </v-menu>
+                </v-col>
+                <v-col
+                  cols="12"
+                  sm="6"
+                >
+                  <v-select
+                  v-model="hour"
+                    :items="[dayConsulted.nueve < 5 ? '09:00' : '09:00 No disponible', 
+                    dayConsulted.once < 5 ? '11:00' : '11:00 No disponible', 
+                    dayConsulted.unaTarde < 5 ? '13:00' : '13:00 No disponible',
+                    dayConsulted.tresTarde < 5 ? '15:00' : '15:00 No disponible']"
+                    label="Hora*"
+                    :disabled="dayConsulted.disabled"
+                    required
+                  ></v-select>
+                </v-col>
+              </v-row>
+            </v-container>
+            <v-btn
+            color="blue darken-1"
+            text
+            @click="submit"
+          >
+            Save
+          </v-btn>
+            </v-form>
+          <small>Escoja una fecha valida, por favor, no sea IMBÉCIL.</small>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="blue darken-1"
+            text
+            @click="dialog = false"
+          >
+            Close
+          </v-btn>
+          <v-btn
+            color="blue darken-1"
+            text
+            @click="/*dialog = false,*/ submit"
+          >
+            Save
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+</template>
+
+<script>
+import { mdiAccountClock} from '@mdi/js';
+import {mapGetters,mapActions} from 'vuex';
+  export default {
+    data: () => ({
+      dialog: false,
+      accountClock: mdiAccountClock,
+      date: null,
+      menu: false,
+      dateForSearch: '',
+      overlay: false,
+      absolute: true,
+      hour: '',
+      zIndex: 9999,
+    }),
+    watch: {
+      menu (val) {
+        val && setTimeout(() => (this.$refs.picker.activePicker = 'YEAR'))
+      },
+      dateForSearch () {
+          const dataToSend = {
+              dateForSearch: this.dateForSearch
+          }
+          this.consultDate(dataToSend);
+      }
+    },
+    methods: {
+      ...mapActions(["consultDate", "createNewDate"]),
+      save (date) {
+        this.$refs.menu.save(date)
+      },
+      async submit () {
+        const dataToSend = {
+            dateForSearch: this.dateForSearch,
+            hour: this.hour,
+            patient_id: this.$store.getters.userLoged._id
+        }
+        this.createNewDate(dataToSend);
+      },
+    },
+    computed:{
+  ...mapGetters(["dayConsulted"])
+},
+  }
+</script>
