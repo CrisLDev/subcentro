@@ -20,7 +20,7 @@ import DashboardCreateDateForm from '../dashboard/DashboardCreateDateForm';
 import DashboardConsultDateForm from '../dashboard/DashboardConsultDateForm';
 
 export default {
-    name: 'dashboardActions',
+    name: 'DashboardActions',
     components: {
       DashboardCreateDateForm,
       DashboardConsultDateForm

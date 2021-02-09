@@ -11,20 +11,20 @@
               <v-alert border="bottom" colored-border color="primary" elevation="2">
                 <v-icon medium>{{mdiNewBox}}</v-icon> Agendar / consultar cita
               </v-alert>
-              <DasboardActions />
+              <DashboardActions />
             </v-col>
         </v-row>
     </v-container>
 </template>
 
 <script>
-import DasboardActions from '../components/dashboard/DashboardActions';
+import DashboardActions from '../components/dashboard/DashboardActions';
 import DasboardUserInfo from '../components/dashboard/DashboardUserInfo';
 import { mdiInformation } from '@mdi/js';
 import { mdiNewBox } from '@mdi/js';
 export default {
   components:{
-    DasboardActions,
+    DashboardActions,
     DasboardUserInfo
   },
     data: function () {
