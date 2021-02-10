@@ -11,20 +11,20 @@
               <v-alert border="bottom" colored-border color="primary" elevation="2">
                 <v-icon medium>{{mdiNewBox}}</v-icon> Agendar / consultar cita
               </v-alert>
-              <Dashboarda />
+              <DashboardAction />
             </v-col>
         </v-row>
     </v-container>
 </template>
 
 <script>
-import Dashboarda from '../components/dashboard/Dashboarda.vue';
+import DashboardAction from '../components/dashboard/DashboardAction.vue';
 import DasboardUserInfo from '../components/dashboard/DashboardUserInfo.vue';
 import { mdiInformation } from '@mdi/js';
 import { mdiNewBox } from '@mdi/js';
 export default {
   components:{
-    Dashboarda,
+    DashboardAction,
     DasboardUserInfo
   },
     data: function () {
