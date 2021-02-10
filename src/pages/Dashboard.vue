@@ -1,5 +1,5 @@
 <template>
-    <v-container>
+    <v-container class="lighten-5 mb-16">
         <v-row no-gutters align="center" justify="center">
             <v-col cols="12">
               <v-alert border="bottom" colored-border color="primary" elevation="2">

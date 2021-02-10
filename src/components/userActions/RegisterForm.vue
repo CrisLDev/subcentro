@@ -31,6 +31,7 @@
                     @blur="$v.email.$touch()"></v-text-field>
                     <v-text-field 
                     v-model="password" 
+                    type="password" 
                     solo 
                     label="Password"
                     clearable 
@@ -41,6 +42,7 @@
                     @blur="$v.password.$touch()"></v-text-field>
                     <v-text-field 
                     v-model="password2" 
+                    type="password" 
                     solo 
                     label="Repeat yout Password" 
                     clearable 
@@ -65,7 +67,7 @@
 import { mdiAccountArrowRight, mdiKeyVariant} from '@mdi/js';
 import { validationMixin } from 'vuelidate';
 import { required, maxLength, email} from 'vuelidate/lib/validators';
-import { createUser } from '../../services/AuthService';
+import {mapActions} from 'vuex';
 export default {
   name: 'home',
   components: {
@@ -117,27 +119,22 @@ export default {
       }
   },
   methods: {
-      async submit () {
-        //this.$v.touch();
+      ...mapActions(["registerUser", "getUltimateSnackbarState"]),
+      async submit() {
         if(this.password !== this.password2){
-            return console.log('Las contrasenas no coinciden');
+            const snackbarData = {
+                timeout: 2000,
+                text: 'Las contrasenas no coinciden.',
+                snackbar: true
+            }
+            return this.getUltimateSnackbarState(snackbarData);
         }
-
-          const dataToSend = {
+        const dataToSend = {
               userName: this.userName,
               email: this.email,
               password: this.password
-          }
-
-        try {
-            await createUser(dataToSend);
-            console.log('Usuario registrado correctamente');
-        } catch(err){
-            return console.log(err.response.data.msg);
         }
-
-        return this.$router.push('/');
-
+        this.registerUser(dataToSend);
       },
       clear () {
         this.$v.$reset()
