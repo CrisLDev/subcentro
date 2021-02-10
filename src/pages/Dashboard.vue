@@ -18,8 +18,8 @@
 </template>
 
 <script>
-import DashboardActions from '@/components/dashboard/DashboardActions';
-import DasboardUserInfo from '@/components/dashboard/DashboardUserInfo';
+import DashboardActions from '../components/dashboard/DashboardActions';
+import DasboardUserInfo from '../components/dashboard/DashboardUserInfo';
 import { mdiInformation } from '@mdi/js';
 import { mdiNewBox } from '@mdi/js';
 export default {
