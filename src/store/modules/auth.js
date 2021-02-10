@@ -1,4 +1,4 @@
-import { loginUser, reloginUserInReload } from '../../services/AuthService';
+import { loginUser, reloginUserInReload, createUser } from '../../services/AuthService';
 import router from '../../router';
 import {logout, setAuthToken} from '../../utils/auth';
 
@@ -55,7 +55,24 @@ const actions = {
         snackbarData.text = 'Usuario deslogeado correctamente';
         dispatch('getUltimateSnackbarState', snackbarData)
         return router.push('/');
-    }
+    },
+    async registerUser({dispatch}, dataToSend) {
+        const snackbarData = {
+            timeout: 2000,
+            text: '',
+            snackbar: true
+        }
+        try {
+            const response = await createUser(dataToSend)
+            dispatch('UserRegisterSuccessfully', response.data)
+            snackbarData.text = 'Usuario registrado correctamente';
+            dispatch('getUltimateSnackbarState', snackbarData)
+            return router.push('/');
+        } catch (err) {
+            if(err)snackbarData.text = err.response.data.msg;
+            return dispatch('getUltimateSnackbarState', snackbarData)
+        }
+    },
 }
 
 const mutations = {
