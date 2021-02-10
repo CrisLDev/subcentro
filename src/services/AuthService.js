@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API = process.env.THEURL || 'http://localhost:4123/api';
+const API = 'https://subcentroback.herokuapp.com/api';
 
 export const createUser = async (dataToSend) => {
     return await axios.post(`${API}/auth/register`, dataToSend);
