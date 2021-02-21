@@ -47,10 +47,13 @@ export default {
   },
   data: () => ({ value: 'recent' }),
   methods:{
-  ...mapActions(["reloginUser"])
+  ...mapActions(["reloginUser", "logoutUser"])
 },
   created(){
     this.reloginUser();
+    if(!localStorage.getItem('token')){
+      this.logoutUser()
+    }
 }
 }
 </script>
