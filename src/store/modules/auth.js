@@ -1,4 +1,4 @@
-import { loginUser, reloginUserInReload, createUser } from '../../services/AuthService';
+import { loginUser, reloginUserInReload, createUser, updateUser } from '../../services/AuthService';
 import router from '../../router';
 import {logout, setAuthToken} from '../../utils/auth';
 
@@ -73,12 +73,32 @@ const actions = {
             return dispatch('getUltimateSnackbarState', snackbarData)
         }
     },
+    async updateUserInfo({dispatch}, dataToSend){
+        const snackbarData = {
+            timeout: 2000,
+            text: '',
+            snackbar: true
+        }
+        try {
+            await updateUser(dataToSend)
+            snackbarData.text = 'Usuario actualizado correctamente';
+            return dispatch('getUltimateSnackbarState', snackbarData)
+        } catch (err) {
+            if(err)snackbarData.text = err.response.data.msg;
+            return dispatch('getUltimateSnackbarState', snackbarData)
+        }
+    }
 }
 
 const mutations = {
     UserLogedSuccessfully:(state, addUser) => (state.user = addUser),
     UserRelogedSuccessfully:(state, reAddUser) => (state.user = reAddUser),
-    UserDeslogedSuccessfylly:(state) => (state.user = {})
+    UserDeslogedSuccessfylly:(state) => (state.user = {}),
+    updateUsername (state, userName) {state.user.userName = userName},
+    updateFullname (state, fullName) {state.user.fullName = fullName},
+    updateEmail (state, email) {state.user.email = email},
+    updateAdress (state, adress) {state.user.adress = adress},
+    updateDate (state, age) {state.user.age = age},
 }
 
 export default {

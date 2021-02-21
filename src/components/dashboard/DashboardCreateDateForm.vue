@@ -78,13 +78,6 @@
                 </v-col>
               </v-row>
             </v-container>
-            <v-btn
-            color="blue darken-1"
-            text
-            @click="submit"
-          >
-            Save
-          </v-btn>
             </v-form>
           <small>Escoja una fecha valida, por favor, no sea IMBÉCIL.</small>
         </v-card-text>
@@ -95,14 +88,14 @@
             text
             @click="dialog = false"
           >
-            Close
+            Cerrar
           </v-btn>
           <v-btn
             color="blue darken-1"
             text
-            @click="/*dialog = false,*/ submit"
+            @click="submit"
           >
-            Save
+            Guardar
           </v-btn>
         </v-card-actions>
       </v-card>

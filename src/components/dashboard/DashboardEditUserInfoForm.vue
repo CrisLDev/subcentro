@@ -28,8 +28,8 @@
                 md="6"
               >
                 <v-text-field
+                v-model="userName"
                   label="Nombre de usuario*"
-                  :value="this.$store.getters.userLoged.userName"
                   required
                 ></v-text-field>
               </v-col>
@@ -39,20 +39,21 @@
                 md="6"
               >
                 <v-text-field
+                v-model="fullName"
                   label="Nombre completo*"
-                  :value="this.$store.getters.userLoged.fullName"
                   required
                 ></v-text-field>
               </v-col>
               <v-col cols="12">
                 <v-text-field
+                v-model="email"
                   label="Email*"
-                  :value="this.$store.getters.userLoged.email"
                   required
                 ></v-text-field>
               </v-col>
               <v-col sm="6" cols="12">
                 <v-text-field
+                v-model="password"
                   label="Contrasena*"
                   type="password"
                   required
@@ -60,8 +61,9 @@
               </v-col>
               <v-col sm="6" cols="12">
                 <v-text-field
+                v-model="password2"
                   label="Confirmar contrasena*"
-                  type="password"
+                  type="password2"
                   required
                 ></v-text-field>
               </v-col>
@@ -69,10 +71,11 @@
                 cols="12"
                 sm="6"
               >
-                <v-select
+                <v-text-field
+                v-model="adress"
                   label="Direccion*"
                   required
-                ></v-select>
+                ></v-text-field>
               </v-col>
               <v-col sm="6" cols="12">
                 <v-menu
@@ -117,7 +120,7 @@
           <v-btn
             color="blue darken-1"
             text
-            @click="dialog = false"
+            @click="submit"
           >
             Guardar
           </v-btn>
@@ -129,22 +132,88 @@
 
 <script>
 import { mdiCalendar } from '@mdi/js';
+import {mapActions} from 'vuex';
   export default {
     data: () => ({
       mdiCalendar: mdiCalendar,
       dialog: false,
-      date: null,
       menu: false,
+      password: '',
+      password2: '',
     }),
+    computed:{
+      userName: {
+        get () {
+          return this.$store.state.auth.user.userName
+        },
+        set (value) {
+          this.$store.commit('updateUsername', value)
+        }
+      },
+      fullName: {
+        get () {
+          return this.$store.state.auth.user.fullName
+        },
+        set (value) {
+          this.$store.commit('updateFullname', value)
+        }
+      },
+      email: {
+        get () {
+          return this.$store.state.auth.user.email
+        },
+        set (value) {
+          this.$store.commit('updateEmail', value)
+        }
+      },
+      adress: {
+        get () {
+          return this.$store.state.auth.user.adress
+        },
+        set (value) {
+          this.$store.commit('updateAdress', value)
+        }
+      },
+      date: {
+        get () {
+          return this.$store.state.auth.user.age
+        },
+        set (value) {
+          this.$store.commit('updateDate', value)
+        }
+      }
+    },
     watch: {
       menu (val) {
         val && setTimeout(() => (this.$refs.picker.activePicker = 'YEAR'))
       },
     },
     methods: {
+      ...mapActions(["updateUserInfo", "getUltimateSnackbarState"]),
       save (date) {
         this.$refs.menu.save(date)
       },
-    },
+      async submit () {
+        if(this.password !== this.password2){
+            const snackbarData = {
+                timeout: 2000,
+                text: 'Las contrasenas no coinciden.',
+                snackbar: true
+            }
+            return this.getUltimateSnackbarState(snackbarData);
+        }
+        const dataToSend = {
+            userName: this.userName,
+            fullName: this.fullName,
+            email: this.email,
+            password: this.password,
+            password2: this.password2,
+            adress: this.adress,
+            age: this.date,
+            user_id: this.$store.getters.userLoged._id,
+        }
+        this.updateUserInfo(dataToSend)
+      },
+    }
   }
 </script>

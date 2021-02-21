@@ -15,3 +15,7 @@ export const loginUser = async (dataToSend) => {
 export const reloginUserInReload = async () => {
     return await axios.get(`${API}/auth/me`);
 }
+
+export const updateUser = async (dataToSend) => {
+    return await axios.put(`${API}/auth/user`, dataToSend)
+}
