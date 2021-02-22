@@ -225,6 +225,7 @@ import {mapActions} from 'vuex';
             password2: this.password2,
             adress: this.adress,
             age: this.date,
+            role: this.$store.getters.userLoged.role,
             telephoneNumber: this.telephoneNumber,
             user_id: this.$store.getters.userLoged._id,
         }
