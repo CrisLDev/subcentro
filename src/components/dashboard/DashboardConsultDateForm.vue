@@ -37,7 +37,9 @@
           <small>*indicates required field</small>
           <v-container v-if="dateCode.date">
             <p>DATOS CONSULTADOS</p>
-            {{dateCode.date}}
+            <p>Fecha: {{dateCode.date}}</p>
+            <p>Hora: {{dateCode.hour}}</p>
+            <p>Consultorio: {{dateCode.consulting_room}}</p>
           </v-container>
         </v-card-text>
         <v-card-actions>
