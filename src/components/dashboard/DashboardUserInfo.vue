@@ -24,7 +24,7 @@
             </v-card-text>
             <v-divider class="mx-4"></v-divider>
     <v-card-actions class="pt-10">
-      <DashboardEditUserInfoForm v-if="!this.$store.getters.userLoged.telephoneNumber && !this.$store.getters.userLoged.fullName" />
+      <DashboardEditUserInfoForm />
     </v-card-actions>
     </v-col>
     </v-row>

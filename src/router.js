@@ -5,8 +5,9 @@ import Login from './pages/Login.vue';
 import E404 from './pages/404.vue';
 import Register from './pages/Register.vue';
 import Dashboard from './pages/Dashboard.vue';
-import {isLogged} from './utils/auth';
-import DatesForm from './pages/DatesForm.vue';
+import {isLogged,isAdmin,isDoctor} from './utils/auth';
+import Admin from './pages/Admin.vue';
+import Dates from './pages/Dates.vue';
 
 Vue.use(VueRouter);
 
@@ -43,11 +44,21 @@ const router = new VueRouter({
             }
         },
         {
-            path: "/dates",
-            name: 'dates',
-            component: DatesForm,
+            path: "/admin",
+            name: 'admin',
+            component: Admin,
             meta: {
-                requiresAuth: true
+                requiresAuth: true,
+                isAdmin: true
+            }
+        },
+        {
+            path: "/citas",
+            name: 'dates',
+            component: Dates,
+            meta: {
+                requiresAuth: true,
+                isDoctor: true
             }
         },
         {
@@ -64,6 +75,14 @@ router.beforeEach((to, from, next) => {
     else next();
 
     if(to.meta.isLogged && isLogged())
+    next({name: 'dashboard'})
+    else next()
+
+    if(to.meta.isAdmin && !isAdmin())
+    next({name: 'dashboard'})
+    else next()
+
+    if(to.meta.isDoctor && !isDoctor())
     next({name: 'dashboard'})
     else next()
 });

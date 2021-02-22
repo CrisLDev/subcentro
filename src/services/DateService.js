@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-//const API = process.env.THEURL || 'http://localhost:4123/api';
+//const API = process.env.API || 'http://localhost:4123/api';
 
 const API = 'https://subcentroback.herokuapp.com/api';
 

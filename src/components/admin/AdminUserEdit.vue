@@ -1,5 +1,5 @@
 <template>
-  <v-row justify="center">
+  <v-row>
     <v-dialog
       v-model="dialog"
       persistent
@@ -11,6 +11,7 @@
           dark
           v-bind="attrs"
           v-on="on"
+          @click="loadUserToEdit"
         >
           Editar Informacion
         </v-btn>
@@ -28,7 +29,7 @@
                 md="6"
               >
                 <v-text-field
-                v-model="userName"
+                v-model="userNameU"
                   label="Nombre de usuario*"
                   required
                 ></v-text-field>
@@ -39,28 +40,35 @@
                 md="6"
               >
                 <v-text-field
-                v-model="fullName"
+                v-model="fullNameU"
                   label="Nombre completo*"
                   required
                 ></v-text-field>
               </v-col>
               <v-col cols="6">
                 <v-text-field
-                v-model="email"
+                v-model="emailU"
                   label="Email*"
                   required
                 ></v-text-field>
               </v-col>
               <v-col cols="6">
                 <v-text-field
-                v-model="telephoneNumber"
+                v-model="telephoneNumberU"
                   label="Numero telefonico*"
+                  required
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12">
+                <v-text-field
+                v-model="roleU"
+                  label="Rol*"
                   required
                 ></v-text-field>
               </v-col>
               <v-col sm="6" cols="12">
                 <v-text-field
-                v-model="password"
+                v-model="passwordU"
                   label="Contrasena*"
                   type="password"
                   required
@@ -68,7 +76,7 @@
               </v-col>
               <v-col sm="6" cols="12">
                 <v-text-field
-                v-model="password2"
+                v-model="password2U"
                   label="Confirmar contrasena*"
                   type="password2"
                   required
@@ -79,7 +87,7 @@
                 sm="6"
               >
                 <v-text-field
-                v-model="adress"
+                v-model="adressU"
                   label="Direccion*"
                   required
                 ></v-text-field>
@@ -95,7 +103,7 @@
                 >
                   <template v-slot:activator="{ on, attrs }">
                     <v-text-field
-                      v-model="date"
+                      v-model="dateU"
                       label="Birthday date"
                       readonly
                       v-bind="attrs"
@@ -104,7 +112,7 @@
                   </template>
                   <v-date-picker
                     ref="picker"
-                    v-model="date"
+                    v-model="dateU"
                     :max="new Date().toISOString().substr(0, 10)"
                     min="1950-01-01"
                     @change="save"
@@ -138,63 +146,71 @@
 </template>
 
 <script>
-import { mdiCalendar } from '@mdi/js';
 import {mapActions} from 'vuex';
+import { mdiCalendar } from '@mdi/js';
   export default {
     data: () => ({
       mdiCalendar: mdiCalendar,
       dialog: false,
       menu: false,
-      password: '',
-      password2: '',
+      passwordU: '',
+      password2U: '',
     }),
     computed:{
-      userName: {
+        roleU: {
         get () {
-          return this.$store.state.auth.user.userName
+          return this.$store.state.auth.userToEdit.role
         },
         set (value) {
-          this.$store.commit('updateUsername', value)
+          this.$store.commit('userToEditUpdateRole', value)
         }
       },
-      fullName: {
+      userNameU: {
         get () {
-          return this.$store.state.auth.user.fullName
+          return this.$store.state.auth.userToEdit.userName
         },
         set (value) {
-          this.$store.commit('updateFullname', value)
+          this.$store.commit('userToEditUpdateUsername', value)
         }
       },
-      email: {
+      fullNameU: {
         get () {
-          return this.$store.state.auth.user.email
+          return this.$store.state.auth.userToEdit.fullName
         },
         set (value) {
-          this.$store.commit('updateEmail', value)
+          this.$store.commit('userToEditUpdateFullname', value)
         }
       },
-      adress: {
+      emailU: {
         get () {
-          return this.$store.state.auth.user.adress
+          return this.$store.state.auth.userToEdit.email
         },
         set (value) {
-          this.$store.commit('updateAdress', value)
+          this.$store.commit('userToEditUpdateEmail', value)
         }
       },
-      date: {
+      adressU: {
         get () {
-          return this.$store.state.auth.user.age
+          return this.$store.state.auth.userToEdit.adress
         },
         set (value) {
-          this.$store.commit('updateDate', value)
+          this.$store.commit('userToEditUpdateAdress', value)
         }
       },
-      telephoneNumber: {
+      dateU: {
         get () {
-          return this.$store.state.auth.user.telephoneNumber
+          return this.$store.state.auth.userToEdit.age
         },
         set (value) {
-          this.$store.commit('updateTelephoneNumber', value)
+          this.$store.commit('userToEditUpdateDate', value)
+        }
+      },
+      telephoneNumberU: {
+        get () {
+          return this.$store.state.auth.userToEdit.telephoneNumber
+        },
+        set (value) {
+          this.$store.commit('userToEditUpdateTelephoneNumber', value)
         }
       }
     },
@@ -203,33 +219,40 @@ import {mapActions} from 'vuex';
         val && setTimeout(() => (this.$refs.picker.activePicker = 'YEAR'))
       },
     },
-    methods: {
-      ...mapActions(["updateUserInfo", "getUltimateSnackbarState"]),
-      save (date) {
-        this.$refs.menu.save(date)
-      },
-      async submit () {
-        if(this.password !== this.password2){
-            const snackbarData = {
-                timeout: 2000,
-                text: 'Las contrasenas no coinciden.',
-                snackbar: true
+    methods:{
+        ...mapActions(["getUltimateSnackbarState", "updateUserInfo"]),
+        loadUserToEdit() {
+            this.$store.commit('loadUserToEdit', this.user_id)
+        },
+        save (date) {
+            this.$refs.menu.save(date)
+        },
+        submit (){
+            if(this.passwordU !== this.password2U){
+                const snackbarData = {
+                    timeout: 2000,
+                    text: 'Las contrasenas no coinciden.',
+                    snackbar: true
+                }
+                return this.getUltimateSnackbarState(snackbarData);
             }
-            return this.getUltimateSnackbarState(snackbarData);
+            const dataToSend = {
+                userName: this.userNameU,
+                fullName: this.fullNameU,
+                email: this.emailU,
+                password: this.passwordU,
+                password2: this.password2U,
+                adress: this.adressU,
+                age: this.dateU,
+                role: this.roleU,
+                telephoneNumber: this.telephoneNumberU,
+                user_id: this.user_id
+            }
+            this.updateUserInfo(dataToSend)
         }
-        const dataToSend = {
-            userName: this.userName,
-            fullName: this.fullName,
-            email: this.email,
-            password: this.password,
-            password2: this.password2,
-            adress: this.adress,
-            age: this.date,
-            telephoneNumber: this.telephoneNumber,
-            user_id: this.$store.getters.userLoged._id,
-        }
-        this.updateUserInfo(dataToSend)
-      },
+    },
+    props:{
+        user_id: String
     }
   }
 </script>

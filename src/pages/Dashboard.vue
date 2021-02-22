@@ -7,7 +7,7 @@
               </v-alert>
               <DasboardUserInfo />
             </v-col>
-            <v-col cols="12">
+            <v-col cols="12" v-if="this.$store.getters.userLoged.role == 'user'">
               <v-alert border="bottom" colored-border color="primary" elevation="2">
                 <v-icon medium>{{mdiNewBox}}</v-icon> Agendar / consultar cita
               </v-alert>

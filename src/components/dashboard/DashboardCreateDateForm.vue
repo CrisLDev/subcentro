@@ -78,13 +78,6 @@
                 </v-col>
               </v-row>
             </v-container>
-            <v-btn
-            color="blue darken-1"
-            text
-            @click="submit"
-          >
-            Save
-          </v-btn>
             </v-form>
           <small>Escoja una fecha valida, por favor, no sea IMBÉCIL.</small>
         </v-card-text>
@@ -95,14 +88,14 @@
             text
             @click="dialog = false"
           >
-            Close
+            Cerrar
           </v-btn>
           <v-btn
             color="blue darken-1"
             text
-            @click="/*dialog = false,*/ submit"
+            @click="submit"
           >
-            Save
+            Guardar
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -129,14 +122,14 @@ import {mapGetters,mapActions} from 'vuex';
         val && setTimeout(() => (this.$refs.picker.activePicker = 'YEAR'))
       },
       dateForSearch () {
-          const dataToSend = {
+            const dataToSend = {
               dateForSearch: this.dateForSearch
-          }
-          this.consultDate(dataToSend);
+            }
+            this.consultDate(dataToSend);
       }
     },
     methods: {
-      ...mapActions(["consultDate", "createNewDate"]),
+      ...mapActions(["consultDate", "createNewDate", "clearDate", "getUltimateSnackbarState"]),
       save (date) {
         this.$refs.menu.save(date)
       },
@@ -144,9 +137,44 @@ import {mapGetters,mapActions} from 'vuex';
         const dataToSend = {
             dateForSearch: this.dateForSearch,
             hour: this.hour,
-            patient_id: this.$store.getters.userLoged._id
+            patient_id: this.$store.getters.userLoged._id,
+            consulting_room: ''
         }
-        this.createNewDate(dataToSend);
+        if(this.$store.getters.dayConsulted.c1 <= 4){
+          dataToSend.consulting_room = 'C1'
+        }else if(this.$store.getters.dayConsulted.c2 <= 4){
+          dataToSend.consulting_room = 'C2'
+        }else if(this.$store.getters.dayConsulted.c3 <= 4){
+          dataToSend.consulting_room = 'C3'
+        }else if(this.$store.getters.dayConsulted.c4 <= 4){
+          dataToSend.consulting_room = 'C4'
+        }else if(this.$store.getters.dayConsulted.c5 <= 4){
+          dataToSend.consulting_room = 'C5'
+        }else {
+          const snackbarData = {
+                timeout: 2000,
+                text: 'Todas las salas ocupadas.',
+                snackbar: true
+          }
+          return this.getUltimateSnackbarState(snackbarData);
+        }
+        this.createNewDate(dataToSend)
+        /*
+        if(this.createNewDate(dataToSend)){
+          await this.clear();
+          var today = new Date();
+          var dd = String(today.getDate()).padStart(2, '0');
+          var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+          var yyyy = today.getFullYear();
+
+          today = yyyy + '-' + mm + '-' + dd;
+          this.dateForSearch = today;
+          this.dialog = false
+        }
+        */
+      },
+      clear () {
+        this.hour = '';
       },
     },
     computed:{
