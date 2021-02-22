@@ -55,8 +55,7 @@
                     <v-date-picker
                       ref="picker"
                       v-model="dateForSearch"
-                      :max="new Date().toISOString().substr(0, 10)"
-                      min="1950-01-01"
+                      :min="new Date().toISOString().substr(0, 10)"
                       @change="save"
                     ></v-date-picker>
                   </v-menu>
@@ -79,7 +78,8 @@
               </v-row>
             </v-container>
             </v-form>
-          <small>Escoja una fecha valida, por favor, no sea IMBÉCIL.</small>
+          <small>Escoja una fecha valida, por favor, no sea IMBÉCIL.</small><br>
+          <small>Recuerda guardar el codigo que se presenta al final.</small>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>

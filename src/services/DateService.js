@@ -8,6 +8,10 @@ export const getDates = async () => {
     return await axios.get(`${API}/dates`);
 }
 
+export const consultDateByCodeService = async (code) => {
+    return await axios.get(`${API}/dates/consult/${code}`);
+}
+
 export const consultDate = async (dataToSend) => {
     return await axios.post(`${API}/dates/consulting`, dataToSend)
 }

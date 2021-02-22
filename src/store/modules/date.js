@@ -1,4 +1,4 @@
-import {consultDate, createDate, getDates} from '../../services/DateService';
+import {consultDate, createDate, getDates, consultDateByCodeService} from '../../services/DateService';
 
 const state = {
     dates: {},
@@ -13,7 +13,8 @@ const state = {
         c3: 0,
         c4: 0,
         c5: 0
-    }
+    },
+    dateByCode: {}
 }
 
 const getters = {
@@ -22,6 +23,9 @@ const getters = {
     },
     dayConsulted: (state) => {
         return state.dayConsulted
+    },
+    dateCode: (state) => {
+        return state.dateByCode
     }
 }
 
@@ -54,7 +58,7 @@ const actions = {
         }
         try {
             const response = await createDate(dataToSend)
-            snackbarData.text = 'Cita agendada correctamente';
+            snackbarData.text = 'Cita agendada correctamente, por favor guarda este codigo, '+response.data.code;
             dispatch('getUltimateSnackbarState', snackbarData);
             const dataForReSend = {
                 dateForSearch: response.data.date
@@ -65,7 +69,21 @@ const actions = {
             if(err)snackbarData.text = err.response.data.msg;
             return dispatch('getUltimateSnackbarState', snackbarData)
         }
-    }
+    },
+    async consultDateByCode({commit, dispatch}, code) {
+        const snackbarData = {
+            timeout: 2000,
+            text: '',
+            snackbar: true
+        }
+        try {
+            const response = await consultDateByCodeService(code)
+            return await commit('dateConsultedByCodeSuccessfyully', response.data)
+        } catch (err) {
+            if(err)snackbarData.text = err.response.data.msg;
+            return dispatch('getUltimateSnackbarState', snackbarData)
+        }
+    },
 }
 
 const mutations = {
@@ -107,7 +125,9 @@ const mutations = {
         c5: 0
     }),
     //dateCreatedSuccessfyully:(state, newDate) => state.dates.unshift(newDate),
-    datesObtainedFailed:(state, error) => (state.user = error)
+    datesObtainedFailed:(state, error) => (state.user = error),
+    clearDateConsultedByCodeSuccessfyully (state) {state.dateByCode = {}},
+    dateConsultedByCodeSuccessfyully: (state, date) => (state.dateByCode = date),
 }
 
 export default {
