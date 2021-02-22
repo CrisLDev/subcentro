@@ -16,6 +16,14 @@ export const reloginUserInReload = async () => {
     return await axios.get(`${API}/auth/me`);
 }
 
+export const getAllUsers = async () => {
+    return await axios.get(`${API}/auth/users`);
+}
+
+export const deleteUserInBd = async (id) => {
+    return await axios.delete(`${API}/auth/users/${id}`);
+}
+
 export const updateUser = async (dataToSend) => {
     return await axios.put(`${API}/auth/user`, dataToSend)
 }
