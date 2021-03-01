@@ -32,6 +32,8 @@
                     </v-card-actions>
                 </v-card>
             </v-col>
+            <v-col cols="12" class="mt-6 mb-16">
+            </v-col>
         </v-row>
     </v-container>
 </template>
@@ -42,10 +44,10 @@ import AdminUserEdit from '../components/admin/AdminUserEdit';
 export default {
     name: "Admin",
     data: () => ({
-      reveal: false
+      reveal: false,
     }),
     components: {
-        AdminUserEdit
+        AdminUserEdit,
     },
     computed: {...mapGetters(["usersInBd"])},
     methods: {
