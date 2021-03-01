@@ -29,23 +29,9 @@ export default {
   },
     data: function () {
       return {
-        numero: 0,
         mdiInformation: mdiInformation,
         mdiNewBox: mdiNewBox
       }
-},
-    methods: {
-        sumar5: function () {
-            return this.numero = this.numero + 5;
-        }
-    },
-  mounted () {
-      document.addEventListener('keydown', logKey);
-    function logKey(e) {
-      if (`${e.code}` == "ArrowRight") {
-          this.sumar5();
-      }
-    }
-  }
+}
 }
 </script>

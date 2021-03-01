@@ -33,7 +33,11 @@
                 </v-card>
             </v-col>
             <v-col cols="12" class="mt-6 mb-16">
-                <v-sheet
+                <v-btn block id="cbtn" @click="showCalendar">
+                    Ver Calendario
+                </v-btn>
+                <div id="cclndr" class="d-none">
+                    <v-sheet
                     tile
                     height="54"
                     class="d-flex"
@@ -94,6 +98,7 @@
                         @change="getEvents"
                     ></v-calendar>
                     </v-sheet>
+                </div>
             </v-col>
         </v-row>
     </v-container>
@@ -141,17 +146,23 @@ export default {
         const dates = this.$store.getters.datesInBd;
         //const eventCount = dates;
 
-        Object.keys(dates).map((evento) => 
-        {const timestamp = evento.date + ' ' + evento.hour;
-        events.push({
-            name: 'Consulta',
-            start: timestamp,
-            end:timestamp,
-            color: this.colors[this.rnd(0, this.colors.length - 1)]
-          })}
+        Object.values(dates).map((evento) => 
+            {
+                const timestamp = evento.date + ' ' + evento.hour;
+                events.push({
+                    name: 'Consulta',
+                    start: timestamp,
+                    end:timestamp,
+                    color: this.colors[this.rnd(0, this.colors.length - 1)]
+                })
+            }
           );
-
         this.events = events
+      },
+      async showCalendar(){
+          await this.getEvents();
+          document.getElementById("cbtn").classList.add("d-none");
+          document.getElementById("cclndr").classList.replace("d-none", "d-block")
       },
       getEventColor (event) {
         return event.color
