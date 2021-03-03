@@ -1,6 +1,26 @@
 <template>
     <v-container class="lighten-5 mb-16">
         <v-row align="center" justify="center">
+          <v-col lg="12">
+            <v-container>
+              <AdminCreateConsultingForm/>
+            </v-container>
+            <v-container>
+              <v-chip v-for="room in consulting_roomsInBd" :key="room._id">
+                {{room.name}}
+              </v-chip>
+            </v-container>
+          </v-col>
+          <v-col lg="12">
+            <v-container>
+              <AdminCreateEspecialityForm/>
+            </v-container>
+            <v-container>
+              <v-chip v-for="especiality in especialititesInBd" :key="especiality._id">
+                {{especiality.name}}
+              </v-chip>
+            </v-container>
+          </v-col>
             <v-col lg="4" md="6" sm="6" cols="12" class="mt-6 mb-1" v-for="user in usersInBd" :key="user._id">
                 <v-card
                     class="mx-auto"
@@ -114,7 +134,7 @@
             <v-toolbar
               :color="selectedEvent.color"
               dark
-            >
+            ><!--
               <v-btn icon>
                 <v-icon>{{mdiBorderColor}}</v-icon>
               </v-btn>
@@ -126,6 +146,8 @@
               <v-btn icon>
                 <v-icon>{{mdiDotsVertical}}</v-icon>
               </v-btn>
+              -->
+              <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
             </v-toolbar>
             <v-card-text>
               <div v-html="selectedEvent.start"></div>
@@ -151,6 +173,8 @@
 <script>
 import {mapGetters, mapActions} from 'vuex';
 import AdminUserEdit from '../components/admin/AdminUserEdit';
+import AdminCreateConsultingForm from '../components/admin/AdminCreateConsultingForm';
+import AdminCreateEspecialityForm from '../components/admin/AdminCreateEspecialityForm';
 import { mdiBorderColor } from '@mdi/js';
 import { mdiDotsVertical } from '@mdi/js';
 import { mdiHeart } from '@mdi/js';
@@ -186,10 +210,12 @@ export default {
     }),
     components: {
         AdminUserEdit,
+        AdminCreateConsultingForm,
+        AdminCreateEspecialityForm
     },
-    computed: {...mapGetters(["usersInBd"])},
+    computed: {...mapGetters(["usersInBd", "consulting_roomsInBd", "especialititesInBd"])},
     methods: {
-        ...mapActions(["getusersFromBD","deleteUser","getDatesFromBD"]),
+        ...mapActions(["getusersFromBD","deleteUser","getDatesFromBD", "getConsultingFromBD", "getEspecialitiesFromBD"]),
         deleteU(id){
             this.deleteUser(id)
         },
@@ -254,6 +280,8 @@ export default {
     created() {
         this.getusersFromBD();
         this.getDatesFromBD();
+        this.getConsultingFromBD();
+        this.getEspecialitiesFromBD();
     },
     watch: {
         $route: {
