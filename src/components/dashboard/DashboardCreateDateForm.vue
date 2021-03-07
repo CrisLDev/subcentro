@@ -66,12 +66,22 @@
                 >
                   <v-select
                   v-model="hour"
-                    :items="[dayConsulted.nueve < 5 ? '09:00' : '09:00 No disponible', 
-                    dayConsulted.once < 5 ? '11:00' : '11:00 No disponible', 
-                    dayConsulted.unaTarde < 5 ? '13:00' : '13:00 No disponible',
-                    dayConsulted.tresTarde < 5 ? '15:00' : '15:00 No disponible']"
+                    :items="[dayConsulted.nueve < 4 ? '09:00' : '09:00 No disponible', 
+                    dayConsulted.once < 2 ? '11:00' : '11:00 No disponible', 
+                    dayConsulted.unaTarde < 4 ? '13:00' : '13:00 No disponible',
+                    dayConsulted.tresTarde < 4 ? '15:00' : '15:00 No disponible']"
                     label="Hora*"
                     :disabled="dayConsulted.disabled"
+                    required
+                  ></v-select>
+                </v-col>
+                <v-col
+                  cols="12"
+                >
+                  <v-select
+                  v-model="especiality"
+                    :items="items"
+                    label="Especialidad*"
                     required
                   ></v-select>
                 </v-col>
@@ -115,21 +125,24 @@ import {mapGetters,mapActions} from 'vuex';
       overlay: false,
       absolute: true,
       hour: '',
+      especiality: '',
       zIndex: 9999,
+      items: []
     }),
     watch: {
       menu (val) {
         val && setTimeout(() => (this.$refs.picker.activePicker = 'YEAR'))
       },
-      dateForSearch () {
+      especiality () {
             const dataToSend = {
-              dateForSearch: this.dateForSearch
+              dateForSearch: this.dateForSearch,
+              especiality: this.especiality
             }
             this.consultDate(dataToSend);
       }
     },
     methods: {
-      ...mapActions(["consultDate", "createNewDate", "clearDate", "getUltimateSnackbarState"]),
+      ...mapActions(["consultDate", "createNewDate", "clearDate", "getUltimateSnackbarState", "getEspecialitiesFromBD"]),
       save (date) {
         this.$refs.menu.save(date)
       },
@@ -138,8 +151,9 @@ import {mapGetters,mapActions} from 'vuex';
             dateForSearch: this.dateForSearch,
             hour: this.hour,
             patient_id: this.$store.getters.userLoged._id,
-            consulting_room: ''
-        }
+            consulting_room: '',
+            especiality: this.especiality
+        }/*
         if(this.$store.getters.dayConsulted.c1 <= 4){
           dataToSend.consulting_room = 'C1'
         }else if(this.$store.getters.dayConsulted.c2 <= 4){
@@ -157,7 +171,7 @@ import {mapGetters,mapActions} from 'vuex';
                 snackbar: true
           }
           return this.getUltimateSnackbarState(snackbarData);
-        }
+        }*/
         this.createNewDate(dataToSend)
         /*
         if(this.createNewDate(dataToSend)){
@@ -178,7 +192,17 @@ import {mapGetters,mapActions} from 'vuex';
       },
     },
     computed:{
-  ...mapGetters(["dayConsulted"])
+  ...mapGetters(["dayConsulted","especialititesInBd"])
 },
+created() {
+        this.getEspecialitiesFromBD();
+        const items = []
+        Object.values(this.especialititesInBd).map((especiality) => 
+            {
+                items.push(especiality.name)
+            }
+          );
+        this.items = items
+    },
   }
 </script>

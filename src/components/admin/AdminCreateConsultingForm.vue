@@ -36,13 +36,16 @@
                   required
                 ></v-text-field>
               </v-col>
-              <v-col cols="12">
-                <v-text-field
-                v-model="especiality"
-                  label="Especialidad*"
-                  required
-                ></v-text-field>
-              </v-col>
+              <v-col
+                  cols="12"
+                >
+                  <v-select
+                  v-model="especiality"
+                    :items="items"
+                    label="Especialidad*"
+                    required
+                  ></v-select>
+                </v-col>
             </v-row>
           </v-container>
           <small>* Indica campos requeridos. </small>
@@ -70,7 +73,7 @@
 </template>
 
 <script>
-import {mapActions} from 'vuex';
+import {mapActions, mapGetters} from 'vuex';
 import { mdiCalendar } from '@mdi/js';
   export default {
     data: () => ({
@@ -79,7 +82,8 @@ import { mdiCalendar } from '@mdi/js';
       menu: false,
       name: '',
       code: '',
-      especiality: ''
+      especiality: '',
+      items: []
     }),
     methods:{
         ...mapActions(["createNewConsulting"]),
@@ -91,6 +95,29 @@ import { mdiCalendar } from '@mdi/js';
             }
             this.createNewConsulting(dataToSend)
         }
-    }
+    },
+    computed:{
+      ...mapGetters(["especialititesInBd"])
+    },
+    watch: {
+      especialititesInBd(){
+        const items = []
+        Object.values(this.especialititesInBd).map((especiality) => 
+            {
+                items.push(especiality.name)
+            }
+          );
+        this.items = items
+      }
+    },
+    created() {
+        const items = []
+        Object.values(this.especialititesInBd).map((especiality) => 
+            {
+                items.push(especiality.name)
+            }
+          );
+        this.items = items
+    },
   }
 </script>
