@@ -77,11 +77,15 @@ const actions = {
         }
         try {
             const response = await createUser(dataToSend)
-            commit('UserRegisterSuccessfully', response.data)
             snackbarData.text = 'Usuario registrado correctamente';
             dispatch('getUltimateSnackbarState', snackbarData)
             const registerRoute = router.currentRoute.name;
-            if(registerRoute !== 'admin'){
+            if(registerRoute == 'admin'){
+                commit('UserRegisterSuccessfully', response.data)
+            }else{
+                dispatch('UserRegisterSuccessfully', response.data)
+            }
+            if(registerRoute != 'admin'){
                 return router.push('/');
             }
         } catch (err) {

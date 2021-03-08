@@ -5,7 +5,10 @@
             <v-container>
               <AdminCreateConsultingForm/>
             </v-container>
-            <v-container>
+            <v-container v-if="consulting_roomsInBd.length == 0">
+              No hay consultorios.
+            </v-container>
+            <v-container v-if="consulting_roomsInBd.length !== 0">
               <v-chip v-for="room in consulting_roomsInBd" :key="room._id">
                 {{room.name}}
               </v-chip>
@@ -15,7 +18,10 @@
             <v-container>
               <AdminCreateEspecialityForm/>
             </v-container>
-            <v-container>
+            <v-container v-if="especialititesInBd.length == 0">
+              No hay Especialidades.
+            </v-container>
+            <v-container v-if="especialititesInBd.length !== 0">
               <v-chip v-for="especiality in especialititesInBd" :key="especiality._id">
                 {{especiality.name}}
               </v-chip>

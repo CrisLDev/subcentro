@@ -132,7 +132,8 @@ export default {
         const dataToSend = {
               userName: this.userName,
               email: this.email,
-              password: this.password
+              password: this.password,
+              role: 'user'
         }
         this.registerUser(dataToSend);
       },
