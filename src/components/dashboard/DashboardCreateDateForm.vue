@@ -139,6 +139,16 @@ import {mapGetters,mapActions} from 'vuex';
               especiality: this.especiality
             }
             this.consultDate(dataToSend);
+      },
+      async dateForSearch () {
+            await this.getEspecialitiesFromBD();
+            const items = [];
+            await Object.values(this.especialititesInBd).map((especiality) => 
+                {
+                    items.push(especiality.name)
+                }
+              );
+            this.items = items;
       }
     },
     methods: {
@@ -193,16 +203,6 @@ import {mapGetters,mapActions} from 'vuex';
     },
     computed:{
   ...mapGetters(["dayConsulted","especialititesInBd"])
-},
-created() {
-        this.getEspecialitiesFromBD();
-        const items = []
-        Object.values(this.especialititesInBd).map((especiality) => 
-            {
-                items.push(especiality.name)
-            }
-          );
-        this.items = items
-    },
+}
   }
 </script>

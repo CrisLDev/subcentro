@@ -61,7 +61,8 @@ const actions = {
             snackbarData.text = 'Cita agendada correctamente, por favor guarda este codigo, '+response.data.code;
             dispatch('getUltimateSnackbarState', snackbarData);
             const dataForReSend = {
-                dateForSearch: response.data.date
+                dateForSearch: response.data.date,
+                especiality: response.data.especiality
             }
             return dispatch('consultDate', dataForReSend)
             //return commit('dateCreatedSuccessfyully', response.data)
