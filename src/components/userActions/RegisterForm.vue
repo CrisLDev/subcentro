@@ -52,10 +52,10 @@
                     @input="$v.password2.$touch()" 
                     @blur="$v.password2.$touch()"></v-text-field>
                 </v-col>
-                <v-col cols="6">
+                <v-col cols="6" style="z-index: 999">
                         <v-btn block color="primary" elevation="2" @click="submit">Enviar</v-btn>
                 </v-col>
-                <v-col cols="6">
+                <v-col cols="6" style="z-index: 999">
                         <v-btn block color="error" elevation="2" @click="clear">Limpiar</v-btn>
                 </v-col>
             </v-row>
