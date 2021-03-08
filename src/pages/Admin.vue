@@ -1,7 +1,7 @@
 <template>
     <v-container class="lighten-5 mb-16">
         <v-row align="center" justify="center">
-          <v-col lg="12">
+          <v-col lg="6">
             <v-container>
               <AdminCreateConsultingForm/>
             </v-container>
@@ -11,7 +11,7 @@
               </v-chip>
             </v-container>
           </v-col>
-          <v-col lg="12">
+          <v-col lg="6">
             <v-container>
               <AdminCreateEspecialityForm/>
             </v-container>
@@ -21,16 +21,18 @@
               </v-chip>
             </v-container>
           </v-col>
-            <v-col lg="4" md="6" sm="6" cols="12" class="mt-6 mb-1" v-for="user in usersInBd" :key="user._id">
+          <v-col lg="12" md="6" sm="6" cols="12" class="mt-6 mb-1">
+            <v-row align="center" justify="center">
+              <v-col lg="4" v-for="user in usersInBd" :key="user._id">
                 <v-card
                     class="mx-auto"
                 >
                     <v-card-text>
-                    <div>Dia de consulta</div>
+                    <div class="text-uppercase">{{user.role}}</div>
                     <p class="display-1 text--primary">
-                        {{user.userName}} - {{user.adress}}
+                        {{user.userName ? user.userName : 'N/A'}} - {{user.adress ? user.adress : 'N/A'}}
                     </p>
-                    <p>{{user.fullName}}</p>
+                    <p>{{user.fullName ? user.fullName : 'N/A'}}</p>
                     <div class="text--primary">
                     </div>
                     </v-card-text>
@@ -51,8 +53,10 @@
                         </v-container>
                     </v-card-actions>
                 </v-card>
-            </v-col>
-            <v-col cols="12" class="mt-6 mb-16">
+              </v-col>
+            </v-row>
+          </v-col>
+          <v-col cols="12">
                 <v-btn block id="cbtn" @click="showCalendar">
                     Ver Calendario
                 </v-btn>
@@ -165,7 +169,12 @@
         </v-menu>
                     </v-sheet>
                 </div>
-            </v-col>
+          </v-col>
+          <v-col class="mt-6 mb-16">
+            <v-container>
+              <AdminCreateDoctorForm/>
+            </v-container>
+          </v-col>
         </v-row>
     </v-container>
 </template>
@@ -175,6 +184,7 @@ import {mapGetters, mapActions} from 'vuex';
 import AdminUserEdit from '../components/admin/AdminUserEdit';
 import AdminCreateConsultingForm from '../components/admin/AdminCreateConsultingForm';
 import AdminCreateEspecialityForm from '../components/admin/AdminCreateEspecialityForm';
+import AdminCreateDoctorForm from '../components/admin/AdminCreateDoctorForm';
 import { mdiBorderColor } from '@mdi/js';
 import { mdiDotsVertical } from '@mdi/js';
 import { mdiHeart } from '@mdi/js';
@@ -211,7 +221,8 @@ export default {
     components: {
         AdminUserEdit,
         AdminCreateConsultingForm,
-        AdminCreateEspecialityForm
+        AdminCreateEspecialityForm,
+        AdminCreateDoctorForm
     },
     computed: {...mapGetters(["usersInBd", "consulting_roomsInBd", "especialititesInBd"])},
     methods: {

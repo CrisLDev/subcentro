@@ -69,7 +69,7 @@ const actions = {
         dispatch('getUltimateSnackbarState', snackbarData)
         return router.push('/');
     },
-    async registerUser({dispatch}, dataToSend) {
+    async registerUser({commit,dispatch}, dataToSend) {
         const snackbarData = {
             timeout: 2000,
             text: '',
@@ -77,10 +77,13 @@ const actions = {
         }
         try {
             const response = await createUser(dataToSend)
-            dispatch('UserRegisterSuccessfully', response.data)
+            commit('UserRegisterSuccessfully', response.data)
             snackbarData.text = 'Usuario registrado correctamente';
             dispatch('getUltimateSnackbarState', snackbarData)
-            return router.push('/');
+            const registerRoute = router.currentRoute.name;
+            if(registerRoute !== 'admin'){
+                return router.push('/');
+            }
         } catch (err) {
             if(err)snackbarData.text = err.response.data.msg;
             return dispatch('getUltimateSnackbarState', snackbarData)
@@ -120,6 +123,7 @@ const actions = {
 }
 
 const mutations = {
+    UserRegisterSuccessfully:(state, newUser) => state.users.push(newUser),
     usersObtainedSuccessfully:(state, users) => (state.users = users),
     usersObtainedFailed:(state, error) => (state.user = error),
     UserLogedSuccessfully:(state, addUser) => (state.user = addUser),
