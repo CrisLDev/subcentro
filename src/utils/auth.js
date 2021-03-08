@@ -1,8 +1,8 @@
 import axios from 'axios';
 import store from '../store';
 
-export const isLogged = async () => {
-    return await !!localStorage.getItem('token')
+export const isLogged = () => {
+    return !!localStorage.getItem('token')
 }
 
 export const isAdmin = async () => {

@@ -80,7 +80,7 @@
                         outlined
                         hide-details
                         class="ma-2"
-                        label="type"
+                        label="Tipo"
                     ></v-select>
                     <v-select
                         v-model="mode"
@@ -88,7 +88,7 @@
                         dense
                         outlined
                         hide-details
-                        label="event-overlap-mode"
+                        label="Tipo de presentación"
                         class="ma-2"
                     ></v-select>
                     <v-select
@@ -97,7 +97,7 @@
                         dense
                         outlined
                         hide-details
-                        label="weekdays"
+                        label="Días"
                         class="ma-2"
                     ></v-select>
                     <v-spacer></v-spacer>

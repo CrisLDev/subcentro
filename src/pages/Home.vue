@@ -112,7 +112,15 @@ export default {
       allInclusive: mdiAllInclusive,
       chatQuestion: mdiChatQuestion,
       info: null
-  })
+  }),
+    watch: {
+        $route: {
+            immediate: true,
+            handler(to) {
+                document.title = to.meta.title || 'Inicio';
+            }
+        },
+    }
 }
 </script>
 

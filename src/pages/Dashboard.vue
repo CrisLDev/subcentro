@@ -22,6 +22,7 @@ import DashboardAction from '../components/dashboard/DashboardAction.vue';
 import DasboardUserInfo from '../components/dashboard/DashboardUserInfo.vue';
 import { mdiInformation } from '@mdi/js';
 import { mdiNewBox } from '@mdi/js';
+import router from '../router';
 export default {
   components:{
     DashboardAction,
@@ -39,7 +40,14 @@ export default {
             handler(to) {
                 document.title = to.meta.title || 'Agendar';
             }
-        },
+        }
+    },
+    mounted () {
+      const token = localStorage.getItem('token');
+      if(!token){
+        console.log('no hay token')
+        return router.push('/login')
+      }
     }
 }
 </script>

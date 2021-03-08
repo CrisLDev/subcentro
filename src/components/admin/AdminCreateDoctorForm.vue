@@ -68,7 +68,9 @@ import {mapActions} from 'vuex';
   export default {
     data: () => ({
       mdiCalendar: mdiCalendar,
-      dialog: false
+      dialog: false,
+      userName: '',
+      email: ''
     }),
     methods: {
       ...mapActions(["registerUser"]),
