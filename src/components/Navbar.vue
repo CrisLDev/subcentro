@@ -1,5 +1,5 @@
 <template>
-    <v-container class="d-flex">
+    <v-container class="d-flex align-center">
         <router-link to="/" class="text-decoration-none" style="color: white;"><v-icon medium color="white">{{ charity }}</v-icon> INICIO</router-link>
         <v-spacer></v-spacer>
         <router-link to="/login" class="text-decoration-none" style="color: white;" v-if="!this.$store.getters.userLoged.token"><v-icon medium color="white">{{ accountArrowRight }}</v-icon> USUARIO</router-link>
