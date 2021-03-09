@@ -8,6 +8,14 @@ export const getConsulting = async () => {
     return await axios.get(`${API}/consulting`);
 }
 
+export const getConsultingById = async (id) => {
+    return await axios.get(`${API}/consulting/${id}`);
+}
+
+export const updateRoomById = async (id, dataToSend) => {
+    return await axios.put(`${API}/consulting/${id}`, dataToSend);
+}
+
 export const consultDateByCodeService = async (code) => {
     return await axios.get(`${API}/dates/consult/${code}`);
 }

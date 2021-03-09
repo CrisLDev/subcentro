@@ -1,14 +1,18 @@
-import {consultDate, createConsulting, getConsulting, consultDateByCodeService} from '../../services/ConsultingService';
+import {consultDate, createConsulting, getConsulting, getConsultingById, updateRoomById} from '../../services/ConsultingService';
 
 const state = {
     consulting_rooms: {},
-    newRoom: {}
+    newRoom: {},
+    roomToEdit: {}
 }
 
 const getters = {
     consulting_roomsInBd: (state) => {
         return state.consulting_rooms
-    }
+    },
+    consultingToEdit: (state) => {
+        return state.roomToEdit
+    },
 }
 
 const actions = {
@@ -20,6 +24,29 @@ const actions = {
             return commit('consultingObtainedFailed', err.response.data.msg)
         }
     },
+    async getConsultingFromBDById({commit}, room_id) {
+        try {
+            const response = await getConsultingById(room_id)
+            return commit('consultingToEditObtainedSuccessfully', response.data)
+        } catch (err) {
+            return commit('consultingObtainedFailed', err.response.data.msg)
+        }
+    },
+    async updateRoom({dispatch},dataToSend){
+        const snackbarData = {
+            timeout: 2000,
+            text: '',
+            snackbar: true
+        }
+        try {
+            await updateRoomById(dataToSend.id ,dataToSend)
+            snackbarData.text = 'Consultorio actualizado correctamente';
+            return dispatch('getUltimateSnackbarState', snackbarData)
+        } catch (err) {
+            if(err)snackbarData.text = err.response.data.msg;
+            return dispatch('getUltimateSnackbarState', snackbarData)
+        }
+    },
     async consultDate({commit}, dataToSend) {
         try {
             const response = await consultDate(dataToSend)
@@ -28,9 +55,6 @@ const actions = {
             await consultDate(dataToSend)
             return commit('dateConsulteGoneEmpty')
         }
-    },
-    async clearDate({commit}) {
-        return await commit('dateInputIsEmpty')
     },
     async createNewConsulting({dispatch, commit}, dataToSend) {
         const snackbarData = {
@@ -48,24 +72,11 @@ const actions = {
             return dispatch('getUltimateSnackbarState', snackbarData)
         }
     },
-    async consultDateByCode({commit, dispatch}, code) {
-        const snackbarData = {
-            timeout: 2000,
-            text: '',
-            snackbar: true
-        }
-        try {
-            const response = await consultDateByCodeService(code)
-            return await commit('dateConsultedByCodeSuccessfyully', response.data)
-        } catch (err) {
-            if(err)snackbarData.text = err.response.data.msg;
-            return dispatch('getUltimateSnackbarState', snackbarData)
-        }
-    },
 }
 
 const mutations = {
     consulting_roomCretaedSuccessfully:(state, consulting_room) => state.consulting_rooms.unshift(consulting_room),
+    consultingToEditObtainedSuccessfully: (state, room) => (state.roomToEdit = room) ,
     consultingObtainedSuccessfully:(state, consulting_rooms) => (state.consulting_rooms = consulting_rooms),
     dateConsultedSuccessfyully:(state, dayConsulted) => (state.dayConsulted = {
         disabled: false,
@@ -107,6 +118,9 @@ const mutations = {
     consultingObtainedFailed:(state, error) => (state.consulting_rooms = error),
     clearDateConsultedByCodeSuccessfyully (state) {state.dateByCode = {}},
     dateConsultedByCodeSuccessfyully: (state, date) => (state.dateByCode = date),
+    updateRoomName (state, name) {state.roomToEdit.name = name},
+    updateEspeciality (state, especiality) {state.roomToEdit.especiality = especiality},
+    updateRoomCode (state, code) {state.roomToEdit.code = code},
 }
 
 export default {

@@ -101,7 +101,7 @@ const actions = {
         }
         try {
             await updateUser(dataToSend)
-            snackbarData.text = 'Usuario actualizado correctamente';
+            snackbarData.text = 'Consultorio actualizado correctamente';
             return dispatch('getUltimateSnackbarState', snackbarData)
         } catch (err) {
             if(err)snackbarData.text = err.response.data.msg;

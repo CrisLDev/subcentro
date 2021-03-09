@@ -66,10 +66,10 @@
                 >
                   <v-select
                   v-model="hour"
-                    :items="[dayConsulted.nueve < 4 ? '09:00' : '09:00 No disponible', 
-                    dayConsulted.once < 2 ? '11:00' : '11:00 No disponible', 
-                    dayConsulted.unaTarde < 4 ? '13:00' : '13:00 No disponible',
-                    dayConsulted.tresTarde < 4 ? '15:00' : '15:00 No disponible']"
+                    :items="[dayConsulted.nueve < 4 * dayConsulted.consultorios ? '09:00' : '09:00 No disponible', 
+                    dayConsulted.once < 2 * dayConsulted.consultorios ? '11:00' : '11:00 No disponible', 
+                    dayConsulted.unaTarde < 4 * dayConsulted.consultorios ? '13:00' : '13:00 No disponible',
+                    dayConsulted.tresTarde < 4 * dayConsulted.consultorios ? '15:00' : '15:00 No disponible']"
                     label="Hora*"
                     :disabled="dayConsulted.disabled"
                     required

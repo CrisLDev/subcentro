@@ -9,7 +9,7 @@
               No hay consultorios.
             </v-container>
             <v-container v-if="consulting_roomsInBd.length !== 0">
-              <v-chip v-for="room in consulting_roomsInBd" :key="room._id">
+              <v-chip v-for="room in consulting_roomsInBd" :key="room._id" @click="editRooom(room._id)">
                 {{room.name}}
               </v-chip>
             </v-container>
@@ -182,6 +182,73 @@
             </v-container>
           </v-col>
         </v-row>
+        <div class="text-center">
+          <v-dialog
+            v-model="dialog"
+            width="500"
+          >
+            <v-card>
+        <v-card-title>
+          <span class="headline">Contenido</span>
+        </v-card-title>
+        <v-card-text>
+          <v-container>
+            <v-row>
+              <v-col cols="12">
+                <v-text-field
+                v-model="name"
+                  label="Nombre completo*"
+                  required
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12">
+                <v-text-field
+                v-model="code"
+                  label="Codigo del conusltorio*"
+                  required
+                ></v-text-field>
+              </v-col>
+              <v-col
+                  cols="12"
+                >
+                  <v-select
+                  v-model="especiality"
+                    :items="items"
+                    label="Especialidad*"
+                    required
+                  ></v-select>
+                </v-col>
+            </v-row>
+          </v-container>
+          <small>* Indica campos requeridos. </small>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="red darken-1"
+            text
+            @click="dialog = false"
+          >
+            Eliminar
+          </v-btn>
+          <v-btn
+            color="blue darken-1"
+            text
+            @click="dialog = false"
+          >
+            Cerrar
+          </v-btn>
+          <v-btn
+            color="blue darken-1"
+            text
+            @click="submitEditRoom"
+          >
+            Editar
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+          </v-dialog>
+        </div>
     </v-container>
 </template>
 
@@ -222,7 +289,10 @@ export default {
       mdiDotsVertical: mdiDotsVertical,
       mdiHeart: mdiHeart,
       mdiChevronLeft: mdiChevronLeft,
-      mdiChevronRight: mdiChevronRight
+      mdiChevronRight: mdiChevronRight,
+      dialog: false,
+      items: [],
+      roomIdToEdit:''
     }),
     components: {
         AdminUserEdit,
@@ -230,9 +300,49 @@ export default {
         AdminCreateEspecialityForm,
         AdminCreateDoctorForm
     },
-    computed: {...mapGetters(["usersInBd", "consulting_roomsInBd", "especialititesInBd"])},
+    computed: {...mapGetters(["usersInBd", "consulting_roomsInBd", "especialititesInBd"]),
+    name: {
+        get () {
+          return this.$store.state.consulting.roomToEdit.name
+        },
+        set (value) {
+          this.$store.commit('updateRoomName', value)
+        }
+      },
+      code: {
+        get () {
+          return this.$store.state.consulting.roomToEdit.code
+        },
+        set (value) {
+          this.$store.commit('updateRoomCode', value)
+        }
+      },
+      especiality: {
+        get () {
+          return this.$store.state.consulting.roomToEdit.especiality
+        },
+        set (value) {
+          this.$store.commit('updateEspeciality', value)
+        }
+      },
+    },
     methods: {
-        ...mapActions(["getusersFromBD","deleteUser","getDatesFromBD", "getConsultingFromBD", "getEspecialitiesFromBD"]),
+        ...mapActions(["getusersFromBD","deleteUser","getDatesFromBD", "getConsultingFromBD", 
+        "getEspecialitiesFromBD", "getConsultingFromBDById", "updateRoom"]),
+        editRooom(roomId){
+          this.dialog = true;
+          this.roomIdToEdit = roomId;
+          this.getConsultingFromBDById(roomId);
+        },
+        submitEditRoom(){
+          const dataToSend = {
+                name: this.name,
+                code: this.code,
+                especiality: this.especiality,
+                id: this.roomIdToEdit
+            }
+          this.updateRoom(dataToSend)
+        },
         deleteU(id){
             this.deleteUser(id)
         },
@@ -307,6 +417,15 @@ export default {
                 document.title = to.meta.title || 'Admin';
             }
         },
+        especialititesInBd(){
+        const items = []
+        Object.values(this.especialititesInBd).map((especiality) => 
+            {
+                items.push(especiality.name)
+            }
+          );
+        this.items = items
+      }
     }
 }
 </script>
