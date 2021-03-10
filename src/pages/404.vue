@@ -12,3 +12,15 @@
         </v-row>
     </v-container>
 </template>
+<script>
+export default {
+    watch: {
+        $route: {
+            immediate: true,
+            handler(to) {
+                document.title = to.meta.title || '404';
+            }
+        },
+    }
+}
+</script>

@@ -31,8 +31,11 @@
                     <p class="font-weight-bold mb-0" style="color:#6c63ff">
                       Agendar una cita.
                     </p>
-                    <p class="font-weight-bold mb-0 text--primary">
-                      ¡Click Aquí!
+                    <p class="font-weight-bold mb-0 text--primary" v-if="this.$store.getters.userLoged.role !== ''">
+                      <router-link to="/dashboard" class="text-decoration-none" style="color: black">¡Click Aquí!</router-link>
+                    </p>
+                    <p class="font-weight-bold mb-0 text--primary" v-if="this.$store.getters.userLoged.role == ''">
+                      <router-link to="/login" class="text-decoration-none" style="color: black">¡Click Aquí!</router-link>
                     </p>
                   </v-card>
                 </v-col>
@@ -42,8 +45,11 @@
                     <p class="font-weight-bold mb-0" style="color:#6c63ff">
                       Consultar una cita.
                     </p>
-                    <p class="font-weight-bold mb-0 text--primary">
-                      ¡Click Aquí!
+                    <p class="font-weight-bold mb-0 text--primary" v-if="this.$store.getters.userLoged.role !== ''">
+                      <router-link to="/dashboard" class="text-decoration-none" style="color: black">¡Click Aquí!</router-link>
+                    </p>
+                    <p class="font-weight-bold mb-0 text--primary" v-if="this.$store.getters.userLoged.role == ''">
+                      <router-link to="/login" class="text-decoration-none" style="color: black">¡Click Aquí!</router-link>
                     </p>
                   </v-card>
                 </v-col>
@@ -54,7 +60,7 @@
                       Personal.
                     </p>
                     <p class="font-weight-bold mb-0 text--primary">
-                      ¡Click Aquí!
+                      <router-link to="/doctors" class="text-decoration-none" style="color: black">¡Click Aquí!</router-link>
                     </p>
                   </v-card>
                 </v-col>
@@ -65,7 +71,7 @@
                       Más información.
                     </p>
                     <p class="font-weight-bold mb-0 text--primary">
-                      ¡Click Aquí!
+                      <router-link to="/more" class="text-decoration-none" style="color: black">¡Click Aquí!</router-link>
                     </p>
                   </v-card>
                 </v-col>
@@ -76,7 +82,7 @@
                       Retroalimentación.
                     </p>
                     <p class="font-weight-bold mb-0 text--primary">
-                      ¡Click Aquí!
+                      <router-link to="/news" class="text-decoration-none" style="color: black">¡Click Aquí!</router-link>
                     </p>
                   </v-card>
                 </v-col>
@@ -87,7 +93,7 @@
                       Preguntanos.
                     </p>
                     <p class="font-weight-bold mb-0 text--primary">
-                      ¡Click Aquí!
+                      <router-link to="/askus" class="text-decoration-none" style="color: black">¡Click Aquí!</router-link>
                     </p>
                   </v-card>
                 </v-col>
@@ -112,7 +118,15 @@ export default {
       allInclusive: mdiAllInclusive,
       chatQuestion: mdiChatQuestion,
       info: null
-  })
+  }),
+    watch: {
+        $route: {
+            immediate: true,
+            handler(to) {
+                document.title = to.meta.title || 'Inicio';
+            }
+        },
+    }
 }
 </script>
 

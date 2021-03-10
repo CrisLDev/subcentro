@@ -22,6 +22,7 @@ import DashboardAction from '../components/dashboard/DashboardAction.vue';
 import DasboardUserInfo from '../components/dashboard/DashboardUserInfo.vue';
 import { mdiInformation } from '@mdi/js';
 import { mdiNewBox } from '@mdi/js';
+import router from '../router';
 export default {
   components:{
     DashboardAction,
@@ -29,23 +30,24 @@ export default {
   },
     data: function () {
       return {
-        numero: 0,
         mdiInformation: mdiInformation,
         mdiNewBox: mdiNewBox
       }
 },
-    methods: {
-        sumar5: function () {
-            return this.numero = this.numero + 5;
+    watch: {
+        $route: {
+            immediate: true,
+            handler(to) {
+                document.title = to.meta.title || 'Agendar';
+            }
         }
     },
-  mounted () {
-      document.addEventListener('keydown', logKey);
-    function logKey(e) {
-      if (`${e.code}` == "ArrowRight") {
-          this.sumar5();
+    mounted () {
+      const token = localStorage.getItem('token');
+      if(!token){
+        console.log('no hay token')
+        return router.push('/login')
       }
     }
-  }
 }
 </script>
