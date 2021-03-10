@@ -227,7 +227,7 @@
           <v-btn
             color="red darken-1"
             text
-            @click="dialog = false"
+            @click="submitDeleteRoom"
           >
             Eliminar
           </v-btn>
@@ -328,11 +328,14 @@ export default {
     },
     methods: {
         ...mapActions(["getusersFromBD","deleteUser","getDatesFromBD", "getConsultingFromBD", 
-        "getEspecialitiesFromBD", "getConsultingFromBDById", "updateRoom"]),
+        "getEspecialitiesFromBD", "getConsultingFromBDById", "updateRoom", "deleteRoom"]),
         editRooom(roomId){
           this.dialog = true;
           this.roomIdToEdit = roomId;
           this.getConsultingFromBDById(roomId);
+        },
+        submitDeleteRoom(){
+          this.deleteRoom(this.roomIdToEdit)
         },
         submitEditRoom(){
           const dataToSend = {

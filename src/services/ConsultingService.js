@@ -12,6 +12,14 @@ export const getConsultingById = async (id) => {
     return await axios.get(`${API}/consulting/${id}`);
 }
 
+export const consultRooms = async (dataForSend) => {
+    return await axios.post(`${API}/consulting/rooms`, dataForSend);
+}
+
+export const deleteRoomById = async (id) => {
+    return await axios.delete(`${API}/consulting/${id}`);
+}
+
 export const updateRoomById = async (id, dataToSend) => {
     return await axios.put(`${API}/consulting/${id}`, dataToSend);
 }

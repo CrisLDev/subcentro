@@ -8,7 +8,6 @@ const state = {
         once: 0, 
         unaTarde: 0,
         tresTarde: 0,
-        consultorios: 0
     },
     dateByCode: {}
 }
@@ -58,7 +57,8 @@ const actions = {
             dispatch('getUltimateSnackbarState', snackbarData);
             const dataForReSend = {
                 dateForSearch: response.data.date,
-                especiality: response.data.especiality
+                especiality: response.data.especiality,
+                code: response.data.consulting_room
             }
             return dispatch('consultDate', dataForReSend)
             //return commit('dateCreatedSuccessfyully', response.data)
@@ -87,11 +87,10 @@ const mutations = {
     datesObtainedSuccessfully:(state, dates) => (state.dates = dates),
     dateConsultedSuccessfyully:(state, dayConsulted) => (state.dayConsulted = {
         disabled: false,
-        nueve: dayConsulted[0].filter(hour => hour.hour === "09:00").length,
-        once: dayConsulted[0].filter(hour => hour.hour === "11:00").length,
-        unaTarde: dayConsulted[0].filter(hour => hour.hour === "13:00").length,
-        tresTarde: dayConsulted[0].filter(hour => hour.hour === "15:00").length,
-        consultorios: dayConsulted[1],
+        nueve: dayConsulted.filter(hour => hour.hour === "09:00").length,
+        once: dayConsulted.filter(hour => hour.hour === "11:00").length,
+        unaTarde: dayConsulted.filter(hour => hour.hour === "13:00").length,
+        tresTarde: dayConsulted.filter(hour => hour.hour === "15:00").length,
     }),
     dateConsulteGoneEmpty:(state) => (state.dayConsulted = {
         disabled: false,
