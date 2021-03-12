@@ -83,7 +83,7 @@
             </v-alert>
           </v-col>
           <v-col cols="12 mt-6 mb-16">
-                <v-btn block id="cbtn" @click="showCalendar" style="z-index: 999">
+                <v-btn block id="cbtn" @click="showCalendar" style="z-index: 50">
                     Ver Calendario
                 </v-btn>
                 <div id="cclndr" class="d-none">
