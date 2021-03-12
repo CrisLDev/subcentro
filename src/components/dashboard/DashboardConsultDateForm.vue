@@ -35,11 +35,13 @@
             </v-row>
           </v-container>
           <small>*indicates required field</small>
+          <div v-if="charginDate">Cangando porfavor espere...</div>
           <v-container v-if="dateCode.date">
             <p>DATOS CONSULTADOS</p>
             <p>Fecha: {{dateCode.date}}</p>
             <p>Hora: {{dateCode.hour}}</p>
             <p>Consultorio: {{dateCode.consulting_room}}</p>
+            <p>Especialidad: {{dateCode.especiality}}</p>
           </v-container>
         </v-card-text>
         <v-card-actions>
@@ -91,7 +93,7 @@ import {mapGetters,mapActions} from 'vuex';
       }
     },
     computed:{
-      ...mapGetters(["dateCode"])
+      ...mapGetters(["dateCode", "charginDate"])
     },
   }
 </script>

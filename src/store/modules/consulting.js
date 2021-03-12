@@ -60,7 +60,7 @@ const actions = {
         }
         try {
             const response = await consultRooms(dataForSend)
-            console.log(response.data)
+            dispatch('activateRoomsInputa');
             return commit('roomsObtained', response.data)
         } catch (err) {
             if(err)snackbarData.text = err.response.data.msg;

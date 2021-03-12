@@ -15,9 +15,10 @@ const getters = {
 }
 
 const actions = {
-    async getEspecialitiesFromBD({commit}) {
+    async getEspecialitiesFromBD({commit, dispatch}) {
         try {
             const response = await getEspecialities()
+            dispatch('activateEspecialityInput');
             return commit('especialitiesObtainedSuccessfully', response.data)
         } catch (err) {
             return commit('especialitiesObtainedFailed', err.response.data.msg)
