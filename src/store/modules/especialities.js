@@ -1,13 +1,17 @@
-import {consultDate, createEspeciality, getEspecialities, consultDateByCodeService} from '../../services/EspecialitesService';
+import {createEspeciality, getEspecialities, getEspecialityById, updateEspecialityById, deleteEspecialityById} from '../../services/EspecialitesService';
 
 const state = {
-    especialities: {}
+    especialities: {},
+    especialityToEdit: {}
 }
 
 const getters = {
     especialititesInBd: (state) => {
         return state.especialities
-    }
+    },
+    especialityToEdit: (state) => {
+        return state.especialityToEdit
+    },
 }
 
 const actions = {
@@ -18,18 +22,6 @@ const actions = {
         } catch (err) {
             return commit('especialitiesObtainedFailed', err.response.data.msg)
         }
-    },
-    async consultDate({commit}, dataToSend) {
-        try {
-            const response = await consultDate(dataToSend)
-            return await commit('dateConsultedSuccessfyully', response.data)
-        } catch (err) {
-            await consultDate(dataToSend)
-            return commit('dateConsulteGoneEmpty')
-        }
-    },
-    async clearDate({commit}) {
-        return await commit('dateInputIsEmpty')
     },
     async createNewEspeciality({dispatch, commit}, dataToSend) {
         const snackbarData = {
@@ -47,15 +39,42 @@ const actions = {
             return dispatch('getUltimateSnackbarState', snackbarData)
         }
     },
-    async consultDateByCode({commit, dispatch}, code) {
+    async getEspecialityFromBDById({commit}, especiality_id) {
+        try {
+            const response = await getEspecialityById(especiality_id)
+            return commit('especialityToEditObtainedSuccessfully', response.data)
+        } catch (err) {
+            return commit('especialityObtainedFailed', err.response.data.msg)
+        }
+    },
+    async updateEspeciality({dispatch, commit},dataToSend){
         const snackbarData = {
             timeout: 2000,
             text: '',
             snackbar: true
         }
         try {
-            const response = await consultDateByCodeService(code)
-            return await commit('dateConsultedByCodeSuccessfyully', response.data)
+            const response = await updateEspecialityById(dataToSend.id ,dataToSend)
+            snackbarData.text = 'Especialidad actualizada correctamente';
+            commit('EspecialityUpdatedSuccessfully', response.data);
+            return dispatch('getUltimateSnackbarState', snackbarData)
+        } catch (err) {
+            if(err)snackbarData.text = err.response.data.msg;
+            return dispatch('getUltimateSnackbarState', snackbarData)
+        }
+    },
+    async deleteEspeciality({commit, dispatch}, especialityId){
+        const snackbarData = {
+            timeout: 2000,
+            text: '',
+            snackbar: true
+        }
+        try {
+            const response = await deleteEspecialityById(especialityId)
+            snackbarData.text = 'Especialidad eliminada correctamente';
+            commit('deleteEspecialityInStore', response.data._id)
+            dispatch('getConsultingFromBD')
+            return dispatch('getUltimateSnackbarState', snackbarData)
         } catch (err) {
             if(err)snackbarData.text = err.response.data.msg;
             return dispatch('getUltimateSnackbarState', snackbarData)
@@ -66,46 +85,15 @@ const actions = {
 const mutations = {
     especialityCreatedSuccessfully:(state, newEspeciality) => state.especialities.unshift(newEspeciality),
     especialitiesObtainedSuccessfully:(state, especialities) => (state.especialities = especialities),
-    dateConsultedSuccessfyully:(state, dayConsulted) => (state.dayConsulted = {
-        disabled: false,
-        nueve: dayConsulted.filter(hour => hour.hour === "09:00").length,
-        once: dayConsulted.filter(hour => hour.hour === "11:00").length,
-        unaTarde: dayConsulted.filter(hour => hour.hour === "13:00").length,
-        tresTarde: dayConsulted.filter(hour => hour.hour === "15:00").length,
-        c1: dayConsulted.filter(room => room.consulting_room == "C1").length,
-        c2: dayConsulted.filter(room => room.consulting_room == "C2").length,
-        c3: dayConsulted.filter(room => room.consulting_room == "C3").length,
-        c4: dayConsulted.filter(room => room.consulting_room == "C4").length,
-        c5: dayConsulted.filter(room => room.consulting_room == "C5").length
-    }),
-    dateConsulteGoneEmpty:(state) => (state.dayConsulted = {
-        disabled: false,
-        nueve: 0,
-        once: 0,
-        unaTarde: 0,
-        tresTarde: 0,
-        c1: 0,
-        c2: 0,
-        c3: 0,
-        c4: 0,
-        c5: 0
-    }),
-    dateInputIsEmpty:(state) => (state.dayConsulted = {
-        disabled: true,
-        nueve: 0,
-        once: 0,
-        unaTarde: 0,
-        tresTarde: 0,
-        c1: 0,
-        c2: 0,
-        c3: 0,
-        c4: 0,
-        c5: 0
-    }),
-    //dateCreatedSuccessfyully:(state, newDate) => state.dates.unshift(newDate),
     especialitiesObtainedFailed:(state, error) => (state.especialities = error),
-    clearDateConsultedByCodeSuccessfyully (state) {state.dateByCode = {}},
-    dateConsultedByCodeSuccessfyully: (state, date) => (state.dateByCode = date),
+    especialityObtainedFailed:(state, error) => (state.especialities = error),
+    especialityToEditObtainedSuccessfully: (state, especiality) => (state.especialityToEdit = especiality),
+    updateEspecialityName (state, name) {state.especialityToEdit.name = name},
+    deleteEspecialityInStore: (state, id) => state.especialities = state.especialities.filter((especiality) => especiality._id !== id),
+    EspecialityUpdatedSuccessfully: (state, especialityUpdated) => {
+        state.especialities.splice(state.especialities.findIndex((especiality) => especiality._id = especialityUpdated._id), 1);
+        state.especialities.unshift(especialityUpdated)
+    }
 }
 
 export default {

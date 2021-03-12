@@ -1,6 +1,11 @@
 <template>
     <v-container class="lighten-5 mb-16">
         <v-row align="center" justify="center">
+          <v-col lg="12">
+            <v-alert border="bottom" colored-border color="primary" elevation="2">
+              <v-icon medium >{{mdiInformation}}</v-icon> Consultorios y especialidades
+            </v-alert>
+          </v-col>
           <v-col lg="6">
             <v-container>
               <AdminCreateConsultingForm/>
@@ -22,9 +27,19 @@
               No hay Especialidades.
             </v-container>
             <v-container v-if="especialititesInBd.length !== 0">
-              <v-chip v-for="especiality in especialititesInBd" :key="especiality._id">
+              <v-chip v-for="especiality in especialititesInBd" :key="especiality._id" @click="editEspeciality(especiality._id)">
                 {{especiality.name}}
               </v-chip>
+            </v-container>
+          </v-col>
+          <v-col lg="12">
+            <v-alert border="bottom" colored-border color="primary" elevation="2">
+              <v-icon medium >{{mdiInformation}}</v-icon> Crear doctor
+            </v-alert>
+          </v-col>
+          <v-col>
+            <v-container>
+              <AdminCreateDoctorForm/>
             </v-container>
           </v-col>
           <v-col lg="12" md="6" sm="6" cols="12" class="mt-6 mb-1">
@@ -62,8 +77,13 @@
               </v-col>
             </v-row>
           </v-col>
-          <v-col cols="12">
-                <v-btn block id="cbtn" @click="showCalendar">
+          <v-col lg="12">
+            <v-alert border="bottom" colored-border color="primary" elevation="2">
+              <v-icon medium >{{mdiInformation}}</v-icon> Ver informacion de las citas
+            </v-alert>
+          </v-col>
+          <v-col cols="12 mt-6 mb-16">
+                <v-btn block id="cbtn" @click="showCalendar" style="z-index: 999">
                     Ver Calendario
                 </v-btn>
                 <div id="cclndr" class="d-none">
@@ -176,11 +196,6 @@
                     </v-sheet>
                 </div>
           </v-col>
-          <v-col class="mt-6 mb-16">
-            <v-container>
-              <AdminCreateDoctorForm/>
-            </v-container>
-          </v-col>
         </v-row>
         <div class="text-center">
           <v-dialog
@@ -249,6 +264,56 @@
       </v-card>
           </v-dialog>
         </div>
+        <div class="text-center">
+          <v-dialog
+            v-model="dialog2"
+            width="500"
+          >
+            <v-card>
+        <v-card-title>
+          <span class="headline">Contenido</span>
+        </v-card-title>
+        <v-card-text>
+          <v-container>
+            <v-row>
+              <v-col cols="12">
+                <v-text-field
+                v-model="nameEspeciality"
+                  label="Nombre*"
+                  required
+                ></v-text-field>
+              </v-col>
+            </v-row>
+          </v-container>
+          <small>* Indica campos requeridos. </small>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="red darken-1"
+            text
+            @click="submitDeleteEspeciality"
+          >
+            Eliminar
+          </v-btn>
+          <v-btn
+            color="blue darken-1"
+            text
+            @click="dialog2 = false"
+          >
+            Cerrar
+          </v-btn>
+          <v-btn
+            color="blue darken-1"
+            text
+            @click="submitEditEspeciality"
+          >
+            Editar
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+          </v-dialog>
+        </div>
     </v-container>
 </template>
 
@@ -291,8 +356,10 @@ export default {
       mdiChevronLeft: mdiChevronLeft,
       mdiChevronRight: mdiChevronRight,
       dialog: false,
+      dialog2: false,
       items: [],
-      roomIdToEdit:''
+      roomIdToEdit:'',
+      especialityIdToEdit: ''
     }),
     components: {
         AdminUserEdit,
@@ -325,10 +392,33 @@ export default {
           this.$store.commit('updateEspeciality', value)
         }
       },
+      nameEspeciality: {
+        get () {
+          return this.$store.state.especialities.especialityToEdit.name
+        },
+        set (value) {
+          this.$store.commit('updateEspecialityName', value)
+        }
+      },
     },
     methods: {
         ...mapActions(["getusersFromBD","deleteUser","getDatesFromBD", "getConsultingFromBD", 
-        "getEspecialitiesFromBD", "getConsultingFromBDById", "updateRoom", "deleteRoom"]),
+        "getEspecialitiesFromBD", "getConsultingFromBDById", "updateRoom", "deleteRoom", "getEspecialityFromBDById", "updateEspeciality", "deleteEspeciality", "getUltimateSnackbarState"]),
+        editEspeciality(especialityId){
+          this.dialog2 = true;
+          this.especialityIdToEdit = especialityId;
+          this.getEspecialityFromBDById(especialityId);
+        },
+        submitDeleteEspeciality(){
+          this.deleteEspeciality(this.especialityIdToEdit)
+        },
+        submitEditEspeciality(){
+          const dataToSend = {
+                name: this.nameEspeciality,
+                id: this.especialityIdToEdit
+            }
+          this.updateEspeciality(dataToSend)
+        },
         editRooom(roomId){
           this.dialog = true;
           this.roomIdToEdit = roomId;
@@ -375,8 +465,16 @@ export default {
       },
       async showCalendar(){
           await this.getEvents();
+          if(this.events.length <= 0){
+            const snackbarData = {
+                timeout: 2000,
+                text: 'No hay citas registradas.',
+                snackbar: true
+            }
+            return this.getUltimateSnackbarState(snackbarData);
+          }
           document.getElementById("cbtn").classList.add("d-none");
-          document.getElementById("cclndr").classList.replace("d-none", "d-block")
+          document.getElementById("cclndr").classList.replace("d-none", "d-block");
       },
       getEventColor (event) {
         return event.color
