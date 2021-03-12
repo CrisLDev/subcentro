@@ -36,15 +36,16 @@ const actions = {
             return commit('consultingObtainedFailed', err.response.data.msg)
         }
     },
-    async updateRoom({dispatch},dataToSend){
+    async updateRoom({dispatch, commit},dataToSend){
         const snackbarData = {
             timeout: 2000,
             text: '',
             snackbar: true
         }
         try {
-            await updateRoomById(dataToSend.id ,dataToSend)
+            const response = await updateRoomById(dataToSend.id ,dataToSend)
             snackbarData.text = 'Consultorio actualizado correctamente';
+            commit('ConsultingUpdatedSuccessfully', response.data);
             return dispatch('getUltimateSnackbarState', snackbarData)
         } catch (err) {
             if(err)snackbarData.text = err.response.data.msg;
@@ -59,22 +60,23 @@ const actions = {
         }
         try {
             const response = await consultRooms(dataForSend)
-            console.log(response.data)
+            dispatch('activateRoomsInputa');
             return commit('roomsObtained', response.data)
         } catch (err) {
             if(err)snackbarData.text = err.response.data.msg;
             return dispatch('getUltimateSnackbarState', snackbarData)
         }
     },
-    async deleteRoom({dispatch}, roomId){
+    async deleteRoom({commit, dispatch}, roomId){
         const snackbarData = {
             timeout: 2000,
             text: '',
             snackbar: true
         }
         try {
-            await deleteRoomById(roomId)
+            const response = await deleteRoomById(roomId)
             snackbarData.text = 'Consultorio eliminado correctamente';
+            commit('deleteRoomInStore', response.data._id)
             return dispatch('getUltimateSnackbarState', snackbarData)
         } catch (err) {
             if(err)snackbarData.text = err.response.data.msg;
@@ -108,6 +110,11 @@ const mutations = {
     updateRoomName (state, name) {state.roomToEdit.name = name},
     updateEspeciality (state, especiality) {state.roomToEdit.especiality = especiality},
     updateRoomCode (state, code) {state.roomToEdit.code = code},
+    deleteRoomInStore: (state, id) => state.consulting_rooms = state.consulting_rooms.filter((room) => room._id !== id),
+    ConsultingUpdatedSuccessfully: (state, roomUpdated) => {
+        state.consulting_rooms.splice(state.consulting_rooms.findIndex((rooms) => rooms._id = roomUpdated._id), 1);
+        state.consulting_rooms.unshift(roomUpdated)
+    }
 }
 
 export default {

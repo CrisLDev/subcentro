@@ -11,6 +11,7 @@
           dark
           v-bind="attrs"
           v-on="on"
+          block
         >
           Crear consultorio
         </v-btn>

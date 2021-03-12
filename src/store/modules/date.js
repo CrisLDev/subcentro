@@ -3,12 +3,15 @@ import {consultDate, createDate, getDates, consultDateByCodeService} from '../..
 const state = {
     dates: {},
     dayConsulted: {
-        disabled: true,
+        disabledh: true,
+        disablede: true,
+        disabledc: true,
         nueve: 0,
         once: 0, 
         unaTarde: 0,
         tresTarde: 0,
     },
+    charginDate: false,
     dateByCode: {}
 }
 
@@ -21,6 +24,9 @@ const getters = {
     },
     dateCode: (state) => {
         return state.dateByCode
+    },
+    charginDate: (state) => {
+        return state.charginDate
     }
 }
 
@@ -74,34 +80,65 @@ const actions = {
             snackbar: true
         }
         try {
+            await commit('putLoading');
             const response = await consultDateByCodeService(code)
-            return await commit('dateConsultedByCodeSuccessfyully', response.data)
+            return await commit('dateConsultedByCodeSuccessfyully', response.data);
         } catch (err) {
             if(err)snackbarData.text = err.response.data.msg;
             return dispatch('getUltimateSnackbarState', snackbarData)
         }
     },
+    async activateEspecialityInput({commit}){
+        return await commit('activateEspecialityInputa')
+    },
+    async activateRoomsInputa({commit}){
+        return await commit('activateRoomsInputa')
+    }
 }
 
 const mutations = {
     datesObtainedSuccessfully:(state, dates) => (state.dates = dates),
     dateConsultedSuccessfyully:(state, dayConsulted) => (state.dayConsulted = {
-        disabled: false,
+        disabledh: false,
+        disablede: false,
+        disabledc: false,
         nueve: dayConsulted.filter(hour => hour.hour === "09:00").length,
         once: dayConsulted.filter(hour => hour.hour === "11:00").length,
         unaTarde: dayConsulted.filter(hour => hour.hour === "13:00").length,
         tresTarde: dayConsulted.filter(hour => hour.hour === "15:00").length,
     }),
     dateConsulteGoneEmpty:(state) => (state.dayConsulted = {
-        disabled: false,
+        disabledh: false,
+        disablede: false,
+        disabledc: false,
         nueve: 0,
         once: 0,
         unaTarde: 0,
         tresTarde: 0,
         consultorios: 0
     }),
+    activateEspecialityInputa:(state) => (state.dayConsulted = {
+        disabledh: true,
+        disablede: false,
+        disabledc: true,
+        nueve: 0,
+        once: 0,
+        unaTarde: 0,
+        tresTarde: 0,
+        consultorios: 0}),
+    activateRoomsInputa:(state) => (state.dayConsulted = {
+        disabledh: true,
+        disablede: false,
+        disabledc: false,
+        nueve: 0,
+        once: 0,
+        unaTarde: 0,
+        tresTarde: 0,
+        consultorios: 0}),
     dateInputIsEmpty:(state) => (state.dayConsulted = {
-        disabled: true,
+        disabledh: false,
+        disablede: false,
+        disabledc: false,
         nueve: 0,
         once: 0,
         unaTarde: 0,
@@ -111,7 +148,8 @@ const mutations = {
     //dateCreatedSuccessfyully:(state, newDate) => state.dates.unshift(newDate),
     datesObtainedFailed:(state, error) => (state.user = error),
     clearDateConsultedByCodeSuccessfyully (state) {state.dateByCode = {}},
-    dateConsultedByCodeSuccessfyully: (state, date) => (state.dateByCode = date),
+    dateConsultedByCodeSuccessfyully: (state, date) => (state.dateByCode = date, state.charginDate = false),
+    putLoading: (state) => (state.charginDate = true),
 }
 
 export default {

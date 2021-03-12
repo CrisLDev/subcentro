@@ -8,12 +8,16 @@ export const getEspecialities = async () => {
     return await axios.get(`${API}/especialities`);
 }
 
-export const consultDateByCodeService = async (code) => {
-    return await axios.get(`${API}/dates/consult/${code}`);
+export const getEspecialityById = async (id) => {
+    return await axios.get(`${API}/especialities/${id}`);
 }
 
-export const consultDate = async (dataToSend) => {
-    return await axios.post(`${API}/dates/consulting`, dataToSend)
+export const deleteEspecialityById = async (id) => {
+    return await axios.delete(`${API}/especialities/${id}`);
+}
+
+export const updateEspecialityById = async (id, dataToSend) => {
+    return await axios.put(`${API}/especialities/${id}`, dataToSend);
 }
 
 export const createEspeciality = async (dataToSend) => {

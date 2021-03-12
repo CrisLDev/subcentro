@@ -64,23 +64,10 @@
                   cols="6"
                 >
                   <v-select
-                  v-model="hour"
-                    :items="[dayConsulted.nueve < 4 ? '09:00' : '09:00 No disponible', 
-                    dayConsulted.once < 2 ? '11:00' : '11:00 No disponible', 
-                    dayConsulted.unaTarde < 4 ? '13:00' : '13:00 No disponible',
-                    dayConsulted.tresTarde < 4 ? '15:00' : '15:00 No disponible']"
-                    label="Hora*"
-                    :disabled="dayConsulted.disabled"
-                    required
-                  ></v-select>
-                </v-col>
-                <v-col
-                  cols="6"
-                >
-                  <v-select
                   v-model="especiality"
                     :items="items"
                     label="Especialidad*"
+                    :disabled="dayConsulted.disablede"
                     required
                   ></v-select>
                 </v-col>
@@ -91,6 +78,21 @@
                   v-model="room"
                     :items="items2"
                     label="Consultorio*"
+                    :disabled="dayConsulted.disabledc"
+                    required
+                  ></v-select>
+                </v-col>
+                <v-col
+                  cols="6"
+                >
+                  <v-select
+                  v-model="hour"
+                    :items="[dayConsulted.nueve < 4 ? '09:00' : '09:00 No disponible', 
+                    dayConsulted.once < 2 ? '11:00' : '11:00 No disponible', 
+                    dayConsulted.unaTarde < 4 ? '13:00' : '13:00 No disponible',
+                    dayConsulted.tresTarde < 4 ? '15:00' : '15:00 No disponible']"
+                    label="Hora*"
+                    :disabled="dayConsulted.disabledh"
                     required
                   ></v-select>
                 </v-col>
