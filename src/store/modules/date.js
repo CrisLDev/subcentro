@@ -10,6 +10,7 @@ const state = {
         once: 0, 
         unaTarde: 0,
         tresTarde: 0,
+        roomsNumber: 0
     },
     charginDate: false,
     dateByCode: {}
@@ -42,6 +43,7 @@ const actions = {
     async consultDate({commit}, dataToSend) {
         try {
             const response = await consultDate(dataToSend)
+            console.log(response.data)
             return await commit('dateConsultedSuccessfyully', response.data)
         } catch (err) {
             await consultDate(dataToSend)
@@ -102,10 +104,11 @@ const mutations = {
         disabledh: false,
         disablede: false,
         disabledc: false,
-        nueve: dayConsulted.filter(hour => hour.hour === "09:00").length,
-        once: dayConsulted.filter(hour => hour.hour === "11:00").length,
-        unaTarde: dayConsulted.filter(hour => hour.hour === "13:00").length,
-        tresTarde: dayConsulted.filter(hour => hour.hour === "15:00").length,
+        nueve: dayConsulted.book.filter(hour => hour.hour === "09:00").length,
+        once: dayConsulted.book.filter(hour => hour.hour === "11:00").length,
+        unaTarde: dayConsulted.book.filter(hour => hour.hour === "13:00").length,
+        tresTarde: dayConsulted.book.filter(hour => hour.hour === "15:00").length,
+        roomsNumber: dayConsulted.rooms.length
     }),
     dateConsulteGoneEmpty:(state) => (state.dayConsulted = {
         disabledh: false,
@@ -115,12 +118,14 @@ const mutations = {
         once: 0,
         unaTarde: 0,
         tresTarde: 0,
-        consultorios: 0
+        consultorios: 0,
+        roomsNumber: 0
     }),
     activateEspecialityInputa:(state) => (state.dayConsulted = {
         disabledh: true,
         disablede: false,
         disabledc: true,
+        roomsNumber: 0,
         nueve: 0,
         once: 0,
         unaTarde: 0,
@@ -130,6 +135,7 @@ const mutations = {
         disabledh: true,
         disablede: false,
         disabledc: false,
+        roomsNumber: 0,
         nueve: 0,
         once: 0,
         unaTarde: 0,
@@ -139,6 +145,7 @@ const mutations = {
         disabledh: false,
         disablede: false,
         disabledc: false,
+        roomsNumber: 0,
         nueve: 0,
         once: 0,
         unaTarde: 0,

@@ -1,12 +1,13 @@
 <template>
   <v-card
-    class="mx-auto my-12 pb-9"
+    class="mx-auto my-12"
     max-width="100%"
   >
 
     <v-row no-gutters justify="center">
         <v-col md="4" sm="4" cols="12">
-            <v-img height="250" src="https://cdn.vuetifyjs.com/images/cards/cooking.png"></v-img>
+            <v-img style="z-index: 1;" height="250" src="https://cdn.vuetifyjs.com/images/cards/cooking.png"></v-img>
+            <v-btn class="imgButton" color="primary" block><v-icon class="mr-2">{{mdiCameraOutline}}</v-icon> Subir Foto</v-btn>
         </v-col>
         <v-col md="8" sm="8" cols="12">
             <v-card-title class="text-uppercase pt-2 pb-0">
@@ -32,10 +33,21 @@
 </template>
 
 <script>
+import { mdiCameraOutline } from '@mdi/js';
 import DashboardEditUserInfoForm from '../dashboard/DashboardEditUserInfoForm';
   export default {
     components: {
       DashboardEditUserInfoForm
-    }
+    },
+    data: () => ({
+      mdiCameraOutline: mdiCameraOutline
+    })
   }
 </script>
+
+<style scoped>
+.imgButton{
+  border-top-left-radius: 0!important;
+  border-top-right-radius: 0!important;
+}
+</style>

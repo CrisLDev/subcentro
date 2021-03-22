@@ -72,25 +72,14 @@
                   ></v-select>
                 </v-col>
                 <v-col
-                  cols="6"
-                >
-                  <v-select
-                  v-model="room"
-                    :items="items2"
-                    label="Consultorio*"
-                    :disabled="dayConsulted.disabledc"
-                    required
-                  ></v-select>
-                </v-col>
-                <v-col
-                  cols="6"
+                  cols="12"
                 >
                   <v-select
                   v-model="hour"
-                    :items="[dayConsulted.nueve < 4 ? '09:00' : '09:00 No disponible', 
-                    dayConsulted.once < 2 ? '11:00' : '11:00 No disponible', 
-                    dayConsulted.unaTarde < 4 ? '13:00' : '13:00 No disponible',
-                    dayConsulted.tresTarde < 4 ? '15:00' : '15:00 No disponible']"
+                    :items="[dayConsulted.nueve < 4 * dayConsulted.roomsNumber ? '09:00' : '09:00 No disponible', 
+                    dayConsulted.once < 2 * dayConsulted.roomsNumber ? '11:00' : '11:00 No disponible', 
+                    dayConsulted.unaTarde < 4 * dayConsulted.roomsNumber? '13:00' : '13:00 No disponible',
+                    dayConsulted.tresTarde < 4 * dayConsulted.roomsNumber ? '15:00' : '15:00 No disponible']"
                     label="Hora*"
                     :disabled="dayConsulted.disabledh"
                     required
@@ -137,7 +126,6 @@ import {mapGetters,mapActions} from 'vuex';
       absolute: true,
       hour: '',
       especiality: '',
-      room: '',
       zIndex: 9999,
       items: [],
       items2: []
@@ -146,24 +134,10 @@ import {mapGetters,mapActions} from 'vuex';
       menu (val) {
         val && setTimeout(() => (this.$refs.picker.activePicker = 'YEAR'))
       },
-      async especiality () {
-            const dataToSend = {
-              especiality: this.especiality
-            }
-            await this.consultRoom(dataToSend);
-        const items = [];
-            await Object.values(this.roomsByEspeciality).map((room) => 
-                {
-                    items.push(room.code)
-                }
-              );
-        this.items2 = items;
-      },
-      room () {
+      especiality () {
             const dataToSend = {
               dateForSearch: this.dateForSearch,
               especiality: this.especiality,
-              code: this.room
             }
             this.consultDate(dataToSend);
       },
@@ -188,7 +162,6 @@ import {mapGetters,mapActions} from 'vuex';
             dateForSearch: this.dateForSearch,
             hour: this.hour,
             patient_id: this.$store.getters.userLoged._id,
-            consulting_room: this.room,
             especiality: this.especiality
         }/*
         if(this.$store.getters.dayConsulted.c1 <= 4){
