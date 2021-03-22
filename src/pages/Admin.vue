@@ -43,15 +43,85 @@
             </v-container>
           </v-col>
           <v-col lg="12" md="6" sm="6" cols="12" class="mt-6 mb-1">
-            <v-row align="center" justify="center">
-              <v-col lg="4" v-for="user in usersInBd" :key="user._id">
+            <v-row align="center">
+              <v-col lg="4" v-for="user in usersRole" :key="user._id">
                 <v-card
                     class="mx-auto"
                 >
                     <v-card-text>
                     <div class="text-uppercase">{{user.role}}</div>
                     <p class="display-1 text--primary">
-                        {{user.userName ? user.userName : 'N/A'}} - {{user.adress ? user.adress : 'N/A'}}
+                        {{user.userName ? user.userName : 'N/A'}}
+                    </p>
+                    <p>{{user.fullName ? user.fullName : 'N/A'}}</p>
+                    <div class="text--primary">
+                    </div>
+                    </v-card-text>
+                    <v-card-actions>
+                        <v-container fluid>
+                            <div><AdminUserEdit :user_id="user._id" /></div>
+                            <br>
+                            <div>
+                                <v-btn
+                                outlined
+                                rounded
+                                text
+                                @click="deleteU(user._id)"
+                            >
+                                Eliminar
+                            </v-btn>
+                            </div>
+                        </v-container>
+                    </v-card-actions>
+                </v-card>
+              </v-col>
+            </v-row>
+          </v-col>
+          <v-col lg="12" md="6" sm="6" cols="12" class="mt-6 mb-1">
+            <v-row align="center">
+              <v-col lg="4" v-for="user in adminsRole" :key="user._id">
+                <v-card
+                    class="mx-auto"
+                >
+                    <v-card-text>
+                    <div class="text-uppercase">{{user.role}}</div>
+                    <p class="display-1 text--primary">
+                        {{user.userName ? user.userName : 'N/A'}}
+                    </p>
+                    <p>{{user.fullName ? user.fullName : 'N/A'}}</p>
+                    <div class="text--primary">
+                    </div>
+                    </v-card-text>
+                    <v-card-actions>
+                        <v-container fluid>
+                            <div><AdminUserEdit :user_id="user._id" /></div>
+                            <br>
+                            <div>
+                                <v-btn
+                                outlined
+                                rounded
+                                text
+                                @click="deleteU(user._id)"
+                            >
+                                Eliminar
+                            </v-btn>
+                            </div>
+                        </v-container>
+                    </v-card-actions>
+                </v-card>
+              </v-col>
+            </v-row>
+          </v-col>
+          <v-col lg="12" md="6" sm="6" cols="12" class="mt-6 mb-1">
+            <v-row align="center">
+              <v-col lg="4" v-for="user in doctorsRole" :key="user._id">
+                <v-card
+                    class="mx-auto"
+                >
+                    <v-card-text>
+                    <div class="text-uppercase">{{user.role}}</div>
+                    <p class="display-1 text--primary">
+                        {{user.userName ? user.userName : 'N/A'}}
                     </p>
                     <p>{{user.fullName ? user.fullName : 'N/A'}}</p>
                     <div class="text--primary">
@@ -368,6 +438,15 @@ export default {
         AdminCreateDoctorForm
     },
     computed: {...mapGetters(["usersInBd", "consulting_roomsInBd", "especialititesInBd"]),
+    usersRole(){
+        return this.usersInBd.filter(user => user.role === "user")
+    },
+    doctorsRole(){
+        return this.usersInBd.filter(doctor => doctor.role === "doctor")
+    },
+    adminsRole(){
+        return this.usersInBd.filter(admin => admin.role === "admin")
+    },
     name: {
         get () {
           return this.$store.state.consulting.roomToEdit.name
