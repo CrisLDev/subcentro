@@ -1,13 +1,15 @@
 <template>
-  <v-card
+  <div>
+    <v-card
     class="mx-auto my-12"
     max-width="100%"
   >
 
     <v-row no-gutters justify="center">
         <v-col md="4" sm="4" cols="12">
-            <v-img style="z-index: 1;" height="250" src="https://cdn.vuetifyjs.com/images/cards/cooking.png"></v-img>
-            <v-btn class="imgButton" color="primary" block><v-icon class="mr-2">{{mdiCameraOutline}}</v-icon> Subir Foto</v-btn>
+          <v-img style="max-height: 17em!important" v-if="!this.$store.getters.userLoged.imgUrl" src="https://icon-library.com/images/no-user-image-icon/no-user-image-icon-27.jpg"></v-img>
+            <v-img v-if="this.$store.getters.userLoged.imgUrl" style="z-index: 1;" height="250" :src="`http://localhost:4123/public/upload/${this.$store.getters.userLoged.imgUrl}`"></v-img>
+            <v-btn class="imgButton" color="primary" block @click="dialog = true"><v-icon class="mr-2">{{mdiCameraOutline}}</v-icon> Subir Foto</v-btn>
         </v-col>
         <v-col md="8" sm="8" cols="12">
             <v-card-title class="text-uppercase pt-2 pb-0">
@@ -30,18 +32,74 @@
     </v-col>
     </v-row>
   </v-card>
+  <div class="text-center">
+          <v-dialog
+            v-model="dialog"
+            width="500"
+          >
+            <v-card>
+        <v-card-title>
+          <span class="headline">Contenido</span>
+        </v-card-title>
+        <v-card-text>
+          <v-container>
+            <v-row>
+              <v-col cols="12">
+                <v-file-input
+                  show-size
+                  label="Selecciona una foto"
+                  v-model="photo"
+                ></v-file-input>
+              </v-col>
+            </v-row>
+          </v-container>
+          <small>* Indica campos requeridos. </small>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="blue darken-1"
+            text
+            @click="dialog = false"
+          >
+            Cerrar
+          </v-btn>
+          <v-btn
+            color="blue darken-1"
+            text
+            @click="savePhoto"
+          >
+            Enviar
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+          </v-dialog>
+        </div>
+  </div>
 </template>
 
 <script>
 import { mdiCameraOutline } from '@mdi/js';
 import DashboardEditUserInfoForm from '../dashboard/DashboardEditUserInfoForm';
+import { mapActions} from 'vuex';
   export default {
     components: {
       DashboardEditUserInfoForm
     },
     data: () => ({
-      mdiCameraOutline: mdiCameraOutline
-    })
+      mdiCameraOutline: mdiCameraOutline,
+      dialog: false,
+      photo: ''
+    }),
+    methods: {
+      ...mapActions(["uploadPhoto"]),
+      async savePhoto(){
+        let formData = new FormData();
+        formData.append("photo", this.photo)
+        formData.append("idUser", this.$store.getters.userLoged._id)
+        await this.uploadPhoto(formData);
+      }
+    }
   }
 </script>
 

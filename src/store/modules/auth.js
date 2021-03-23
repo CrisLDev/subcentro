@@ -1,4 +1,4 @@
-import { loginUser, reloginUserInReload, createUser, updateUser, getAllUsers, deleteUserInBd } from '../../services/AuthService';
+import { loginUser, reloginUserInReload, createUser, updateUser, getAllUsers, deleteUserInBd, uploadPhoto } from '../../services/AuthService';
 import router from '../../router';
 import {logout, setAuthToken} from '../../utils/auth';
 
@@ -124,6 +124,18 @@ const actions = {
             return dispatch('getUltimateSnackbarState', snackbarData)
         }
     },
+    async uploadPhoto({dispatch, commit}, photo){
+        const snackbarData = {
+            timeout: 2000,
+            text: '',
+            snackbar: true
+        }
+        const response = await uploadPhoto(photo)
+        console.log(response.data)
+        snackbarData.text = 'Foto actualizada correctamente';
+        dispatch('getUltimateSnackbarState', snackbarData)
+        return commit('UserPhotoSuccessfully', response.data);
+    }
 }
 
 const mutations = {
@@ -131,6 +143,7 @@ const mutations = {
     usersObtainedSuccessfully:(state, users) => (state.users = users),
     usersObtainedFailed:(state, error) => (state.user = error),
     UserLogedSuccessfully:(state, addUser) => (state.user = addUser),
+    UserPhotoSuccessfully:(state, photo) => (state.user = photo),
     UserRelogedSuccessfully:(state, reAddUser) => (state.user = reAddUser),
     UserDeslogedSuccessfylly:(state) => (state.user = {}),
     updateUsername (state, userName) {state.user.userName = userName},
@@ -142,6 +155,7 @@ const mutations = {
     userToEditUpdateUsername (state, userName) {state.userToEdit.userName = userName},
     userToEditUpdateFullname (state, fullName) {state.userToEdit.fullName = fullName},
     userToEditUpdateEmail (state, email) {state.userToEdit.email = email},
+    updatePhoto (state, photo) {state.user.imgUrl = photo},
     userToEditUpdateAdress (state, adress) {state.userToEdit.adress = adress},
     userToEditUpdateDate (state, age) {state.userToEdit.age = age},
     userToEditUpdateTelephoneNumber (state, telephoneNumber) {state.userToEdit.telephoneNumber = telephoneNumber},

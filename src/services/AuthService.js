@@ -27,3 +27,7 @@ export const deleteUserInBd = async (id) => {
 export const updateUser = async (dataToSend) => {
     return await axios.put(`${API}/auth/user`, dataToSend)
 }
+
+export const uploadPhoto = async (formData) => {
+    return await axios.post(`${API}/auth/create`, formData)
+}

@@ -14,7 +14,8 @@
           v-on="on"
         >
         <v-avatar class="mr-2" size="35">
-          <v-img src="https://cdn.vuetifyjs.com/images/lists/2.jpg"></v-img>
+          <v-img v-if="userLoged.imgUrl" :src="`http://localhost:4123/public/upload/`+userLoged.imgUrl"></v-img>
+          <v-img v-if="!userLoged.imgUrl" src="https://icon-library.com/images/no-user-image-icon/no-user-image-icon-27.jpg"></v-img>
         </v-avatar>
           {{userLoged.userName}}
         </v-btn>

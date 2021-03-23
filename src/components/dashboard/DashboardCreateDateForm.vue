@@ -88,7 +88,7 @@
               </v-row>
             </v-container>
             </v-form>
-          <small>Escoja una fecha valida, por favor, no sea IMBÉCIL.</small><br>
+          <small>Escoja una fecha valida, por favor.</small><br>
           <small>Recuerda guardar el codigo que se presenta al final.</small>
         </v-card-text>
         <v-card-actions>

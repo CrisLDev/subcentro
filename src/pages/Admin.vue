@@ -163,7 +163,7 @@
             </v-container>
           </v-col>
           <v-col cols="12 mt-6 mb-16">
-                <v-btn block id="cbtn" @click="showCalendar" style="z-index: 50">
+                <v-btn class="d-block" block id="cbtn" @click="showCalendar" style="z-index: 50">
                     Ver Calendario
                 </v-btn>
                 <div id="cclndr" class="d-none">
@@ -406,6 +406,8 @@ import AdminCreateEspecialityForm from '../components/admin/AdminCreateEspeciali
 import AdminCreateDoctorForm from '../components/admin/AdminCreateDoctorForm';
 import { mdiBorderColor } from '@mdi/js';
 import { mdiDotsVertical } from '@mdi/js';
+import { mdiInformation } from '@mdi/js';
+import { mdiNewBox } from '@mdi/js';
 import { mdiHeart } from '@mdi/js';
 import { mdiChevronLeft } from '@mdi/js';
 import { mdiChevronRight } from '@mdi/js';
@@ -434,6 +436,8 @@ export default {
       mdiBorderColor: mdiBorderColor,
       mdiDotsVertical: mdiDotsVertical,
       mdiHeart: mdiHeart,
+      mdiInformation: mdiInformation,
+      mdiNewBox: mdiNewBox,
       mdiChevronLeft: mdiChevronLeft,
       mdiChevronRight: mdiChevronRight,
       dialog: false,
@@ -562,6 +566,10 @@ export default {
         this.events = events
       },
       async showCalendar(){
+        if(document.getElementById("cbtn").classList.contains("d-block")){
+            document.getElementById("cbtn").classList.replace("d-block", "d-none");
+            document.getElementById("cclndr").classList.replace("d-none", "d-block");
+          }
           await this.getEvents();
           if(this.events.length <= 0){
             const snackbarData = {
@@ -571,8 +579,6 @@ export default {
             }
             return this.getUltimateSnackbarState(snackbarData);
           }
-          document.getElementById("cbtn").classList.add("d-none");
-          document.getElementById("cclndr").classList.replace("d-none", "d-block");
       },
       getEventColor (event) {
         return event.color
