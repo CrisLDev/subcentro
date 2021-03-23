@@ -16,6 +16,10 @@ export const consultDateByCodeService = async (code) => {
     return await axios.get(`${API}/dates/consult/${code}`);
 }
 
+export const consultDateByUserLogedId = async (userId) => {
+    return await axios.get(`${API}/dates/consult/userLoged/${userId}`);
+}
+
 export const consultDate = async (dataToSend) => {
     return await axios.post(`${API}/dates/consulting`, dataToSend)
 }

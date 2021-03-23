@@ -1,4 +1,4 @@
-import {consultDate, createDate, getDates, consultDateByCodeService, getDatesForCodeRoom} from '../../services/DateService';
+import {consultDate, createDate, getDates, consultDateByCodeService, getDatesForCodeRoom, consultDateByUserLogedId} from '../../services/DateService';
 
 const state = {
     dates: {},
@@ -13,7 +13,8 @@ const state = {
         roomsNumber: 0
     },
     charginDate: false,
-    dateByCode: {}
+    dateByCode: {},
+    datesForUserLoged: {}
 }
 
 const getters = {
@@ -28,7 +29,10 @@ const getters = {
     },
     charginDate: (state) => {
         return state.charginDate
-    }
+    },
+    datesForUserLoged: (state) => {
+        return state.datesForUserLoged
+    },
 }
 
 const actions = {
@@ -103,11 +107,27 @@ const actions = {
     },
     async activateRoomsInputa({commit}){
         return await commit('activateRoomsInputa')
+    },
+    async consultDateByUserLogedId({commit, dispatch}, userId){
+        const snackbarData = {
+            timeout: 2000,
+            text: '',
+            snackbar: true
+        }
+        try {
+            await commit('putLoading');
+            const response = await consultDateByUserLogedId(userId)
+            return await commit('datesObtainedForUserLogedSuccessfully', response.data);
+        } catch (err) {
+            if(err)snackbarData.text = err.response.data.msg;
+            return dispatch('getUltimateSnackbarState', snackbarData)
+        }
     }
 }
 
 const mutations = {
     datesObtainedSuccessfully:(state, dates) => (state.dates = dates),
+    datesObtainedForUserLogedSuccessfully:(state, dates) => (state.datesForUserLoged = dates),
     datesForCodeRoomObtainedSuccessfully:(state, dates) => (state.dates = dates),
     dateConsultedSuccessfyully:(state, dayConsulted) => (state.dayConsulted = {
         disabledh: false,

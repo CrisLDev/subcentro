@@ -2,7 +2,7 @@
     <v-container class="d-flex align-center">
         <router-link to="/" class="text-decoration-none" style="color: white;"><v-icon medium color="white">{{ charity }}</v-icon> INICIO</router-link>
         <v-spacer></v-spacer>
-        <router-link to="/login" class="text-decoration-none" style="color: white;" v-if="!this.$store.getters.userLoged.token"><v-icon medium color="white">{{ accountArrowRight }}</v-icon> USUARIO</router-link>
+        <router-link to="/login" class="text-decoration-none" style="color: white;" v-if="!userLoged.token"><v-icon medium color="white">{{ accountArrowRight }}</v-icon> USUARIO</router-link>
         <v-menu offset-y v-if="userLoged.token" bottom
       origin="center center"
       transition="scale-transition">
@@ -13,10 +13,7 @@
           v-bind="attrs"
           v-on="on"
         >
-        <v-avatar class="mr-2" size="35">
-          <v-img v-if="userLoged.imgUrl" :src="`http://localhost:4123/public/upload/`+userLoged.imgUrl"></v-img>
-          <v-img v-if="!userLoged.imgUrl" src="https://icon-library.com/images/no-user-image-icon/no-user-image-icon-27.jpg"></v-img>
-        </v-avatar>
+          <v-icon size="1.3em" color="white">{{ accountArrowRight }}</v-icon>
           {{userLoged.userName}}
         </v-btn>
       </template>
