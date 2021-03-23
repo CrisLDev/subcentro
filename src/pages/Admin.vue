@@ -1,12 +1,12 @@
 <template>
     <v-container class="lighten-5 mb-16">
         <v-row align="center" justify="center">
-          <v-col lg="12">
+          <v-col cols="12">
             <v-alert border="bottom" colored-border color="primary" elevation="2">
               <v-icon medium >{{mdiInformation}}</v-icon> Consultorios y especialidades
             </v-alert>
           </v-col>
-          <v-col lg="6">
+          <v-col cols="12">
             <v-container>
               <AdminCreateConsultingForm/>
             </v-container>
@@ -19,7 +19,7 @@
               </v-chip>
             </v-container>
           </v-col>
-          <v-col lg="6">
+          <v-col cols="12">
             <v-container>
               <AdminCreateEspecialityForm/>
             </v-container>
@@ -32,7 +32,7 @@
               </v-chip>
             </v-container>
           </v-col>
-          <v-col lg="12">
+          <v-col cols="12">
             <v-alert border="bottom" colored-border color="primary" elevation="2">
               <v-icon medium >{{mdiInformation}}</v-icon> Crear doctor
             </v-alert>
@@ -42,7 +42,7 @@
               <AdminCreateDoctorForm/>
             </v-container>
           </v-col>
-          <v-col lg="12" md="6" sm="6" cols="12" class="mt-6 mb-1">
+          <v-col cols="12" class="mt-6 mb-1">
             <v-row align="center">
               <v-col lg="4" v-for="user in usersRole" :key="user._id">
                 <v-card
@@ -77,7 +77,7 @@
               </v-col>
             </v-row>
           </v-col>
-          <v-col lg="12" md="6" sm="6" cols="12" class="mt-6 mb-1">
+          <v-col cols="12" class="mt-6 mb-1">
             <v-row align="center">
               <v-col lg="4" v-for="user in adminsRole" :key="user._id">
                 <v-card
@@ -112,7 +112,7 @@
               </v-col>
             </v-row>
           </v-col>
-          <v-col lg="12" md="6" sm="6" cols="12" class="mt-6 mb-1">
+          <v-col cols="12" class="mt-6 mb-1">
             <v-row align="center">
               <v-col lg="4" v-for="user in doctorsRole" :key="user._id">
                 <v-card
@@ -147,10 +147,20 @@
               </v-col>
             </v-row>
           </v-col>
-          <v-col lg="12">
+          <v-col cols="12">
             <v-alert border="bottom" colored-border color="primary" elevation="2">
               <v-icon medium >{{mdiInformation}}</v-icon> Ver informacion de las citas
             </v-alert>
+          </v-col>
+          <v-col cols="12">
+            <v-container v-if="consulting_roomsInBd.length == 0">
+              No hay consultorios.
+            </v-container>
+            <v-container v-if="consulting_roomsInBd.length !== 0">
+              <v-chip v-for="room in consulting_roomsInBd" :key="room._id" @click="searchByRoom(room.code)">
+                {{room.name}}
+              </v-chip>
+            </v-container>
           </v-col>
           <v-col cols="12 mt-6 mb-16">
                 <v-btn block id="cbtn" @click="showCalendar" style="z-index: 50">
@@ -251,6 +261,7 @@
             </v-toolbar>
             <v-card-text>
               <div v-html="selectedEvent.start"></div>
+              <div v-html="selectedEvent.room"></div>
             </v-card-text>
             <v-card-actions>
               <v-btn
@@ -482,7 +493,7 @@ export default {
     },
     methods: {
         ...mapActions(["getusersFromBD","deleteUser","getDatesFromBD", "getConsultingFromBD", 
-        "getEspecialitiesFromBD", "getConsultingFromBDById", "updateRoom", "deleteRoom", "getEspecialityFromBDById", "updateEspeciality", "deleteEspeciality", "getUltimateSnackbarState"]),
+        "getEspecialitiesFromBD", "getConsultingFromBDById", "updateRoom", "deleteRoom", "getEspecialityFromBDById", "updateEspeciality", "deleteEspeciality", "getUltimateSnackbarState", "getDatesForCodeRoom"]),
         editEspeciality(especialityId){
           this.dialog2 = true;
           this.especialityIdToEdit = especialityId;
@@ -502,6 +513,13 @@ export default {
           this.dialog = true;
           this.roomIdToEdit = roomId;
           this.getConsultingFromBDById(roomId);
+        },
+        async searchByRoom(code){
+          if(document.getElementById("cbtn").classList.contains("d-none")){
+            document.getElementById("cbtn").classList.replace("d-none", "d-block");
+            document.getElementById("cclndr").classList.replace("d-block", "d-none");
+          }
+          await this.getDatesForCodeRoom(code);
         },
         submitDeleteRoom(){
           this.deleteRoom(this.roomIdToEdit)
@@ -536,6 +554,7 @@ export default {
                     allInfo: evento,
                     start: timestamp,
                     end:timestamp,
+                    room:evento.consulting_room,
                     color: this.colors[this.rnd(0, this.colors.length - 1)]
                 })
             }

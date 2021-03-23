@@ -8,6 +8,10 @@ export const getDates = async () => {
     return await axios.get(`${API}/dates`);
 }
 
+export const getDatesForCodeRoom = async (consultingroom) => {
+    return await axios.get(`${API}/dates/${consultingroom}`);
+}
+
 export const consultDateByCodeService = async (code) => {
     return await axios.get(`${API}/dates/consult/${code}`);
 }

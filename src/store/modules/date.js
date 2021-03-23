@@ -1,4 +1,4 @@
-import {consultDate, createDate, getDates, consultDateByCodeService} from '../../services/DateService';
+import {consultDate, createDate, getDates, consultDateByCodeService, getDatesForCodeRoom} from '../../services/DateService';
 
 const state = {
     dates: {},
@@ -36,6 +36,14 @@ const actions = {
         try {
             const response = await getDates()
             return commit('datesObtainedSuccessfully', response.data)
+        } catch (err) {
+            return commit('datesObtainedFailed', err.response.data.msg)
+        }
+    },
+    async getDatesForCodeRoom({commit}, code){
+        try {
+            const response = await getDatesForCodeRoom(code);
+            return commit('datesForCodeRoomObtainedSuccessfully', response.data)
         } catch (err) {
             return commit('datesObtainedFailed', err.response.data.msg)
         }
@@ -100,6 +108,7 @@ const actions = {
 
 const mutations = {
     datesObtainedSuccessfully:(state, dates) => (state.dates = dates),
+    datesForCodeRoomObtainedSuccessfully:(state, dates) => (state.dates = dates),
     dateConsultedSuccessfyully:(state, dayConsulted) => (state.dayConsulted = {
         disabledh: false,
         disablede: false,
