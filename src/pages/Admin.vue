@@ -260,10 +260,12 @@
               <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
             </v-toolbar>
             <v-card-text>
-              <div v-html="selectedEvent.start"></div>
-              <div v-html="selectedEvent.room"></div>
-              <div v-if="selectedEvent.doctor" v-html="selectedEvent.doctor.userName"></div>
+              <div v-html="`Fecha: `+selectedEvent.start"></div>
+              <div v-html="`Consultorio: `+selectedEvent.room"></div>
+              <div v-if="selectedEvent.doctor" v-html="`Doctor: `+selectedEvent.doctor.userName"></div>
               <div v-if="!selectedEvent.doctor" v-html="`No se ha seleccionado un doctor.`" @click="openDialog(selectedEvent.id)" style="cursor: pointer"></div>
+              <div v-if="selectedEvent.complete == 'no'" v-html="`Cita en progreso.`" @click="completeDate(selectedEvent.id)" style="cursor: pointer"></div>
+              <div v-if="selectedEvent.complete == 'si'" v-html="`Cita terminada.`"></div>
             </v-card-text>
             <v-card-actions>
               <v-btn
@@ -630,6 +632,7 @@ export default {
                     end:timestamp,
                     room:evento.consulting_room,
                     doctor:evento.doctor_id,
+                    complete:evento.complete,
                     id: evento._id,
                     color: this.colors[this.rnd(0, this.colors.length - 1)]
                 })
