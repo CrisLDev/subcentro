@@ -1,4 +1,4 @@
-import {consultDate, createDate, getDates, consultDateByCodeService, getDatesForCodeRoom, consultDateByUserLogedId, consultDateByDoctorId, putDoctorId} from '../../services/DateService';
+import {consultDate, createDate, getDates, consultDateByCodeService, getDatesForCodeRoom, consultDateByUserLogedId, consultDateByDoctorId, putDoctorId,updateDateToComplete} from '../../services/DateService';
 
 const state = {
     dates: {},
@@ -152,13 +152,35 @@ const actions = {
             snackbar: true
         }
         try {
-            const response = await consultDateByDoctorId(doctorId)
+            const data = {
+                id: doctorId
+            }
+            const response = await consultDateByDoctorId(data)
             return await commit('datesObtainedForDoctorLogedSuccessfully', response.data);
         } catch (err) {
             if(err)snackbarData.text = err.response.data.msg;
             return dispatch('getUltimateSnackbarState', snackbarData)
         }
-    }
+    },
+    async updateCompleteDate({dispatch}, id){
+        const snackbarData = {
+            timeout: 2000,
+            text: '',
+            snackbar: true
+        }
+        try {
+            const data = {
+                id: id
+            }
+            const response = await updateDateToComplete(data)
+            snackbarData.text = 'Cita editada correctamente.';
+            dispatch('getUltimateSnackbarState', snackbarData)
+            return await dispatch('taskMarkAsComplete', response.data);
+        } catch (err) {
+            if(err)snackbarData.text = err.response.data.msg;
+            return dispatch('getUltimateSnackbarState', snackbarData)
+        }
+    },
 }
 
 const mutations = {
@@ -167,7 +189,7 @@ const mutations = {
         state.dates.splice(state.dates.findIndex((date) => date._id = dateUp._id), 1);
         state.dates.unshift(dateUp)
     },
-    datesObtainedForUserLogedSuccessfully:(state, dates) => (state.datesForUserLoged = dates),
+    datesObtainedForUserLogedSuccessfully:(state, dates) => (state.datesForUserLoged = dates, state.charginDate = false),
     datesObtainedForDoctorLogedSuccessfully:(state, dates) => (state.datesForDoctorLoged = dates),
     datesForCodeRoomObtainedSuccessfully:(state, dates) => (state.dates = dates),
     dateConsultedSuccessfyully:(state, dayConsulted) => (state.dayConsulted = {

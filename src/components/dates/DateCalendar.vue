@@ -1,15 +1,21 @@
 <template>
 <div>
-  <v-btn class="d-block" block id="cbtn" @click="showCalendar" style="z-index: 50">
+  <v-btn class="d-block" block id="cbtn" @click="showCalendar" style="z-index: 5">
                     Ver Calendario
                 </v-btn>
     <div id="cclndr" class="d-none">
                     <v-sheet
                     tile
-                    height="100%"
-                    width="100%"
-                    class="d-inline-block"
+                    height="54"
+                    class="d-flex"
                     >
+                    <v-btn
+                        icon
+                        class="ma-2"
+                        @click="$refs.calendar.prev()"
+                    >
+                        <v-icon>{{mdiChevronLeft}}</v-icon>
+                    </v-btn>
                     <v-select
                         v-model="type"
                         :items="types"
@@ -40,14 +46,7 @@
                     <v-spacer></v-spacer>
                     <v-btn
                         icon
-                        class="mr-auto"
-                        @click="$refs.calendar.prev()"
-                    >
-                        <v-icon>{{mdiChevronLeft}}</v-icon>
-                    </v-btn>
-                    <v-btn
-                        icon
-                        class="ml-auto"
+                        class="ma-2"
                         @click="$refs.calendar.next()"
                     >
                         <v-icon>{{mdiChevronRight}}</v-icon>
@@ -83,11 +82,15 @@
               :color="selectedEvent.color"
               dark
             >
-              <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
+              <v-toolbar-title v-html="`Paciente: `+selectedEvent.name"></v-toolbar-title>
             </v-toolbar>
             <v-card-text>
-              <div v-html="selectedEvent.start"></div>
-              <div v-html="selectedEvent.room"></div>
+              <div v-html="`Fecha: `+selectedEvent.start"></div>
+              <div v-html="`Consultorio: `+selectedEvent.room"></div>
+              <div v-if="selectedEvent.doctor" v-html="`Doctor: `+selectedEvent.doctor.userName"></div>
+              <div v-if="!selectedEvent.doctor" v-html="`No se ha seleccionado un doctor.`"></div>
+              <div v-if="selectedEvent.complete == 'no'" v-html="`Click para marcar como completada.`" @click="completeDate(selectedEvent.id)" style="cursor: pointer"></div>
+              <div v-if="selectedEvent.complete == 'si'" v-html="`Cita terminada.`"></div>
             </v-card-text>
             <v-card-actions>
               <v-btn
@@ -150,7 +153,7 @@ export default {
       }
     },
     methods: {
-      ...mapActions(["consultDateByDoctorId"]),
+      ...mapActions(["consultDateByDoctorId", "updateCompleteDate"]),
       getEvents () {
         const events = []
 
@@ -167,7 +170,10 @@ export default {
                     name: evento.patient_id.userName,
                     allInfo: evento,
                     start: timestamp,
+                    id: evento._id,
                     end:timestamp,
+                    doctor:evento.doctor_id,
+                    complete:evento.complete,
                     room:evento.consulting_room,
                     color: this.colors[this.rnd(0, this.colors.length - 1)]
                 })
@@ -176,12 +182,19 @@ export default {
         this.events = events
       },
       async showCalendar(){
-        await this.consultDateByDoctorId(this.$store.getters.userLoged._id);
+        await this.consultDateByDoctorId(this.userLoged._id);
         await this.getEvents();
         if(document.getElementById("cbtn").classList.contains("d-block")){
             document.getElementById("cbtn").classList.replace("d-block", "d-none");
             document.getElementById("cclndr").classList.replace("d-none", "d-block");
           }
+      },
+      async completeDate(id){
+        await this.updateCompleteDate(id);
+          this.selectedOpen = false;
+          this.selectedEvent.complete = 'si';
+        await this.consultDateByDoctorId(this.userLoged._id);
+        await this.getEvents();
       },
       getEventColor (event) {
         return event.color
@@ -211,6 +224,10 @@ export default {
 
         nativeEvent.stopPropagation()
       }
+    },
+    mounted(){
+      this.consultDateByDoctorId(this.userLoged._id);
+      this.getEvents()
     }
 }
 </script>

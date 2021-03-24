@@ -1,7 +1,7 @@
 <template>
     <v-container class="lighten-5 mb-16">
         <v-row align="center" justify="center">
-            <v-col cols="12" class="mt-6 mb-1">
+            <v-col cols="12" class="mt-6 mb-16">
                 <DateCalendar/>
             </v-col>
         </v-row>

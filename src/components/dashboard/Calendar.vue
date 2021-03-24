@@ -82,10 +82,13 @@
               <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
             </v-toolbar>
             <v-card-text>
-              <div v-html="selectedEvent.start"></div>
-              <div v-html="selectedEvent.room"></div>
-              <div v-if="selectedEvent.doctor" v-html="selectedEvent.doctor.userName"></div>
+              <div v-html="`Fecha: `+selectedEvent.start"></div>
+              <div v-html="`Consultorio: `+selectedEvent.room"></div>
+              <div v-if="selectedEvent.doctor" v-html="`Doctor: `+selectedEvent.doctor.userName"></div>
+              <div v-if="selectedEvent.code" v-html="`Código: `+selectedEvent.code"></div>
               <div v-if="!selectedEvent.doctor" v-html="`No se ha seleccionado un doctor.`"></div>
+              <div v-if="selectedEvent.complete == 'no'" v-html="`Cita en progreso.`"></div>
+              <div v-if="selectedEvent.complete == 'si'" v-html="`Cita terminada.`"></div>
             </v-card-text>
             <v-card-actions>
               <v-btn
@@ -156,8 +159,10 @@ export default {
                 events.push({
                     name: evento.patient_id.userName,
                     allInfo: evento,
+                    code: evento.code,
                     start: timestamp,
                     end:timestamp,
+                    complete:evento.complete,
                     doctor:evento.doctor_id,
                     room:evento.consulting_room,
                     color: this.colors[this.rnd(0, this.colors.length - 1)]
