@@ -1,12 +1,12 @@
 <template>
     <v-container class="lighten-5 mb-16">
         <v-row align="center" justify="center">
-          <v-col lg="12">
+          <v-col cols="12">
             <v-alert border="bottom" colored-border color="primary" elevation="2">
               <v-icon medium >{{mdiInformation}}</v-icon> Consultorios y especialidades
             </v-alert>
           </v-col>
-          <v-col lg="6">
+          <v-col cols="12">
             <v-container>
               <AdminCreateConsultingForm/>
             </v-container>
@@ -19,7 +19,7 @@
               </v-chip>
             </v-container>
           </v-col>
-          <v-col lg="6">
+          <v-col cols="12">
             <v-container>
               <AdminCreateEspecialityForm/>
             </v-container>
@@ -32,7 +32,7 @@
               </v-chip>
             </v-container>
           </v-col>
-          <v-col lg="12">
+          <v-col cols="12">
             <v-alert border="bottom" colored-border color="primary" elevation="2">
               <v-icon medium >{{mdiInformation}}</v-icon> Crear doctor
             </v-alert>
@@ -42,16 +42,16 @@
               <AdminCreateDoctorForm/>
             </v-container>
           </v-col>
-          <v-col lg="12" md="6" sm="6" cols="12" class="mt-6 mb-1">
-            <v-row align="center" justify="center">
-              <v-col lg="4" v-for="user in usersInBd" :key="user._id">
+          <v-col cols="12" class="mt-6 mb-1">
+            <v-row align="center">
+              <v-col lg="4" v-for="user in usersRole" :key="user._id">
                 <v-card
                     class="mx-auto"
                 >
                     <v-card-text>
                     <div class="text-uppercase">{{user.role}}</div>
                     <p class="display-1 text--primary">
-                        {{user.userName ? user.userName : 'N/A'}} - {{user.adress ? user.adress : 'N/A'}}
+                        {{user.userName ? user.userName : 'N/A'}}
                     </p>
                     <p>{{user.fullName ? user.fullName : 'N/A'}}</p>
                     <div class="text--primary">
@@ -77,13 +77,93 @@
               </v-col>
             </v-row>
           </v-col>
-          <v-col lg="12">
+          <v-col cols="12" class="mt-6 mb-1">
+            <v-row align="center">
+              <v-col lg="4" v-for="user in adminsRole" :key="user._id">
+                <v-card
+                    class="mx-auto"
+                >
+                    <v-card-text>
+                    <div class="text-uppercase">{{user.role}}</div>
+                    <p class="display-1 text--primary">
+                        {{user.userName ? user.userName : 'N/A'}}
+                    </p>
+                    <p>{{user.fullName ? user.fullName : 'N/A'}}</p>
+                    <div class="text--primary">
+                    </div>
+                    </v-card-text>
+                    <v-card-actions>
+                        <v-container fluid>
+                            <div><AdminUserEdit :user_id="user._id" /></div>
+                            <br>
+                            <div>
+                                <v-btn
+                                outlined
+                                rounded
+                                text
+                                @click="deleteU(user._id)"
+                            >
+                                Eliminar
+                            </v-btn>
+                            </div>
+                        </v-container>
+                    </v-card-actions>
+                </v-card>
+              </v-col>
+            </v-row>
+          </v-col>
+          <v-col cols="12" class="mt-6 mb-1">
+            <v-row align="center">
+              <v-col lg="4" v-for="user in doctorsRole" :key="user._id">
+                <v-card
+                    class="mx-auto"
+                >
+                    <v-card-text>
+                    <div class="text-uppercase">{{user.role}}</div>
+                    <p class="display-1 text--primary">
+                        {{user.userName ? user.userName : 'N/A'}}
+                    </p>
+                    <p>{{user.fullName ? user.fullName : 'N/A'}}</p>
+                    <div class="text--primary">
+                    </div>
+                    </v-card-text>
+                    <v-card-actions>
+                        <v-container fluid>
+                            <div><AdminUserEdit :user_id="user._id" /></div>
+                            <br>
+                            <div>
+                                <v-btn
+                                outlined
+                                rounded
+                                text
+                                @click="deleteU(user._id)"
+                            >
+                                Eliminar
+                            </v-btn>
+                            </div>
+                        </v-container>
+                    </v-card-actions>
+                </v-card>
+              </v-col>
+            </v-row>
+          </v-col>
+          <v-col cols="12">
             <v-alert border="bottom" colored-border color="primary" elevation="2">
               <v-icon medium >{{mdiInformation}}</v-icon> Ver informacion de las citas
             </v-alert>
           </v-col>
+          <v-col cols="12">
+            <v-container v-if="consulting_roomsInBd.length == 0">
+              No hay consultorios.
+            </v-container>
+            <v-container v-if="consulting_roomsInBd.length !== 0">
+              <v-chip v-for="room in consulting_roomsInBd" :key="room._id" @click="searchByRoom(room.code)">
+                {{room.name}}
+              </v-chip>
+            </v-container>
+          </v-col>
           <v-col cols="12 mt-6 mb-16">
-                <v-btn block id="cbtn" @click="showCalendar" style="z-index: 50">
+                <v-btn class="d-block" block id="cbtn" @click="showCalendar" style="z-index: 50">
                     Ver Calendario
                 </v-btn>
                 <div id="cclndr" class="d-none">
@@ -181,6 +261,9 @@
             </v-toolbar>
             <v-card-text>
               <div v-html="selectedEvent.start"></div>
+              <div v-html="selectedEvent.room"></div>
+              <div v-if="selectedEvent.doctor" v-html="selectedEvent.doctor.userName"></div>
+              <div v-if="!selectedEvent.doctor" v-html="`No se ha seleccionado un doctor.`" @click="openDialog(selectedEvent.id)" style="cursor: pointer"></div>
             </v-card-text>
             <v-card-actions>
               <v-btn
@@ -314,6 +397,54 @@
       </v-card>
           </v-dialog>
         </div>
+        <div class="text-center">
+          <v-dialog
+            v-model="dialog3"
+            width="500"
+          >
+            <v-card>
+        <v-card-title>
+          <span class="headline">Contenido</span>
+        </v-card-title>
+        <v-card-text>
+          <v-container>
+            <v-row>
+              <v-col
+                  cols="12"
+                >
+                  <v-select
+                  v-model="doctor"
+                    :items="items2"
+                    item-text="name"
+                    item-value="id"
+                    label="Doctor*"
+                    required
+                  ></v-select>
+                </v-col>
+            </v-row>
+          </v-container>
+          <small>* Indica campos requeridos. </small>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="blue darken-1"
+            text
+            @click="dialog3 = false"
+          >
+            Cerrar
+          </v-btn>
+          <v-btn
+            color="blue darken-1"
+            text
+            @click="putDoctor"
+          >
+            Editar
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+          </v-dialog>
+        </div>
     </v-container>
 </template>
 
@@ -325,6 +456,8 @@ import AdminCreateEspecialityForm from '../components/admin/AdminCreateEspeciali
 import AdminCreateDoctorForm from '../components/admin/AdminCreateDoctorForm';
 import { mdiBorderColor } from '@mdi/js';
 import { mdiDotsVertical } from '@mdi/js';
+import { mdiInformation } from '@mdi/js';
+import { mdiNewBox } from '@mdi/js';
 import { mdiHeart } from '@mdi/js';
 import { mdiChevronLeft } from '@mdi/js';
 import { mdiChevronRight } from '@mdi/js';
@@ -353,13 +486,19 @@ export default {
       mdiBorderColor: mdiBorderColor,
       mdiDotsVertical: mdiDotsVertical,
       mdiHeart: mdiHeart,
+      mdiInformation: mdiInformation,
+      mdiNewBox: mdiNewBox,
       mdiChevronLeft: mdiChevronLeft,
       mdiChevronRight: mdiChevronRight,
       dialog: false,
       dialog2: false,
+      dialog3: false,
       items: [],
+      items2: [],
       roomIdToEdit:'',
-      especialityIdToEdit: ''
+      especialityIdToEdit: '',
+      doctor: '',
+      dateId: ''
     }),
     components: {
         AdminUserEdit,
@@ -367,7 +506,16 @@ export default {
         AdminCreateEspecialityForm,
         AdminCreateDoctorForm
     },
-    computed: {...mapGetters(["usersInBd", "consulting_roomsInBd", "especialititesInBd"]),
+    computed: {...mapGetters(["usersInBd", "consulting_roomsInBd", "especialititesInBd", "doctorsInBd"]),
+    usersRole(){
+        return this.usersInBd.filter(user => user.role === "user")
+    },
+    doctorsRole(){
+        return this.usersInBd.filter(doctor => doctor.role === "doctor")
+    },
+    adminsRole(){
+        return this.usersInBd.filter(admin => admin.role === "admin")
+    },
     name: {
         get () {
           return this.$store.state.consulting.roomToEdit.name
@@ -403,7 +551,23 @@ export default {
     },
     methods: {
         ...mapActions(["getusersFromBD","deleteUser","getDatesFromBD", "getConsultingFromBD", 
-        "getEspecialitiesFromBD", "getConsultingFromBDById", "updateRoom", "deleteRoom", "getEspecialityFromBDById", "updateEspeciality", "deleteEspeciality", "getUltimateSnackbarState"]),
+        "getEspecialitiesFromBD", "getConsultingFromBDById", "updateRoom", "deleteRoom", "getEspecialityFromBDById", "updateEspeciality", "deleteEspeciality", "getUltimateSnackbarState", "getDatesForCodeRoom", "getDoctorsFromBD", "putDoctorId"]),
+        async putDoctor(){
+          const data = {
+            id: this.dateId,
+            doctor: this.doctor
+          }
+          await this.putDoctorId(data)
+          this.dialog3 = false;
+          document.getElementById("cclndr").classList.replace("d-block", "d-none");
+          document.getElementById("cbtn").classList.replace("d-none", "d-block");
+          await this.getDatesFromBD();
+          await this.getEvents();
+        },
+        openDialog(id){
+          this.dateId = id;
+          this.dialog3 = true;
+        },
         editEspeciality(especialityId){
           this.dialog2 = true;
           this.especialityIdToEdit = especialityId;
@@ -423,6 +587,13 @@ export default {
           this.dialog = true;
           this.roomIdToEdit = roomId;
           this.getConsultingFromBDById(roomId);
+        },
+        async searchByRoom(code){
+          if(document.getElementById("cbtn").classList.contains("d-none")){
+            document.getElementById("cbtn").classList.replace("d-none", "d-block");
+            document.getElementById("cclndr").classList.replace("d-block", "d-none");
+          }
+          await this.getDatesForCodeRoom(code);
         },
         submitDeleteRoom(){
           this.deleteRoom(this.roomIdToEdit)
@@ -457,6 +628,9 @@ export default {
                     allInfo: evento,
                     start: timestamp,
                     end:timestamp,
+                    room:evento.consulting_room,
+                    doctor:evento.doctor_id,
+                    id: evento._id,
                     color: this.colors[this.rnd(0, this.colors.length - 1)]
                 })
             }
@@ -464,6 +638,10 @@ export default {
         this.events = events
       },
       async showCalendar(){
+        if(document.getElementById("cbtn").classList.contains("d-block")){
+            document.getElementById("cbtn").classList.replace("d-block", "d-none");
+            document.getElementById("cclndr").classList.replace("d-none", "d-block");
+          }
           await this.getEvents();
           if(this.events.length <= 0){
             const snackbarData = {
@@ -473,8 +651,6 @@ export default {
             }
             return this.getUltimateSnackbarState(snackbarData);
           }
-          document.getElementById("cbtn").classList.add("d-none");
-          document.getElementById("cclndr").classList.replace("d-none", "d-block");
       },
       getEventColor (event) {
         return event.color
@@ -510,6 +686,7 @@ export default {
         this.getDatesFromBD();
         this.getConsultingFromBD();
         this.getEspecialitiesFromBD();
+        this.getDoctorsFromBD();
     },
     watch: {
         $route: {
@@ -526,6 +703,15 @@ export default {
             }
           );
         this.items = items
+      },
+        doctorsInBd(){
+        const items2 = []
+        Object.values(this.doctorsInBd).map((doctor) => 
+            {
+                items2.push({name: doctor.userName, id: doctor._id})
+            }
+          );
+        this.items2 = items2
       }
     }
 }

@@ -8,6 +8,10 @@ export const createUser = async (dataToSend) => {
     return await axios.post(`${API}/auth/register`, dataToSend);
 }
 
+export const getAllDoctors = async () => {
+    return await axios.get(`${API}/auth/doctors`);
+}
+
 export const loginUser = async (dataToSend) => {
     return await axios.post(`${API}/auth/login`, dataToSend)
 }
@@ -26,4 +30,8 @@ export const deleteUserInBd = async (id) => {
 
 export const updateUser = async (dataToSend) => {
     return await axios.put(`${API}/auth/user`, dataToSend)
+}
+
+export const uploadPhoto = async (formData) => {
+    return await axios.post(`${API}/auth/create`, formData)
 }

@@ -1,11 +1,12 @@
-import { loginUser, reloginUserInReload, createUser, updateUser, getAllUsers, deleteUserInBd } from '../../services/AuthService';
+import { loginUser, reloginUserInReload, createUser, updateUser, getAllUsers, deleteUserInBd, uploadPhoto, getAllDoctors } from '../../services/AuthService';
 import router from '../../router';
 import {logout, setAuthToken} from '../../utils/auth';
 
 const state = {
     user: {},
     users: {},
-    userToEdit:{}
+    userToEdit:{},
+    doctors: {}
 }
 
 const getters = {
@@ -14,6 +15,9 @@ const getters = {
     },
     usersInBd: (state) => {
         return state.users
+    },
+    doctorsInBd: (state) => {
+        return state.doctors
     }
 }
 
@@ -101,7 +105,7 @@ const actions = {
         }
         try {
             await updateUser(dataToSend)
-            snackbarData.text = 'Consultorio actualizado correctamente';
+            snackbarData.text = 'Información actualizada correctamente';
             return dispatch('getUltimateSnackbarState', snackbarData)
         } catch (err) {
             if(err)snackbarData.text = err.response.data.msg;
@@ -124,13 +128,35 @@ const actions = {
             return dispatch('getUltimateSnackbarState', snackbarData)
         }
     },
+    async uploadPhoto({dispatch, commit}, photo){
+        const snackbarData = {
+            timeout: 2000,
+            text: '',
+            snackbar: true
+        }
+        const response = await uploadPhoto(photo)
+        console.log(response.data)
+        snackbarData.text = 'Foto actualizada correctamente';
+        dispatch('getUltimateSnackbarState', snackbarData)
+        return commit('UserPhotoSuccessfully', response.data);
+    },
+     async getDoctorsFromBD({commit}) {
+        try {
+            const response = await getAllDoctors()
+            return commit('doctorsObtainedSuccessfully', response.data)
+        } catch (err) {
+            return commit('usersObtainedFailed', err.response.data.msg)
+        }
+    },
 }
 
 const mutations = {
     UserRegisterSuccessfully:(state, newUser) => state.users.push(newUser),
+    doctorsObtainedSuccessfully:(state, doctors) => (state.doctors = doctors),
     usersObtainedSuccessfully:(state, users) => (state.users = users),
     usersObtainedFailed:(state, error) => (state.user = error),
     UserLogedSuccessfully:(state, addUser) => (state.user = addUser),
+    UserPhotoSuccessfully:(state, photo) => (state.user = photo),
     UserRelogedSuccessfully:(state, reAddUser) => (state.user = reAddUser),
     UserDeslogedSuccessfylly:(state) => (state.user = {}),
     updateUsername (state, userName) {state.user.userName = userName},
@@ -142,6 +168,7 @@ const mutations = {
     userToEditUpdateUsername (state, userName) {state.userToEdit.userName = userName},
     userToEditUpdateFullname (state, fullName) {state.userToEdit.fullName = fullName},
     userToEditUpdateEmail (state, email) {state.userToEdit.email = email},
+    updatePhoto (state, photo) {state.user.imgUrl = photo},
     userToEditUpdateAdress (state, adress) {state.userToEdit.adress = adress},
     userToEditUpdateDate (state, age) {state.userToEdit.age = age},
     userToEditUpdateTelephoneNumber (state, telephoneNumber) {state.userToEdit.telephoneNumber = telephoneNumber},

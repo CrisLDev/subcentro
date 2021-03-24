@@ -1,4 +1,4 @@
-import {consultDate, createDate, getDates, consultDateByCodeService} from '../../services/DateService';
+import {consultDate, createDate, getDates, consultDateByCodeService, getDatesForCodeRoom, consultDateByUserLogedId, consultDateByDoctorId, putDoctorId} from '../../services/DateService';
 
 const state = {
     dates: {},
@@ -10,9 +10,12 @@ const state = {
         once: 0, 
         unaTarde: 0,
         tresTarde: 0,
+        roomsNumber: 0
     },
     charginDate: false,
-    dateByCode: {}
+    dateByCode: {},
+    datesForUserLoged: {},
+    datesForDoctorLoged: {}
 }
 
 const getters = {
@@ -27,7 +30,13 @@ const getters = {
     },
     charginDate: (state) => {
         return state.charginDate
-    }
+    },
+    datesForUserLoged: (state) => {
+        return state.datesForUserLoged
+    },
+    datesForDoctorLoged: (state) => {
+        return state.datesForDoctorLoged
+    },
 }
 
 const actions = {
@@ -39,9 +48,18 @@ const actions = {
             return commit('datesObtainedFailed', err.response.data.msg)
         }
     },
+    async getDatesForCodeRoom({commit}, code){
+        try {
+            const response = await getDatesForCodeRoom(code);
+            return commit('datesForCodeRoomObtainedSuccessfully', response.data)
+        } catch (err) {
+            return commit('datesObtainedFailed', err.response.data.msg)
+        }
+    },
     async consultDate({commit}, dataToSend) {
         try {
             const response = await consultDate(dataToSend)
+            console.log(response.data)
             return await commit('dateConsultedSuccessfyully', response.data)
         } catch (err) {
             await consultDate(dataToSend)
@@ -67,6 +85,7 @@ const actions = {
                 code: response.data.consulting_room
             }
             return dispatch('consultDate', dataForReSend)
+            //return dispatch('clearEspecialities')
             //return commit('dateCreatedSuccessfyully', response.data)
         } catch (err) {
             if(err)snackbarData.text = err.response.data.msg;
@@ -93,19 +112,73 @@ const actions = {
     },
     async activateRoomsInputa({commit}){
         return await commit('activateRoomsInputa')
+    },
+    async consultDateByUserLogedId({commit, dispatch}, userId){
+        const snackbarData = {
+            timeout: 2000,
+            text: '',
+            snackbar: true
+        }
+        try {
+            await commit('putLoading');
+            const response = await consultDateByUserLogedId(userId)
+            return await commit('datesObtainedForUserLogedSuccessfully', response.data);
+        } catch (err) {
+            if(err)snackbarData.text = err.response.data.msg;
+            return dispatch('getUltimateSnackbarState', snackbarData)
+        }
+    },
+    async putDoctorId({commit, dispatch}, data){
+        const snackbarData = {
+            timeout: 2000,
+            text: '',
+            snackbar: true
+        }
+        try {
+            const response = await putDoctorId(data.id, data)
+            snackbarData.text = 'Cita editada correctamente.';
+            dispatch('getUltimateSnackbarState', snackbarData)
+            console.log(response.data)
+            await commit('doctorEstablished', response.data);
+        } catch (err) {
+            if(err)snackbarData.text = err.response.data.msg;
+            return dispatch('getUltimateSnackbarState', snackbarData)
+        }
+    },
+    async consultDateByDoctorId({commit, dispatch}, doctorId){
+        const snackbarData = {
+            timeout: 2000,
+            text: '',
+            snackbar: true
+        }
+        try {
+            const response = await consultDateByDoctorId(doctorId)
+            return await commit('datesObtainedForDoctorLogedSuccessfully', response.data);
+        } catch (err) {
+            if(err)snackbarData.text = err.response.data.msg;
+            return dispatch('getUltimateSnackbarState', snackbarData)
+        }
     }
 }
 
 const mutations = {
     datesObtainedSuccessfully:(state, dates) => (state.dates = dates),
+    doctorEstablished: (state, dateUp) => {
+        state.dates.splice(state.dates.findIndex((date) => date._id = dateUp._id), 1);
+        state.dates.unshift(dateUp)
+    },
+    datesObtainedForUserLogedSuccessfully:(state, dates) => (state.datesForUserLoged = dates),
+    datesObtainedForDoctorLogedSuccessfully:(state, dates) => (state.datesForDoctorLoged = dates),
+    datesForCodeRoomObtainedSuccessfully:(state, dates) => (state.dates = dates),
     dateConsultedSuccessfyully:(state, dayConsulted) => (state.dayConsulted = {
         disabledh: false,
         disablede: false,
         disabledc: false,
-        nueve: dayConsulted.filter(hour => hour.hour === "09:00").length,
-        once: dayConsulted.filter(hour => hour.hour === "11:00").length,
-        unaTarde: dayConsulted.filter(hour => hour.hour === "13:00").length,
-        tresTarde: dayConsulted.filter(hour => hour.hour === "15:00").length,
+        nueve: dayConsulted.book.filter(hour => hour.hour === "09:00").length,
+        once: dayConsulted.book.filter(hour => hour.hour === "11:00").length,
+        unaTarde: dayConsulted.book.filter(hour => hour.hour === "13:00").length,
+        tresTarde: dayConsulted.book.filter(hour => hour.hour === "15:00").length,
+        roomsNumber: dayConsulted.rooms.length
     }),
     dateConsulteGoneEmpty:(state) => (state.dayConsulted = {
         disabledh: false,
@@ -115,12 +188,14 @@ const mutations = {
         once: 0,
         unaTarde: 0,
         tresTarde: 0,
-        consultorios: 0
+        consultorios: 0,
+        roomsNumber: 0
     }),
     activateEspecialityInputa:(state) => (state.dayConsulted = {
         disabledh: true,
         disablede: false,
         disabledc: true,
+        roomsNumber: 0,
         nueve: 0,
         once: 0,
         unaTarde: 0,
@@ -130,6 +205,7 @@ const mutations = {
         disabledh: true,
         disablede: false,
         disabledc: false,
+        roomsNumber: 0,
         nueve: 0,
         once: 0,
         unaTarde: 0,
@@ -139,6 +215,7 @@ const mutations = {
         disabledh: false,
         disablede: false,
         disabledc: false,
+        roomsNumber: 0,
         nueve: 0,
         once: 0,
         unaTarde: 0,

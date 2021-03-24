@@ -81,6 +81,9 @@ const actions = {
             return dispatch('getUltimateSnackbarState', snackbarData)
         }
     },
+    async clearEspecialities({commit}){
+        return commit('clearEspecialities')
+    }
 }
 
 const mutations = {
@@ -94,7 +97,8 @@ const mutations = {
     EspecialityUpdatedSuccessfully: (state, especialityUpdated) => {
         state.especialities.splice(state.especialities.findIndex((especiality) => especiality._id = especialityUpdated._id), 1);
         state.especialities.unshift(especialityUpdated)
-    }
+    },
+    clearEspecialities: (state) => {state.especialities = {}}
 }
 
 export default {
