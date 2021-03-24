@@ -20,9 +20,18 @@ export const consultDateByUserLogedId = async (userId) => {
     return await axios.get(`${API}/dates/consult/userLoged/${userId}`);
 }
 
+export const consultDateByDoctorId = async (id) => {
+    return await axios.get(`${API}/dates/consult/doctorLoged/${id}`);
+}
+
 export const consultDate = async (dataToSend) => {
     return await axios.post(`${API}/dates/consulting`, dataToSend)
 }
+
+export const putDoctorId = async (id, doctor) => {
+    return await axios.put(`${API}/dates/${id}`, doctor)
+}
+
 
 export const createDate = async (dataToSend) => {
     return await axios.post(`${API}/dates`, dataToSend)

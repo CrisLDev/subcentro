@@ -1,11 +1,12 @@
-import { loginUser, reloginUserInReload, createUser, updateUser, getAllUsers, deleteUserInBd, uploadPhoto } from '../../services/AuthService';
+import { loginUser, reloginUserInReload, createUser, updateUser, getAllUsers, deleteUserInBd, uploadPhoto, getAllDoctors } from '../../services/AuthService';
 import router from '../../router';
 import {logout, setAuthToken} from '../../utils/auth';
 
 const state = {
     user: {},
     users: {},
-    userToEdit:{}
+    userToEdit:{},
+    doctors: {}
 }
 
 const getters = {
@@ -14,6 +15,9 @@ const getters = {
     },
     usersInBd: (state) => {
         return state.users
+    },
+    doctorsInBd: (state) => {
+        return state.doctors
     }
 }
 
@@ -135,11 +139,20 @@ const actions = {
         snackbarData.text = 'Foto actualizada correctamente';
         dispatch('getUltimateSnackbarState', snackbarData)
         return commit('UserPhotoSuccessfully', response.data);
-    }
+    },
+     async getDoctorsFromBD({commit}) {
+        try {
+            const response = await getAllDoctors()
+            return commit('doctorsObtainedSuccessfully', response.data)
+        } catch (err) {
+            return commit('usersObtainedFailed', err.response.data.msg)
+        }
+    },
 }
 
 const mutations = {
     UserRegisterSuccessfully:(state, newUser) => state.users.push(newUser),
+    doctorsObtainedSuccessfully:(state, doctors) => (state.doctors = doctors),
     usersObtainedSuccessfully:(state, users) => (state.users = users),
     usersObtainedFailed:(state, error) => (state.user = error),
     UserLogedSuccessfully:(state, addUser) => (state.user = addUser),

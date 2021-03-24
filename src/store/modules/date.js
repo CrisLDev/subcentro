@@ -1,4 +1,4 @@
-import {consultDate, createDate, getDates, consultDateByCodeService, getDatesForCodeRoom, consultDateByUserLogedId} from '../../services/DateService';
+import {consultDate, createDate, getDates, consultDateByCodeService, getDatesForCodeRoom, consultDateByUserLogedId, consultDateByDoctorId, putDoctorId} from '../../services/DateService';
 
 const state = {
     dates: {},
@@ -14,7 +14,8 @@ const state = {
     },
     charginDate: false,
     dateByCode: {},
-    datesForUserLoged: {}
+    datesForUserLoged: {},
+    datesForDoctorLoged: {}
 }
 
 const getters = {
@@ -32,6 +33,9 @@ const getters = {
     },
     datesForUserLoged: (state) => {
         return state.datesForUserLoged
+    },
+    datesForDoctorLoged: (state) => {
+        return state.datesForDoctorLoged
     },
 }
 
@@ -123,12 +127,48 @@ const actions = {
             if(err)snackbarData.text = err.response.data.msg;
             return dispatch('getUltimateSnackbarState', snackbarData)
         }
+    },
+    async putDoctorId({commit, dispatch}, data){
+        const snackbarData = {
+            timeout: 2000,
+            text: '',
+            snackbar: true
+        }
+        try {
+            const response = await putDoctorId(data.id, data)
+            snackbarData.text = 'Cita editada correctamente.';
+            dispatch('getUltimateSnackbarState', snackbarData)
+            console.log(response.data)
+            await commit('doctorEstablished', response.data);
+        } catch (err) {
+            if(err)snackbarData.text = err.response.data.msg;
+            return dispatch('getUltimateSnackbarState', snackbarData)
+        }
+    },
+    async consultDateByDoctorId({commit, dispatch}, doctorId){
+        const snackbarData = {
+            timeout: 2000,
+            text: '',
+            snackbar: true
+        }
+        try {
+            const response = await consultDateByDoctorId(doctorId)
+            return await commit('datesObtainedForDoctorLogedSuccessfully', response.data);
+        } catch (err) {
+            if(err)snackbarData.text = err.response.data.msg;
+            return dispatch('getUltimateSnackbarState', snackbarData)
+        }
     }
 }
 
 const mutations = {
     datesObtainedSuccessfully:(state, dates) => (state.dates = dates),
+    doctorEstablished: (state, dateUp) => {
+        state.dates.splice(state.dates.findIndex((date) => date._id = dateUp._id), 1);
+        state.dates.unshift(dateUp)
+    },
     datesObtainedForUserLogedSuccessfully:(state, dates) => (state.datesForUserLoged = dates),
+    datesObtainedForDoctorLogedSuccessfully:(state, dates) => (state.datesForDoctorLoged = dates),
     datesForCodeRoomObtainedSuccessfully:(state, dates) => (state.dates = dates),
     dateConsultedSuccessfyully:(state, dayConsulted) => (state.dayConsulted = {
         disabledh: false,

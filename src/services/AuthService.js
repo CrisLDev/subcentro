@@ -8,6 +8,10 @@ export const createUser = async (dataToSend) => {
     return await axios.post(`${API}/auth/register`, dataToSend);
 }
 
+export const getAllDoctors = async () => {
+    return await axios.get(`${API}/auth/doctors`);
+}
+
 export const loginUser = async (dataToSend) => {
     return await axios.post(`${API}/auth/login`, dataToSend)
 }

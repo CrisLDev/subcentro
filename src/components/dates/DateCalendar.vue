@@ -1,5 +1,9 @@
 <template>
-    <div id="cclndr">
+<div>
+  <v-btn class="d-block" block id="cbtn" @click="showCalendar" style="z-index: 50">
+                    Ver Calendario
+                </v-btn>
+    <div id="cclndr" class="d-none">
                     <v-sheet
                     tile
                     height="100%"
@@ -84,8 +88,6 @@
             <v-card-text>
               <div v-html="selectedEvent.start"></div>
               <div v-html="selectedEvent.room"></div>
-              <div v-if="selectedEvent.doctor" v-html="selectedEvent.doctor.userName"></div>
-              <div v-if="!selectedEvent.doctor" v-html="`No se ha seleccionado un doctor.`"></div>
             </v-card-text>
             <v-card-actions>
               <v-btn
@@ -100,9 +102,11 @@
         </v-menu>
                     </v-sheet>
                 </div>
+</div>
 </template>
 
 <script>
+import {mapGetters, mapActions} from 'vuex';
 import { mdiBorderColor } from '@mdi/js';
 import { mdiDotsVertical } from '@mdi/js';
 import { mdiInformation } from '@mdi/js';
@@ -139,7 +143,14 @@ export default {
       mdiChevronLeft: mdiChevronLeft,
       mdiChevronRight: mdiChevronRight,
     }),
+    computed: {...mapGetters(["datesForDoctorLoged", "userLoged"])},
+    watch: {
+      userLoged(){
+        this.consultDateByDoctorId(this.userLoged._id)
+      }
+    },
     methods: {
+      ...mapActions(["consultDateByDoctorId"]),
       getEvents () {
         const events = []
 
@@ -147,9 +158,8 @@ export default {
         //const max = new Date(`${end.date}T23:59:59`)
         //const days = (max.getTime() - min.getTime()) / 86400000
         //const eventCount = this.rnd(days, days + 20)
-        const dates = this.$store.getters.datesForUserLoged;
+        const dates = this.$store.getters.datesForDoctorLoged;
         //const eventCount = dates;
-
         Object.values(dates).map((evento) => 
             {
                 const timestamp = evento.date + ' ' + evento.possible_hour;
@@ -158,13 +168,20 @@ export default {
                     allInfo: evento,
                     start: timestamp,
                     end:timestamp,
-                    doctor:evento.doctor_id,
                     room:evento.consulting_room,
                     color: this.colors[this.rnd(0, this.colors.length - 1)]
                 })
             }
           );
         this.events = events
+      },
+      async showCalendar(){
+        await this.consultDateByDoctorId(this.$store.getters.userLoged._id);
+        await this.getEvents();
+        if(document.getElementById("cbtn").classList.contains("d-block")){
+            document.getElementById("cbtn").classList.replace("d-block", "d-none");
+            document.getElementById("cclndr").classList.replace("d-none", "d-block");
+          }
       },
       getEventColor (event) {
         return event.color
@@ -194,9 +211,6 @@ export default {
 
         nativeEvent.stopPropagation()
       }
-    },
-    async mounted(){
-      await this.getEvents();
     }
 }
 </script>

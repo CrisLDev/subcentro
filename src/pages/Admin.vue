@@ -262,6 +262,8 @@
             <v-card-text>
               <div v-html="selectedEvent.start"></div>
               <div v-html="selectedEvent.room"></div>
+              <div v-if="selectedEvent.doctor" v-html="selectedEvent.doctor.userName"></div>
+              <div v-if="!selectedEvent.doctor" v-html="`No se ha seleccionado un doctor.`" @click="openDialog(selectedEvent.id)" style="cursor: pointer"></div>
             </v-card-text>
             <v-card-actions>
               <v-btn
@@ -395,6 +397,54 @@
       </v-card>
           </v-dialog>
         </div>
+        <div class="text-center">
+          <v-dialog
+            v-model="dialog3"
+            width="500"
+          >
+            <v-card>
+        <v-card-title>
+          <span class="headline">Contenido</span>
+        </v-card-title>
+        <v-card-text>
+          <v-container>
+            <v-row>
+              <v-col
+                  cols="12"
+                >
+                  <v-select
+                  v-model="doctor"
+                    :items="items2"
+                    item-text="name"
+                    item-value="id"
+                    label="Doctor*"
+                    required
+                  ></v-select>
+                </v-col>
+            </v-row>
+          </v-container>
+          <small>* Indica campos requeridos. </small>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="blue darken-1"
+            text
+            @click="dialog3 = false"
+          >
+            Cerrar
+          </v-btn>
+          <v-btn
+            color="blue darken-1"
+            text
+            @click="putDoctor"
+          >
+            Editar
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+          </v-dialog>
+        </div>
     </v-container>
 </template>
 
@@ -442,9 +492,13 @@ export default {
       mdiChevronRight: mdiChevronRight,
       dialog: false,
       dialog2: false,
+      dialog3: false,
       items: [],
+      items2: [],
       roomIdToEdit:'',
-      especialityIdToEdit: ''
+      especialityIdToEdit: '',
+      doctor: '',
+      dateId: ''
     }),
     components: {
         AdminUserEdit,
@@ -452,7 +506,7 @@ export default {
         AdminCreateEspecialityForm,
         AdminCreateDoctorForm
     },
-    computed: {...mapGetters(["usersInBd", "consulting_roomsInBd", "especialititesInBd"]),
+    computed: {...mapGetters(["usersInBd", "consulting_roomsInBd", "especialititesInBd", "doctorsInBd"]),
     usersRole(){
         return this.usersInBd.filter(user => user.role === "user")
     },
@@ -497,7 +551,23 @@ export default {
     },
     methods: {
         ...mapActions(["getusersFromBD","deleteUser","getDatesFromBD", "getConsultingFromBD", 
-        "getEspecialitiesFromBD", "getConsultingFromBDById", "updateRoom", "deleteRoom", "getEspecialityFromBDById", "updateEspeciality", "deleteEspeciality", "getUltimateSnackbarState", "getDatesForCodeRoom"]),
+        "getEspecialitiesFromBD", "getConsultingFromBDById", "updateRoom", "deleteRoom", "getEspecialityFromBDById", "updateEspeciality", "deleteEspeciality", "getUltimateSnackbarState", "getDatesForCodeRoom", "getDoctorsFromBD", "putDoctorId"]),
+        async putDoctor(){
+          const data = {
+            id: this.dateId,
+            doctor: this.doctor
+          }
+          await this.putDoctorId(data)
+          this.dialog3 = false;
+          document.getElementById("cclndr").classList.replace("d-block", "d-none");
+          document.getElementById("cbtn").classList.replace("d-none", "d-block");
+          await this.getDatesFromBD();
+          await this.getEvents();
+        },
+        openDialog(id){
+          this.dateId = id;
+          this.dialog3 = true;
+        },
         editEspeciality(especialityId){
           this.dialog2 = true;
           this.especialityIdToEdit = especialityId;
@@ -559,6 +629,8 @@ export default {
                     start: timestamp,
                     end:timestamp,
                     room:evento.consulting_room,
+                    doctor:evento.doctor_id,
+                    id: evento._id,
                     color: this.colors[this.rnd(0, this.colors.length - 1)]
                 })
             }
@@ -614,6 +686,7 @@ export default {
         this.getDatesFromBD();
         this.getConsultingFromBD();
         this.getEspecialitiesFromBD();
+        this.getDoctorsFromBD();
     },
     watch: {
         $route: {
@@ -630,6 +703,15 @@ export default {
             }
           );
         this.items = items
+      },
+        doctorsInBd(){
+        const items2 = []
+        Object.values(this.doctorsInBd).map((doctor) => 
+            {
+                items2.push({name: doctor.userName, id: doctor._id})
+            }
+          );
+        this.items2 = items2
       }
     }
 }
