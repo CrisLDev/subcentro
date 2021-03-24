@@ -81,6 +81,7 @@ const actions = {
                 code: response.data.consulting_room
             }
             return dispatch('consultDate', dataForReSend)
+            //return dispatch('clearEspecialities')
             //return commit('dateCreatedSuccessfyully', response.data)
         } catch (err) {
             if(err)snackbarData.text = err.response.data.msg;

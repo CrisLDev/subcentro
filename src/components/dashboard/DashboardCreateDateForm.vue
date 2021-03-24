@@ -150,6 +150,7 @@ import {mapGetters,mapActions} from 'vuex';
                 }
               );
             this.items = items;
+            this.especiality = null;
       }
     },
     methods: {
