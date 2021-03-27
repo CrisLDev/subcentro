@@ -6,7 +6,8 @@ const state = {
     user: {},
     users: {},
     userToEdit:{},
-    doctors: {}
+    doctors: {},
+    charginAuth: false
 }
 
 const getters = {
@@ -18,7 +19,10 @@ const getters = {
     },
     doctorsInBd: (state) => {
         return state.doctors
-    }
+    },
+    charginAuth: (state) => {
+        return state.charginAuth
+    },
 }
 
 const actions = {
@@ -37,6 +41,7 @@ const actions = {
             snackbar: true
         }
         try {
+            commit('putLoading')
             const response = await loginUser(dataToSend)
             commit('UserLogedSuccessfully', response.data)
             snackbarData.text = 'Usuario logeado correctamente';
@@ -79,6 +84,7 @@ const actions = {
             text: '',
             snackbar: true
         }
+        dispatch('putLoading')
         try {
             const response = await createUser(dataToSend)
             snackbarData.text = 'Usuario registrado correctamente';
@@ -151,11 +157,11 @@ const actions = {
 }
 
 const mutations = {
-    UserRegisterSuccessfully:(state, newUser) => state.users.push(newUser),
+    UserRegisterSuccessfully:(state, newUser) => {state.users.push(newUser), state.charginAuth = false},
     doctorsObtainedSuccessfully:(state, doctors) => (state.doctors = doctors),
     usersObtainedSuccessfully:(state, users) => (state.users = users),
     usersObtainedFailed:(state, error) => (state.user = error),
-    UserLogedSuccessfully:(state, addUser) => (state.user = addUser),
+    UserLogedSuccessfully:(state, addUser) => (state.user = addUser, state.charginAuth = false),
     UserPhotoSuccessfully:(state, photo) => (state.user = photo),
     UserRelogedSuccessfully:(state, reAddUser) => (state.user = reAddUser),
     UserDeslogedSuccessfylly:(state) => (state.user = {}),
@@ -174,7 +180,8 @@ const mutations = {
     userToEditUpdateTelephoneNumber (state, telephoneNumber) {state.userToEdit.telephoneNumber = telephoneNumber},
     userToEditUpdateRole (state, role) {state.userToEdit.role = role},
     loadUserToEdit: (state, id) => state.userToEdit = state.users.filter(user => user._id === id)[0],
-    deleteItemInStore: (state, id) => state.users = state.users.filter((user) => user._id !== id)
+    deleteItemInStore: (state, id) => state.users = state.users.filter((user) => user._id !== id),
+    putLoading: (state) => (state.charginAuth = true),
 }
 
 export default {

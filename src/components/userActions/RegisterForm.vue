@@ -51,7 +51,10 @@
                     required 
                     @input="$v.password2.$touch()" 
                     @blur="$v.password2.$touch()"></v-text-field>
-                </v-col>
+                </v-col><!--
+                    <div v-if="charginAuth" class="mb-4">
+                        <Loading/>
+                </div>-->
                 <v-col cols="6" style="z-index: 999">
                         <v-btn block color="primary" elevation="2" @click="submit">Enviar</v-btn>
                 </v-col>
@@ -67,7 +70,7 @@
 import { mdiAccountArrowRight, mdiKeyVariant} from '@mdi/js';
 import { validationMixin } from 'vuelidate';
 import { required, maxLength, email} from 'vuelidate/lib/validators';
-import {mapActions} from 'vuex';
+import {mapActions, mapGetters} from 'vuex';
 export default {
   name: 'home',
   components: {
@@ -88,6 +91,7 @@ export default {
       password2: '',
   }),
   computed:{
+      ...mapGetters(["charginAuth"]),
       userNameErrors (){
           const errors = []
             if(!this.$v.userName.$dirty) return errors
