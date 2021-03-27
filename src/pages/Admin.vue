@@ -420,6 +420,7 @@
                     item-text="name"
                     item-value="id"
                     label="Doctor*"
+                    @change="putName()"
                     required
                   ></v-select>
                 </v-col>
@@ -500,7 +501,8 @@ export default {
       roomIdToEdit:'',
       especialityIdToEdit: '',
       doctor: '',
-      dateId: ''
+      dateId: '',
+      doctorName: ''
     }),
     components: {
         AdminUserEdit,
@@ -554,6 +556,9 @@ export default {
     methods: {
         ...mapActions(["getusersFromBD","deleteUser","getDatesFromBD", "getConsultingFromBD", 
         "getEspecialitiesFromBD", "getConsultingFromBDById", "updateRoom", "deleteRoom", "getEspecialityFromBDById", "updateEspeciality", "deleteEspeciality", "getUltimateSnackbarState", "getDatesForCodeRoom", "getDoctorsFromBD", "putDoctorId"]),
+        putName(){
+          this.doctorName = this.items2.filter(item => item.id == this.doctor)
+        },
         async putDoctor(){
           const data = {
             id: this.dateId,
@@ -565,6 +570,7 @@ export default {
           document.getElementById("cbtn").classList.replace("d-none", "d-block");
           await this.getDatesFromBD();
           await this.getEvents();
+          this.selectedEvent.doctor.userName= this.doctorName;
         },
         openDialog(id){
           this.dateId = id;

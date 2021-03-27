@@ -65,12 +65,7 @@
           </v-container>
           <small>*indicates required field</small>
           <div v-if="charginDate">
-            <v-progress-linear
-            color="deep-purple accent-4"
-            indeterminate
-            rounded
-            height="6"
-          ></v-progress-linear>
+            <Loading/>
           </div>
           <v-container v-if="dateCode.date">
             <p>DATOS CONSULTADOS</p>
@@ -140,12 +135,14 @@
 </template>
 
 <script>
+import Loading from '../Loading';
 import {mdiAccountDetails} from '@mdi/js';
 import {mapGetters,mapActions} from 'vuex';
 import Calendar from './Calendar';
   export default {
     components:{
-      Calendar
+      Calendar,
+      Loading
     },
     data: () => ({
       dialog5: false,

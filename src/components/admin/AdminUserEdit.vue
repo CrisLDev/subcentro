@@ -60,11 +60,12 @@
                 ></v-text-field>
               </v-col>
               <v-col cols="12">
-                <v-text-field
-                v-model="roleU"
+                <v-select
+                  v-model="roleU"
                   label="Rol*"
-                  required
-                ></v-text-field>
+                    :items="['admin', 'doctor','user']"
+                    required
+                  ></v-select>
               </v-col>
               <v-col sm="6" cols="12">
                 <v-text-field
