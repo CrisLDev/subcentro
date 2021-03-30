@@ -1,8 +1,11 @@
 <template>
     <v-container class="lighten-5 mb-16">
-        <v-row align="center" justify="center">
-            <v-col cols="12" class="mt-6 mb-16">
+        <v-row justify="center" class="mb-16">
+            <v-col cols="12" sm="8" class="mt-6">
                 <DateCalendar/>
+            </v-col>
+            <v-col cols="12" sm="3" class="mt-6" v-if="datesForDoctorLoged.length !== 0">
+                <TableDoctorTable/>
             </v-col>
         </v-row>
     </v-container>
@@ -10,16 +13,18 @@
 
 <script>
 import DateCalendar from '../components/dates/DateCalendar';
+import TableDoctorTable from '../components/dates/TableDoctorDates';
 import {mapGetters, mapActions} from 'vuex';
 export default {
     name: "Dates",
     components: {
-        DateCalendar
+        DateCalendar,
+        TableDoctorTable
     },
     data: () => ({
       reveal: false
     }),
-    computed: {...mapGetters(["datesInBd"])},
+    computed: {...mapGetters(["datesForDoctorLoged","datesInBd"])},
     methods: {
         ...mapActions(["getDatesFromBD"]),
     },
