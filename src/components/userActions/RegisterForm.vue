@@ -95,30 +95,30 @@ export default {
       userNameErrors (){
           const errors = []
             if(!this.$v.userName.$dirty) return errors
-            !this.$v.userName.maxLength && errors.push('Name must be at most 10 characters long')
-            !this.$v.userName.required && errors.push('Name is required.')
+            !this.$v.userName.maxLength && errors.push('El nombre no debe tener mas de 10 caracteres')
+            !this.$v.userName.required && errors.push('El nombre es requerido.')
             return errors
       },
       emailErrors (){
           const errors = []
             if(!this.$v.email.$dirty) return errors
-            !this.$v.email.maxLength && errors.push('Email must be at most 50 characters long')
-            !this.$v.email.required && errors.push('Email is required.')
-            !this.$v.email.email && errors.push('Must be valid e-mail')
+            !this.$v.email.maxLength && errors.push('El email no debe tener mas de 50 caracteres')
+            !this.$v.email.required && errors.push('El email es requerido.')
+            !this.$v.email.email && errors.push('Ingrese un email valido')
             return errors
       },
       passwordErrors (){
           const errors = []
             if(!this.$v.password.$dirty) return errors
-            !this.$v.password.maxLength && errors.push('Password must be at most 20 characters long')
-            !this.$v.password.required && errors.push('Password is required.')
+            !this.$v.password.maxLength && errors.push('La contrasena no debe tener mas de 20 caracteres')
+            !this.$v.password.required && errors.push('La contrasena es requerida.')
             return errors
       },
       password2Errors (){
           const errors = []
             if(!this.$v.password2.$dirty) return errors
-            !this.$v.password2.maxLength && errors.push('Confirmation password must be at most 20 characters long')
-            !this.$v.password2.required && errors.push('Confirmation password is required.')
+            !this.$v.password2.maxLength && errors.push('La contrasena de confirmacion no debe tener mas de 20 caracteres')
+            !this.$v.password2.required && errors.push('La contrasena es requerida.')
             return errors
       }
   },

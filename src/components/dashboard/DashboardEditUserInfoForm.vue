@@ -31,6 +31,10 @@
                 v-model="userName"
                   label="Nombre de usuario*"
                   required
+                  :counter="20"
+                  :error-messages="userNameErrors" 
+                  @input="$v.userName.$touch()" 
+                  @blur="$v.userName.$touch()"
                 ></v-text-field>
               </v-col>
               <v-col
@@ -42,6 +46,10 @@
                 v-model="fullName"
                   label="Nombre completo*"
                   required
+                  :counter="50"
+                  :error-messages="fullNameErrors" 
+                  @input="$v.fullName.$touch()" 
+                  @blur="$v.fullName.$touch()"
                 ></v-text-field>
               </v-col>
               <v-col cols="6">
@@ -49,6 +57,10 @@
                 v-model="email"
                   label="Email*"
                   required
+                  :counter="50"
+                    :error-messages="emailErrors" 
+                    @input="$v.email.$touch()" 
+                    @blur="$v.email.$touch()"
                 ></v-text-field>
               </v-col>
               <v-col cols="6">
@@ -56,6 +68,10 @@
                 v-model="telephoneNumber"
                   label="Numero telefonico*"
                   required
+                  :counter="20"
+                    :error-messages="telephoneNumberErrors" 
+                    @input="$v.telephoneNumber.$touch()" 
+                    @blur="$v.telephoneNumber.$touch()"
                 ></v-text-field>
               </v-col>
               <v-col sm="6" cols="12">
@@ -64,6 +80,10 @@
                   label="Contrasena*"
                   type="password"
                   required
+                  :counter="20"
+                    :error-messages="passwordErrors" 
+                    @input="$v.password.$touch()" 
+                    @blur="$v.password.$touch()"
                 ></v-text-field>
               </v-col>
               <v-col sm="6" cols="12">
@@ -72,6 +92,10 @@
                   label="Confirmar contrasena*"
                   type="password2"
                   required
+                    :counter="20"
+                    :error-messages="password2Errors" 
+                    @input="$v.password2.$touch()" 
+                    @blur="$v.password2.$touch()"
                 ></v-text-field>
               </v-col>
               <v-col
@@ -140,6 +164,8 @@
 <script>
 import { mdiCalendar } from '@mdi/js';
 import {mapActions} from 'vuex';
+import { validationMixin } from 'vuelidate';
+import { required, maxLength, email} from 'vuelidate/lib/validators';
   export default {
     data: () => ({
       mdiCalendar: mdiCalendar,
@@ -148,7 +174,57 @@ import {mapActions} from 'vuex';
       password: '',
       password2: '',
     }),
+    mixins: [validationMixin],
+  validations:{
+      userName: {required, maxLength: maxLength(10)},
+      fullName: {maxLength: maxLength(50)},
+      telephoneNumber: {maxLength: maxLength(10)},
+      password: {required, maxLength: maxLength(10)},
+      password2: {required, maxLength: maxLength(10)},
+      email: { required, email, maxLength: maxLength(50) },
+  },
     computed:{
+      userNameErrors (){
+          const errors = []
+            if(!this.$v.userName.$dirty) return errors
+            !this.$v.userName.maxLength && errors.push('El nombre no debe tener mas de 10 caracteres')
+            !this.$v.userName.required && errors.push('El nombre es requerido.')
+            return errors
+      },
+      fullNameErrors (){
+          const errors = []
+            if(!this.$v.fullName.$dirty) return errors
+            !this.$v.fullName.maxLength && errors.push('El nombre no debe tener mas de 50 caracteres')
+            return errors
+      },
+      telephoneNumberErrors (){
+          const errors = []
+            if(!this.$v.telephoneNumber.$dirty) return errors
+            !this.$v.telephoneNumber.maxLength && errors.push('El numero de telefono no debe tener mas de 10 numeros')
+            return errors
+      },
+      emailErrors (){
+          const errors = []
+            if(!this.$v.email.$dirty) return errors
+            !this.$v.email.maxLength && errors.push('El email no debe tener mas de 50 caracteres')
+            !this.$v.email.required && errors.push('El email es requerido.')
+            !this.$v.email.email && errors.push('Ingrese un email valido')
+            return errors
+      },
+      passwordErrors (){
+          const errors = []
+          if(!this.$v.password.$dirty) return errors
+            !this.$v.password.maxLength && errors.push('La contrasena no debe tener mas de 20 caracteres')
+            !this.$v.password.required && errors.push('La contrasena es requerida.')
+            return errors
+      },
+      password2Errors (){
+          const errors = []
+            if(!this.$v.password2.$dirty) return errors
+            !this.$v.password2.maxLength && errors.push('La contrasena de confirmacion no debe tener mas de 20 caracteres')
+            !this.$v.password2.required && errors.push('La contrasena es requerida.')
+            return errors
+      },
       userName: {
         get () {
           return this.$store.state.auth.user.userName
