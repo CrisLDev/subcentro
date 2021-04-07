@@ -502,7 +502,9 @@ export default {
       especialityIdToEdit: '',
       doctor: '',
       dateId: '',
-      doctorName: ''
+      doctorName: '',
+      dateForCheckColorInCard: '',
+      hourToCheck: ''
     }),
     components: {
         AdminUserEdit,
@@ -639,9 +641,25 @@ export default {
                     room:evento.consulting_room,
                     doctor:evento.doctor_id,
                     complete:evento.complete,
+                    date: evento.date,
+                    hour: evento.possible_hour,
                     id: evento._id,
-                    color: this.colors[this.rnd(0, this.colors.length - 1)]
-                })
+                    //color: this.colors[this.rnd(0, this.colors.length - 1)]
+                });
+                events.forEach((item) => {
+                  if(item.date == this.dateForCheckColorInCard && item.hour < this.hourToCheck){
+                  item.color = 'orange';
+                }else if(item.date < this.dateForCheckColorInCard && item.complete == 'si'){
+                  item.color = 'green';
+                }else if(item.date < this.dateForCheckColorInCard && item.complete == 'no'){
+                  item.color = 'red';
+                }else if(item.date > this.dateForCheckColorInCard){
+                  item.color = 'blue';
+                }else{
+                  item.color = 'red';
+                }
+                });
+                  
             }
           );
         this.events = events
@@ -696,6 +714,23 @@ export default {
         this.getConsultingFromBD();
         this.getEspecialitiesFromBD();
         this.getDoctorsFromBD();
+        let date = new Date()
+
+let day = date.getDate()
+let month = date.getMonth() + 1
+let year = date.getFullYear();
+let hour = date.getHours() + ':' + date.getMinutes();
+this.hourToCheck = hour;
+
+if(month < 10 && day < 10){
+  this.dateForCheckColorInCard = `${year}-0${month}-0${day}`;
+}else if(month < 10){
+  this.dateForCheckColorInCard = `${year}-0${month}-${day}`;
+}else if(day < 10){
+  this.dateForCheckColorInCard = `${year}-${month}-0${day}`;
+}else{
+  this.dateForCheckColorInCard = `${year}-${month}-${day}`;
+}
     },
     watch: {
         $route: {
