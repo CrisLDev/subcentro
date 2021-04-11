@@ -13,7 +13,7 @@
           v-on="on"
           block
         >
-          Crear Doctor
+          Crear Usuario o Doctor
         </v-btn>
       </template>
       <v-card>
@@ -23,6 +23,20 @@
         <v-card-text>
           <v-container>
             <v-row>
+              <v-col cols="12">
+                <v-radio-group class="mb-0 mt-0 pt-0 pb-0" v-model="radioGroup" @change="showOrNotInput">
+                  <v-radio
+                    label="Crear usuario"
+                    name="radioGroup"
+                    :value="1"
+                  ></v-radio>
+                  <v-radio
+                    label="Crear doctor"
+                    name="radioGroup"
+                    :value="2"
+                  ></v-radio>
+                </v-radio-group>
+              </v-col>
               <v-col cols="12" sm="6" md="6">
                 <v-text-field
                 v-model="userName"
@@ -71,7 +85,8 @@ import {mapActions} from 'vuex';
       mdiCalendar: mdiCalendar,
       dialog: false,
       userName: '',
-      email: ''
+      email: '',
+      radioGroup: 1,
     }),
     methods: {
       ...mapActions(["registerUser"]),
@@ -79,8 +94,13 @@ import {mapActions} from 'vuex';
         const dataToSend = {
             userName: this.userName,
             email: this.email,
-            password: 'resub123',
-            role: 'doctor'
+            password: 'resub123'
+        }
+        if(this.radioGroup == 1){
+          dataToSend.role = 'user'
+        }
+        if(this.radioGroup == 2){
+          dataToSend.role = 'doctor'
         }
         this.registerUser(dataToSend);
       },

@@ -34,7 +34,7 @@
           </v-col>
           <v-col cols="12">
             <v-alert border="bottom" colored-border color="primary" elevation="2">
-              <v-icon medium >{{mdiInformation}}</v-icon> Crear doctor
+              <v-icon medium >{{mdiInformation}}</v-icon> Crear usuario o doctor
             </v-alert>
           </v-col>
           <v-col>
