@@ -162,8 +162,8 @@
               </v-chip>
             </v-container>
           </v-col>
-          <v-col cols="12 mt-6 mb-16">
-                <v-btn class="d-block" block id="cbtn" @click="showCalendar" style="z-index: 50">
+          <v-col cols="12">
+                <v-btn class="d-block" block id="cbtn" @click="showCalendar" style="z-index: 3">
                     Ver Calendario
                 </v-btn>
                 <div id="cclndr" class="d-none">
@@ -280,6 +280,17 @@
         </v-menu>
                     </v-sheet>
                 </div>
+          </v-col>
+          <v-col cols="12">
+            <v-alert border="bottom" colored-border color="primary" elevation="2">
+              <v-icon medium >{{mdiInformation}}</v-icon> Horario de doctores
+            </v-alert>
+          </v-col>
+          <v-col cols="12" class="mb-16">
+            <v-container>
+                <AdminCreateScheduleDoctor/>
+            </v-container>
+                <AdminSchedule/>
           </v-col>
         </v-row>
         <div class="text-center">
@@ -457,6 +468,8 @@ import AdminUserEdit from '../components/admin/AdminUserEdit';
 import AdminCreateConsultingForm from '../components/admin/AdminCreateConsultingForm';
 import AdminCreateEspecialityForm from '../components/admin/AdminCreateEspecialityForm';
 import AdminCreateDoctorForm from '../components/admin/AdminCreateDoctorForm';
+import AdminCreateScheduleDoctor from '../components/admin/AdminCreateScheduleDoctor';
+import AdminSchedule from '../components/admin/AdminSchedule';
 import { mdiBorderColor } from '@mdi/js';
 import { mdiDotsVertical } from '@mdi/js';
 import { mdiInformation } from '@mdi/js';
@@ -510,7 +523,9 @@ export default {
         AdminUserEdit,
         AdminCreateConsultingForm,
         AdminCreateEspecialityForm,
-        AdminCreateDoctorForm
+        AdminCreateDoctorForm,
+        AdminCreateScheduleDoctor,
+        AdminSchedule
     },
     computed: {...mapGetters(["usersInBd", "consulting_roomsInBd", "especialititesInBd", "doctorsInBd"]),
     usersRole(){
@@ -557,7 +572,7 @@ export default {
     },
     methods: {
         ...mapActions(["getusersFromBD","deleteUser","getDatesFromBD", "getConsultingFromBD", 
-        "getEspecialitiesFromBD", "getConsultingFromBDById", "updateRoom", "deleteRoom", "getEspecialityFromBDById", "updateEspeciality", "deleteEspeciality", "getUltimateSnackbarState", "getDatesForCodeRoom", "getDoctorsFromBD", "putDoctorId"]),
+        "getEspecialitiesFromBD", "getConsultingFromBDById", "updateRoom", "deleteRoom", "getEspecialityFromBDById", "updateEspeciality", "deleteEspeciality", "getUltimateSnackbarState", "getDatesForCodeRoom", "getDoctorsFromBD", "putDoctorId", "getSchedulesFromDb"]),
         putName(){
           this.doctorName = this.items2.filter(item => item.id == this.doctor)
         },
@@ -647,11 +662,11 @@ export default {
                     //color: this.colors[this.rnd(0, this.colors.length - 1)]
                 });
                 events.forEach((item) => {
-                  if(item.date == this.dateForCheckColorInCard && item.hour < this.hourToCheck){
+                  if(item.date == this.dateForCheckColorInCard && item.hour < this.hourToCheck && item.complete == 'no'){
                   item.color = 'orange';
-                }else if(item.date < this.dateForCheckColorInCard && item.complete == 'si'){
+                }else if(item.date <= this.dateForCheckColorInCard && item.complete == 'si'){
                   item.color = 'green';
-                }else if(item.date < this.dateForCheckColorInCard && item.complete == 'no'){
+                }else if(item.date <= this.dateForCheckColorInCard && item.complete == 'no'){
                   item.color = 'red';
                 }else if(item.date > this.dateForCheckColorInCard){
                   item.color = 'blue';
@@ -714,6 +729,7 @@ export default {
         this.getConsultingFromBD();
         this.getEspecialitiesFromBD();
         this.getDoctorsFromBD();
+        this.getSchedulesFromDb();
         let date = new Date()
 
 let day = date.getDate()
@@ -752,7 +768,7 @@ if(month < 10 && day < 10){
         const items2 = []
         Object.values(this.doctorsInBd).map((doctor) => 
             {
-                items2.push({name: doctor.userName, id: doctor._id})
+                items2.push({name: !doctor.fullName ? doctor.userName + ' -  N/A' : doctor.userName + ' - ' + doctor.fullName, id: doctor._id})
             }
           );
         this.items2 = items2

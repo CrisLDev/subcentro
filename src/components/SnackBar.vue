@@ -13,7 +13,7 @@
                   v-bind="attrs"
                   @click="snackbarUpdated.snackbar = false"
               >
-                  Close
+                  Cerrar
               </v-btn>
           </template>
       </v-snackbar>

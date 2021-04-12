@@ -68,7 +68,7 @@
                 v-model="telephoneNumber"
                   label="Numero telefonico*"
                   required
-                  :counter="20"
+                  :counter="10"
                     :error-messages="telephoneNumberErrors" 
                     @input="$v.telephoneNumber.$touch()" 
                     @blur="$v.telephoneNumber.$touch()"
@@ -90,7 +90,7 @@
                 <v-text-field
                 v-model="password2"
                   label="Confirmar contrasena*"
-                  type="password2"
+                  type="password"
                   required
                     :counter="20"
                     :error-messages="password2Errors" 
