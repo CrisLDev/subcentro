@@ -1,9 +1,9 @@
 <template>
-<div>
-  <v-btn class="d-block" block id="cbtn" @click="showCalendar" style="z-index: 5">
+    <v-col cols="12">
+                <v-btn class="d-block" block id="cbtns" @click="showSchedule" style="z-index: 3">
                     Ver Calendario
                 </v-btn>
-    <div id="cclndr" class="d-none">
+                <div id="cclndrs" class="d-none">
                     <v-sheet
                     tile
                     height="54"
@@ -62,17 +62,19 @@
                         :event-overlap-mode="mode"
                         :event-overlap-threshold="30"
                         :event-color="getEventColor"
-                        @click:event="showEvent"
+                        @click:event="deleteEvent"
                         @click:more="viewDay"
                         @click:date="viewDay"
                         @change="getEvents"
                     ></v-calendar>
+                    <!--
                     <v-menu
           v-model="selectedOpen"
           :close-on-content-click="false"
           :activator="selectedElement"
           offset-x
         >
+        
           <v-card
             color="grey lighten-4"
             min-width="350px"
@@ -82,14 +84,26 @@
               :color="selectedEvent.color"
               dark
             >
-              <v-toolbar-title v-html="`Paciente: `+selectedEvent.name"></v-toolbar-title>
+              <v-btn icon>
+                <v-icon>{{mdiBorderColor}}</v-icon>
+              </v-btn>
+              <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
+              <v-spacer></v-spacer>
+              <v-btn icon>
+                <v-icon>{{mdiHeart}}</v-icon>
+              </v-btn>
+              <v-btn icon>
+                <v-icon>{{mdiDotsVertical}}</v-icon>
+              </v-btn>
+              
+              <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
             </v-toolbar>
             <v-card-text>
               <div v-html="`Fecha: `+selectedEvent.start"></div>
               <div v-html="`Consultorio: `+selectedEvent.room"></div>
               <div v-if="selectedEvent.doctor" v-html="`Doctor: `+selectedEvent.doctor.userName"></div>
-              <div v-if="!selectedEvent.doctor" v-html="`No se ha seleccionado un doctor.`"></div>
-              <div v-if="selectedEvent.complete == 'no' && selectedEvent.date <= dateForCheckColorInCard && selectedEvent.hour < hourToCheck" v-html="`Click para marcar como completada.`" @click="completeDate(selectedEvent.id)" style="cursor: pointer"></div>
+              <div v-if="!selectedEvent.doctor" v-html="`No se ha seleccionado un doctor.`" @click="openDialog(selectedEvent.id)" style="cursor: pointer"></div>
+              <div v-if="selectedEvent.complete == 'no'" v-html="`Cita en progreso.`" @click="completeDate(selectedEvent.id)" style="cursor: pointer"></div>
               <div v-if="selectedEvent.complete == 'si'" v-html="`Cita terminada.`"></div>
             </v-card-text>
             <v-card-actions>
@@ -102,14 +116,15 @@
               </v-btn>
             </v-card-actions>
           </v-card>
-        </v-menu>
+
+        </v-menu>-->
                     </v-sheet>
                 </div>
-</div>
+          </v-col>
 </template>
 
 <script>
-import {mapGetters, mapActions} from 'vuex';
+import {mapActions, mapGetters} from 'vuex';
 import { mdiBorderColor } from '@mdi/js';
 import { mdiDotsVertical } from '@mdi/js';
 import { mdiInformation } from '@mdi/js';
@@ -119,8 +134,8 @@ import { mdiChevronLeft } from '@mdi/js';
 import { mdiChevronRight } from '@mdi/js';
 export default {
     data: () => ({
-      reveal: false,
-       type: 'month',
+        reveal: false,
+       type: 'day',
       types: ['month', 'week', 'day', '4day'],
       mode: 'stack',
       modes: ['stack', 'column'],
@@ -145,73 +160,66 @@ export default {
       mdiNewBox: mdiNewBox,
       mdiChevronLeft: mdiChevronLeft,
       mdiChevronRight: mdiChevronRight,
-      dateForCheckColorInCard: '',
-      hourToCheck: ''
     }),
-    computed: {...mapGetters(["datesForDoctorLoged", "userLoged"])},
-    watch: {
-      userLoged(){
-        this.consultDateByDoctorId(this.userLoged._id)
-      }
-    },
+    computed: {...mapGetters(["schedulesInBd"])},
     methods: {
-      ...mapActions(["consultDateByDoctorId", "updateCompleteDate"]),
-      getEvents () {
+      ...mapActions(["deleteScheduleById"]), 
+        async showSchedule(){
+        if(document.getElementById("cbtns").classList.contains("d-block")){
+            document.getElementById("cbtns").classList.replace("d-block", "d-none");
+            document.getElementById("cclndrs").classList.replace("d-none", "d-block");
+          }
+          await this.getEvents();
+          if(this.events.length <= 0){
+            const snackbarData = {
+                timeout: 2000,
+                text: 'No hay citas registradas.',
+                snackbar: true
+            }
+            return this.getUltimateSnackbarState(snackbarData);
+          }
+      },
+        getEvents () {
         const events = []
 
         //const min = new Date(`${start.date}T00:00:00`)
         //const max = new Date(`${end.date}T23:59:59`)
         //const days = (max.getTime() - min.getTime()) / 86400000
         //const eventCount = this.rnd(days, days + 20)
-        const dates = this.$store.getters.datesForDoctorLoged;
+        const dates = this.$store.getters.schedulesInBd;
         //const eventCount = dates;
-        Object.values(dates).map((evento) => 
+
+        Object.values(dates).map((horario) => 
             {
-                const timestamp = evento.date + ' ' + evento.possible_hour;
+                const timestampStart = horario.dateStart + ' ' + horario.hourStart;
+                const timestampEnd = horario.dateEnd + ' ' + horario.hourEnd;
                 events.push({
-                    name: evento.patient_id.userName,
-                    allInfo: evento,
-                    start: timestamp,
-                    id: evento._id,
-                    end:timestamp,
-                    date: evento.date,
-                    hour: evento.possible_hour,
-                    doctor:evento.doctor_id,
-                    complete:evento.complete,
-                    room:evento.consulting_room,
-                    //color: this.colors[this.rnd(0, this.colors.length - 1)]
+                    name: horario.doctor_id.userName,
+                    allInfo: horario,
+                    start: timestampStart,
+                    end:timestampEnd,
+                    doctor:horario.doctor_id,
+                    id: horario._id,
+                    color: this.colors[this.rnd(0, this.colors.length - 1)]
                 });
+                /*
                 events.forEach((item) => {
-                  if(item.date == this.dateForCheckColorInCard && item.hour < this.hourToCheck&& item.complete == 'no'){
+                  if(item.date == this.dateForCheckColorInCard && item.hour < this.hourToCheck){
                   item.color = 'orange';
-                }else if(item.date <= this.dateForCheckColorInCard && item.complete == 'si'){
+                }else if(item.date < this.dateForCheckColorInCard && item.complete == 'si'){
                   item.color = 'green';
-                }else if(item.date <= this.dateForCheckColorInCard && item.complete == 'no'){
+                }else if(item.date < this.dateForCheckColorInCard && item.complete == 'no'){
                   item.color = 'red';
                 }else if(item.date > this.dateForCheckColorInCard){
                   item.color = 'blue';
                 }else{
                   item.color = 'red';
                 }
-                });
+                });*/
+                  
             }
           );
         this.events = events
-      },
-      async showCalendar(){
-        await this.consultDateByDoctorId(this.userLoged._id);
-        await this.getEvents();
-        if(document.getElementById("cbtn").classList.contains("d-block")){
-            document.getElementById("cbtn").classList.replace("d-block", "d-none");
-            document.getElementById("cclndr").classList.replace("d-none", "d-block");
-          }
-      },
-      async completeDate(id){
-        await this.updateCompleteDate(id);
-          this.selectedOpen = false;
-          this.selectedEvent.complete = 'si';
-        await this.consultDateByDoctorId(this.userLoged._id);
-        await this.getEvents();
       },
       getEventColor (event) {
         return event.color
@@ -223,47 +231,13 @@ export default {
         this.focus = date
         this.type = 'day'
       },
-      showEvent ({ nativeEvent, event }) {
-        const open = () => {
-          this.selectedEvent = event
-          this.selectedElement = nativeEvent.target
-          setTimeout(() => {
-            this.selectedOpen = true
-          }, 10)
-        }
-
-        if (this.selectedOpen) {
-          this.selectedOpen = false
-          setTimeout(open, 10)
-        } else {
-          open()
-        }
-
-        nativeEvent.stopPropagation()
+      deleteEvent ({ event }) {
+        if(document.getElementById("cbtns").classList.contains("d-none")){
+            document.getElementById("cbtns").classList.replace("d-none", "d-block");
+            document.getElementById("cclndrs").classList.replace("d-block", "d-none");
+          }
+        this.deleteScheduleById(event.id);
       }
-    },
-    mounted(){
-      this.consultDateByDoctorId(this.userLoged._id);
-      this.getEvents()
-    },
-    created() {
-      let date = new Date()
-
-let day = date.getDate()
-let month = date.getMonth() + 1
-let year = date.getFullYear();
-let hour = date.getHours() + ':' + date.getMinutes();
-this.hourToCheck = hour;
-
-if(month < 10 && day < 10){
-  this.dateForCheckColorInCard = `${year}-0${month}-0${day}`;
-}else if(month < 10){
-  this.dateForCheckColorInCard = `${year}-0${month}-${day}`;
-}else if(day < 10){
-  this.dateForCheckColorInCard = `${year}-${month}-0${day}`;
-}else{
-  this.dateForCheckColorInCard = `${year}-${month}-${day}`;
-}
     }
 }
 </script>

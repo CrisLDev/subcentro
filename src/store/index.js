@@ -5,6 +5,7 @@ import snackbar from './modules/snackbar';
 import date from './modules/date';
 import consulting from './modules/consulting';
 import especialities from './modules/especialities';
+import schedules from './modules/schedules';
 
 Vue.use(Vuex);
 
@@ -14,6 +15,7 @@ export default new Vuex.Store({
         snackbar,
         date,
         consulting,
-        especialities
+        especialities,
+        schedules
     }
 })

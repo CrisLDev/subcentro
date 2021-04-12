@@ -25,7 +25,7 @@
           <v-list-item-title><router-link to="/admin" class="text-decoration-none" style="color: black">Administracion</router-link></v-list-item-title>
         </v-list-item>
         <v-list-item style="cursor: pointer" v-if="userLoged.role == 'doctor'">
-          <v-list-item-title><router-link to="/citas" class="text-decoration-none" style="color: black">Citas</router-link></v-list-item-title>
+          <v-list-item-title><router-link to="/citas" class="text-decoration-none" style="color: black">Citas y Horarios</router-link></v-list-item-title>
           </v-list-item>
            <v-list-item style="cursor: pointer" v-if="userLoged.role == 'doctor' || userLoged.role == 'admin'">
           <v-list-item-title><router-link to="/dashboard" class="text-decoration-none" style="color: black">Perfil</router-link></v-list-item-title>
