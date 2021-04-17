@@ -54,6 +54,11 @@ export default {
     if(!localStorage.getItem('token')){
       this.logoutUser()
     }
+},
+mounted(){
+  this.reloginUser();
+    if(!localStorage.getItem('token')){
+      this.logoutUser()}
 }
 }
 </script>

@@ -1,6 +1,6 @@
 <template>
 <div>
-  <v-btn class="d-block" block id="cbtn" @click="showCalendar" style="z-index: 5">
+  <v-btn class="d-block" block id="cbtn" @click="showCalendar" style="z-index: 3">
                     Ver Calendario
                 </v-btn>
     <div id="cclndr" class="d-none">
