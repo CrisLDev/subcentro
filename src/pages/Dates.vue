@@ -1,10 +1,10 @@
 <template>
     <v-container class="lighten-5 mb-16">
         <v-row justify="center" class="mb-16">
-            <v-col cols="12" sm="8" class="mt-6">
+            <v-col cols="12" md="8" sm="12" class="mt-6">
                 <DateCalendar/>
             </v-col>
-            <v-col cols="12" sm="3" class="mt-6" v-if="datesForDoctorLoged.length !== 0">
+            <v-col cols="12" md="3" sm="12" class="mt-6" v-if="datesForDoctorLoged.length !== 0">
                 <TableDoctorTable/>
             </v-col>
             <v-col cols="12" class="mt-6">
@@ -12,7 +12,6 @@
             </v-col>
             <div class="scroll">
                     <ScheduleDoctor/>
-                    <v-btn color="primary" elevation="2" @click="submit">Enviar</v-btn><v-btn color="primary" elevation="2" @click="submit">Enviar</v-btn><v-btn color="primary" elevation="2" @click="submit">Enviar</v-btn><v-btn color="primary" elevation="2" @click="submit">Enviar</v-btn><v-btn color="primary" elevation="2" @click="submit">Enviar</v-btn><v-btn color="primary" elevation="2" @click="submit">Enviar</v-btn><v-btn color="primary" elevation="2" @click="submit">Enviar</v-btn><v-btn color="primary" elevation="2" @click="submit">Enviar</v-btn><v-btn color="primary" elevation="2" @click="submit">Enviar</v-btn><v-btn color="primary" elevation="2" @click="submit">Enviar</v-btn><v-btn color="primary" elevation="2" @click="submit">Enviar</v-btn><v-btn color="primary" elevation="2" @click="submit">Enviar</v-btn><v-btn color="primary" elevation="2" @click="submit">Enviar</v-btn><v-btn color="primary" elevation="2" @click="submit">Enviar</v-btn><v-btn color="primary" elevation="2" @click="submit">Enviar</v-btn><v-btn color="primary" elevation="2" @click="submit">Enviar</v-btn><v-btn color="primary" elevation="2" @click="submit">Enviar</v-btn><v-btn color="primary" elevation="2" @click="submit">Enviar</v-btn><v-btn color="primary" elevation="2" @click="submit">Enviar</v-btn><v-btn color="primary" elevation="2" @click="submit">Enviar</v-btn><v-btn color="primary" elevation="2" @click="submit">Enviar</v-btn><v-btn color="primary" elevation="2" @click="submit">Enviar</v-btn><v-btn color="primary" elevation="2" @click="submit">Enviar</v-btn><v-btn color="primary" elevation="2" @click="submit">Enviar</v-btn><v-btn color="primary" elevation="2" @click="submit">Enviar</v-btn><v-btn color="primary" elevation="2" @click="submit">Enviar</v-btn><v-btn color="primary" elevation="2" @click="submit">Enviar</v-btn><v-btn color="primary" elevation="2" @click="submit">Enviar</v-btn><v-btn color="primary" elevation="2" @click="submit">Enviar</v-btn>
             </div>
         </v-row>
     </v-container>
@@ -56,7 +55,6 @@ export default {
 
 <style>
 div.scroll{
-    white-space: nowrap;
-    overflow: auto;
+    width: 100%;
 }
 </style>

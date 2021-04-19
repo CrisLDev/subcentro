@@ -748,6 +748,13 @@ if(month < 10 && day < 10){
   this.dateForCheckColorInCard = `${year}-${month}-${day}`;
 }
     },
+    mounted() {
+        this.getusersFromBD();
+        this.getDatesFromBD();
+        this.getConsultingFromBD();
+        this.getEspecialitiesFromBD();
+        this.getDoctorsFromBD();
+        this.getSchedulesFromDb();},
     watch: {
         $route: {
             immediate: true,

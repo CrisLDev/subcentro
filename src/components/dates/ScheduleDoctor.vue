@@ -1,7 +1,7 @@
 <template>
     <Schedule
-                      :time-ground="['09:00', '21:00']"
-      :week-ground="['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']"
+                      :time-ground="['09:00', '18:00']"
+      :week-ground="['LUN', 'MAR', 'MIE', 'JUE', 'VIE']"
       :color="[
         '#2B2E4A',
         '#521262',
@@ -72,18 +72,6 @@
             dateEnd: '15:50',
             title: 'Metting',
           }
-        ],
-        [
-          {
-            dateStart: '14:30',
-            dateEnd: '15:30',
-            title: 'Metting',
-          },
-          {
-            dateStart: '17:30',
-            dateEnd: '19:50',
-            title: 'Metting',
-          }
         ]
       ]">
 
@@ -91,11 +79,50 @@
 </template>
 
 <style>
-.schedule{
-    width: 100%!important;
-}
 ul{
     list-style-type: none!important;
     padding-left: 0!important;
+}
+.task-list-item{
+  border-radius: 5px!important;
+  width: 16%!important;
+}
+.task-list-item h3 {
+    display: none!important;
+}
+.task-list-item p {
+    margin: 0.1rem 0.4rem!important;
+    font-size: 12px!important;
+}
+.task-list p {
+  font-size: 12px!important;
+    padding: 1rem 0.1rem!important;
+}
+.task-list {
+    width: 16%!important;
+}
+.time-ground ul li p {
+  width: 80%!important;
+}
+
+@media (max-width: 1400px) {
+  .schedule{
+    margin: 0 250px!important;
+  }
+}
+@media (max-width: 1200px) {
+  .schedule{
+    margin: 0 200px!important;
+  }
+}
+@media (max-width: 900px) {
+  .schedule{
+    margin: 0 150px!important;
+  }
+}
+@media (max-width: 600px) {
+  .schedule{
+    margin: 0 100px!important;
+  }
 }
 </style>
