@@ -711,6 +711,10 @@ module.exports = function normalizeComponent (
 			//obj.week = week;
 			//this.showModalDetail = obj;
 			//this.showModal = !this.showModal;
+      if(document.getElementById("cbtns").classList.contains("d-none")){
+        document.getElementById("cbtns").classList.replace("d-none", "d-block");
+        document.getElementById("cclndrs").classList.replace("d-block", "d-none");
+      }
       this.deleteScheduleById(obj.id);
 		},
 		initTimeGroud: function initTimeGroud(value) {

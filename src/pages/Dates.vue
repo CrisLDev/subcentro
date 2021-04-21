@@ -7,11 +7,8 @@
             <v-col cols="12" md="3" sm="12" class="mt-6" v-if="datesForDoctorLoged.length !== 0">
                 <TableDoctorTable/>
             </v-col>
-            <v-col cols="12" class="mt-6">
-                <DateSchedulesDoctor/>
-            </v-col>
             <div class="scroll">
-                    <ScheduleDoctor/>
+                    <AdminSchedule/>
             </div>
         </v-row>
     </v-container>
@@ -19,28 +16,29 @@
 
 <script>
 import DateCalendar from '../components/dates/DateCalendar';
-import ScheduleDoctor from '../components/dates/ScheduleDoctor';
-import DateSchedulesDoctor from '../components/dates/DateSchedulesDoctor';
 import TableDoctorTable from '../components/dates/TableDoctorDates';
+import AdminSchedule from '../components/admin/AdminSchedule';
 import {mapGetters, mapActions} from 'vuex';
 export default {
     name: "Dates",
     components: {
         DateCalendar,
         TableDoctorTable,
-        DateSchedulesDoctor,
-        ScheduleDoctor
+        AdminSchedule
     },
     data: () => ({
       reveal: false
     }),
     computed: {...mapGetters(["datesForDoctorLoged","datesInBd"])},
     methods: {
-        ...mapActions(["getDatesFromBD", "getSchedulesFromDb"]),
+        ...mapActions(["getDatesFromBD", "getSchedulesFromDb", "getSchedulesFromDbByUserId"]),
     },
     created() {
         this.getDatesFromBD();
         this.getSchedulesFromDb();
+    },
+    mounted(){
+        this.getSchedulesFromDbByUserId(this.$store.state.auth.user._id);
     },
     watch: {
         $route: {

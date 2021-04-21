@@ -48,9 +48,22 @@ const actions = {
             return commit('datesObtainedFailed', err.response.data.msg)
         }
     },
-    async getDatesForCodeRoom({commit}, code){
+    async getDatesForCodeRoom({dispatch, commit}, code){
+        const snackbarData = {
+            timeout: 2000,
+            text: '',
+            snackbar: true
+        }
         try {
+            await commit('putLoadingDate');
             const response = await getDatesForCodeRoom(code);
+            if(response.data.length > 0){
+                snackbarData.text = 'Citas consultados correctamente';
+                dispatch('getUltimateSnackbarState', snackbarData);
+            }else{
+                snackbarData.text = 'No hay citas para mostrar';
+                dispatch('getUltimateSnackbarState', snackbarData);
+            }
             return commit('datesForCodeRoomObtainedSuccessfully', response.data)
         } catch (err) {
             return commit('datesObtainedFailed', err.response.data.msg)
@@ -69,13 +82,14 @@ const actions = {
     async clearDate({commit}) {
         return await commit('dateInputIsEmpty')
     },
-    async createNewDate({dispatch}, dataToSend) {
+    async createNewDate({commit, dispatch}, dataToSend) {
         const snackbarData = {
             timeout: 2000,
             text: '',
             snackbar: true
         }
         try {
+            await commit('putLoadingDate');
             const response = await createDate(dataToSend)
             snackbarData.text = 'Cita agendada correctamente, por favor guarda este codigo, '+response.data.code;
             dispatch('getUltimateSnackbarState', snackbarData);
@@ -84,11 +98,12 @@ const actions = {
                 especiality: response.data.especiality,
                 code: response.data.consulting_room
             }
+            commit('dateCreatedSuccessfyully')
             return dispatch('consultDate', dataForReSend)
             //return dispatch('clearEspecialities')
-            //return commit('dateCreatedSuccessfyully', response.data)
         } catch (err) {
             if(err)snackbarData.text = err.response.data.msg;
+            await commit('putUnloadingDate');
             return dispatch('getUltimateSnackbarState', snackbarData)
         }
     },
@@ -99,11 +114,12 @@ const actions = {
             snackbar: true
         }
         try {
-            await commit('putLoading');
+            await commit('putLoadingDate');
             const response = await consultDateByCodeService(code)
             return await commit('dateConsultedByCodeSuccessfyully', response.data);
         } catch (err) {
             if(err)snackbarData.text = err.response.data.msg;
+            await commit('putUnloadingDate');
             return dispatch('getUltimateSnackbarState', snackbarData)
         }
     },
@@ -120,7 +136,7 @@ const actions = {
             snackbar: true
         }
         try {
-            await commit('putLoading');
+            await commit('putLoadingDate');
             const response = await consultDateByUserLogedId(userId)
             return await commit('datesObtainedForUserLogedSuccessfully', response.data);
         } catch (err) {
@@ -191,7 +207,7 @@ const mutations = {
     },
     datesObtainedForUserLogedSuccessfully:(state, dates) => (state.datesForUserLoged = dates, state.charginDate = false),
     datesObtainedForDoctorLogedSuccessfully:(state, dates) => (state.datesForDoctorLoged = dates),
-    datesForCodeRoomObtainedSuccessfully:(state, dates) => (state.dates = dates),
+    datesForCodeRoomObtainedSuccessfully:(state, dates) => (state.dates = dates, state.charginDate = false),
     dateConsultedSuccessfyully:(state, dayConsulted) => (state.dayConsulted = {
         disabledh: false,
         disablede: false,
@@ -244,11 +260,12 @@ const mutations = {
         tresTarde: 0,
         consultorios: 0
     }),
-    //dateCreatedSuccessfyully:(state, newDate) => state.dates.unshift(newDate),
+    dateCreatedSuccessfyully:(state) => (state.charginDate = false),
     datesObtainedFailed:(state, error) => (state.user = error),
     clearDateConsultedByCodeSuccessfyully (state) {state.dateByCode = {}},
     dateConsultedByCodeSuccessfyully: (state, date) => (state.dateByCode = date, state.charginDate = false),
-    putLoading: (state) => (state.charginDate = true),
+    putLoadingDate: (state) => (state.charginDate = true),
+    putUnloadingDate: (state) => (state.charginDate = false),
 }
 
 export default {

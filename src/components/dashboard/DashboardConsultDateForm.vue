@@ -63,7 +63,7 @@
               </v-col>
             </v-row>
           </v-container>
-          <small>*indicates required field</small>
+          <small>*Campos indicados son requeridos</small>
           <div v-if="charginDate">
             <Loading/>
           </div>

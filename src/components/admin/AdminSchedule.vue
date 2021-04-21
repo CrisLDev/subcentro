@@ -36,24 +36,25 @@ export default {
       miercoles: [],
       jueves: [],
       viernes: [],
+      scheduless: [],
       color: ["#2B2E4A", "#521262", "#903749", "#53354A", "#40514E", "#537780"]
     }),
     computed: {...mapGetters(["schedulesInBd"])},
     methods: {
-      ...mapActions(["deleteScheduleById"]), 
+      ...mapActions(["deleteScheduleById", "getUltimateSnackbarState"]), 
         async showSchedule(){
           await this.getEvents();
-        if(document.getElementById("cbtns").classList.contains("d-block")){
-            document.getElementById("cbtns").classList.replace("d-block", "d-none");
-            document.getElementById("cclndrs").classList.replace("d-none", "d-block");
-          }
-          if(this.lunes.length <= 0 && this.martes.length <= 0 && this.miercoles.length <= 0 && this.jueves.length <= 0 && this.viernes.length <= 0){
+          if(this.scheduless.length <= 0){
             const snackbarData = {
                 timeout: 2000,
-                text: 'No hay citas registradas.',
+                text: 'No hay horarios registradas.',
                 snackbar: true
             }
             return this.getUltimateSnackbarState(snackbarData);
+          }
+        if(document.getElementById("cbtns").classList.contains("d-block")){
+            document.getElementById("cbtns").classList.replace("d-block", "d-none");
+            document.getElementById("cclndrs").classList.replace("d-none", "d-block");
           }
       },
       getEvents () {
@@ -72,11 +73,12 @@ export default {
                 })
             }
           );
-        this.lunes  = events.filter(schedule => schedule.detail === "01");
-        this.martes  = events.filter(schedule => schedule.detail === "02");
-        this.miercoles  = events.filter(schedule => schedule.detail === "03");
-        this.jueves  = events.filter(schedule => schedule.detail === "04");
-        this.viernes  = events.filter(schedule => schedule.detail === "05");
+          this.scheduless = events;
+        this.lunes  = this.scheduless.filter(schedule => schedule.detail === "01");
+        this.martes  = this.scheduless.filter(schedule => schedule.detail === "02");
+        this.miercoles  = this.scheduless.filter(schedule => schedule.detail === "03");
+        this.jueves  = this.scheduless.filter(schedule => schedule.detail === "04");
+        this.viernes  = this.scheduless.filter(schedule => schedule.detail === "05");
       },
       initTimeGroud: function initTimeGroud(value) {
 			if (value && value.length == 2) {

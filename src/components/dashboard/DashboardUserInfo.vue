@@ -54,6 +54,9 @@
             </v-row>
           </v-container>
           <small>* Indica campos requeridos. </small>
+          <div v-if="charginAuth" class="mb-4">
+                <Loading/>
+            </div>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -81,16 +84,19 @@
 <script>
 import { mdiCameraOutline } from '@mdi/js';
 import DashboardEditUserInfoForm from '../dashboard/DashboardEditUserInfoForm';
-import { mapActions} from 'vuex';
+import { mapActions,mapGetters} from 'vuex';
+import Loading from '../Loading';
   export default {
     components: {
-      DashboardEditUserInfoForm
+      DashboardEditUserInfoForm,
+      Loading
     },
     data: () => ({
       mdiCameraOutline: mdiCameraOutline,
       dialog: false,
       photo: ''
     }),
+    computed:{...mapGetters(["charginAuth"])},
     methods: {
       ...mapActions(["uploadPhoto"]),
       async savePhoto(){

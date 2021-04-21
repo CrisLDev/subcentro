@@ -4,7 +4,8 @@ const state = {
     consulting_rooms: {},
     newRoom: {},
     roomToEdit: {},
-    roomsByEspeciality: {}
+    roomsByEspeciality: {},
+    charginConsulting: false
 }
 
 const getters = {
@@ -16,6 +17,9 @@ const getters = {
     },
     roomsByEspeciality: (state) => {
         return state.roomsByEspeciality
+    },
+    charginConsulting: (state) => {
+        return state.charginConsulting
     },
 }
 
@@ -43,12 +47,15 @@ const actions = {
             snackbar: true
         }
         try {
+            commit('putLoadingConsulting')
             const response = await updateRoomById(dataToSend.id ,dataToSend)
             snackbarData.text = 'Consultorio actualizado correctamente';
+            console.log(response.data)
             commit('ConsultingUpdatedSuccessfully', response.data);
             return dispatch('getUltimateSnackbarState', snackbarData)
         } catch (err) {
             if(err)snackbarData.text = err.response.data.msg;
+            commit('putUnloadingConsulting')
             return dispatch('getUltimateSnackbarState', snackbarData)
         }
     },
@@ -74,12 +81,14 @@ const actions = {
             snackbar: true
         }
         try {
+            commit('putLoadingConsulting')
             const response = await deleteRoomById(roomId)
             snackbarData.text = 'Consultorio eliminado correctamente';
             commit('deleteRoomInStore', response.data._id)
             return dispatch('getUltimateSnackbarState', snackbarData)
         } catch (err) {
             if(err)snackbarData.text = err.response.data.msg;
+            commit('putunLoadingConsulting')
             return dispatch('getUltimateSnackbarState', snackbarData)
         }
     },
@@ -90,19 +99,21 @@ const actions = {
             snackbar: true
         }
         try {
+            commit('putLoadingConsulting')
             const response = await createConsulting(dataToSend)
             snackbarData.text = 'Consultorio agregado correctamente';
             dispatch('getUltimateSnackbarState', snackbarData);
             commit('consulting_roomCretaedSuccessfully', response.data)
         } catch (err) {
             if(err)snackbarData.text = err.response.data.msg;
+            commit('putunLoadingConsulting')
             return dispatch('getUltimateSnackbarState', snackbarData)
         }
     },
 }
 
 const mutations = {
-    consulting_roomCretaedSuccessfully:(state, consulting_room) => state.consulting_rooms.unshift(consulting_room),
+    consulting_roomCretaedSuccessfully:(state, consulting_room) => (state.consulting_rooms.unshift(consulting_room), state.charginConsulting = false),
     roomsObtained: (state, rooms) => (state.roomsByEspeciality = rooms),
     consultingToEditObtainedSuccessfully: (state, room) => (state.roomToEdit = room) ,
     consultingObtainedSuccessfully:(state, consulting_rooms) => (state.consulting_rooms = consulting_rooms),
@@ -110,11 +121,17 @@ const mutations = {
     updateRoomName (state, name) {state.roomToEdit.name = name},
     updateEspeciality (state, especiality) {state.roomToEdit.especiality = especiality},
     updateRoomCode (state, code) {state.roomToEdit.code = code},
-    deleteRoomInStore: (state, id) => state.consulting_rooms = state.consulting_rooms.filter((room) => room._id !== id),
+    deleteRoomInStore: (state, id) => (state.consulting_rooms = state.consulting_rooms.filter((room) => room._id !== id), state.charginConsulting = false),
     ConsultingUpdatedSuccessfully: (state, roomUpdated) => {
-        state.consulting_rooms.splice(state.consulting_rooms.findIndex((rooms) => rooms._id = roomUpdated._id), 1);
-        state.consulting_rooms.unshift(roomUpdated)
-    }
+        const index = state.consulting_rooms.findIndex(room => room._id === roomUpdated._id);
+    
+        if (index !== -1) {
+          state.consulting_rooms.splice(index, 1, roomUpdated);
+        }
+        state.charginConsulting = false
+    },
+    putUnloadingConsulting:(state) => (state.charginConsulting = false),
+    putLoadingConsulting: (state) => (state.charginConsulting = true),
 }
 
 export default {

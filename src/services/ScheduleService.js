@@ -4,8 +4,8 @@ const API = process.env.API || 'http://localhost:4123/api';
 
 //const API = 'https://subcentroback.herokuapp.com/api';
 
-export const getSchedules = async () => {
-    return await axios.get(`${API}/schedules`);
+export const getSchedulesByUserId = async (id) => {
+    return await axios.get(`${API}/schedules/${id}`);
 }
 
 export const deleteSchedule = async (id) => {
