@@ -4,8 +4,8 @@ import axios from 'axios';
 
 const API = 'https://subcentroback.herokuapp.com/api';
 
-export const getSchedules = async () => {
-    return await axios.get(`${API}/schedules`);
+export const getSchedulesByUserId = async (id) => {
+    return await axios.get(`${API}/schedules/${id}`);
 }
 
 export const deleteSchedule = async (id) => {

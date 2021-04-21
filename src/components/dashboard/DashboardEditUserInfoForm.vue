@@ -138,6 +138,9 @@
             </v-row>
           </v-container>
           <small>* Indica campos requeridos. </small> <small>Solo rellenamos los datos que has rellenado previamente.</small>
+          <div v-if="charginAuth" class="mb-4">
+              <Loading/>
+          </div>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -163,10 +166,12 @@
 
 <script>
 import { mdiCalendar } from '@mdi/js';
-import {mapActions} from 'vuex';
+import {mapGetters, mapActions} from 'vuex';
 import { validationMixin } from 'vuelidate';
 import { required, maxLength, email} from 'vuelidate/lib/validators';
+import Loading from '../Loading';
   export default {
+    components:{Loading},
     data: () => ({
       mdiCalendar: mdiCalendar,
       dialog: false,
@@ -272,7 +277,8 @@ import { required, maxLength, email} from 'vuelidate/lib/validators';
         set (value) {
           this.$store.commit('updateTelephoneNumber', value)
         }
-      }
+      },
+      ...mapGetters(["charginAuth"])
     },
     watch: {
       menu (val) {

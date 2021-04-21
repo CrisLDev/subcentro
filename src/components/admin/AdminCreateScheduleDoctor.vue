@@ -2,9 +2,10 @@
     <v-row>
         <v-col cols="12">
             <v-row>
+                <!--
                 <v-col cols="6">
                     <v-menu
-                        v-model="menu2"
+                        v-model="menu4"
                         :close-on-content-click="false"
                         :nudge-right="40"
                         transition="scale-transition"
@@ -13,19 +14,19 @@
                     >
                         <template v-slot:activator="{ on, attrs }">
                         <v-text-field
-                            v-model="date"
-                            label="Fecha de incio"
+                            v-model="date2"
+                            label="Fecha de fin"
                             readonly
                             v-bind="attrs"
                             v-on="on"
                         ></v-text-field>
                         </template>
                         <v-date-picker
-                        v-model="date"
-                        @input="menu2 = false"
+                        v-model="date2"
+                        @input="menu4 = false"
                         ></v-date-picker>
                     </v-menu>
-                </v-col>
+                </v-col>-->
                 <v-col cols="6">
                     <v-menu
                         ref="menu1"
@@ -53,34 +54,6 @@
                         full-width
                         @click:minute="$refs.menu1.save(time)"
                         ></v-time-picker>
-                    </v-menu>
-                </v-col>
-            </v-row>
-        </v-col>
-        <v-col cols="12">
-            <v-row>
-                <v-col cols="6">
-                    <v-menu
-                        v-model="menu4"
-                        :close-on-content-click="false"
-                        :nudge-right="40"
-                        transition="scale-transition"
-                        offset-y
-                        min-width="auto"
-                    >
-                        <template v-slot:activator="{ on, attrs }">
-                        <v-text-field
-                            v-model="date2"
-                            label="Fecha de fin"
-                            readonly
-                            v-bind="attrs"
-                            v-on="on"
-                        ></v-text-field>
-                        </template>
-                        <v-date-picker
-                        v-model="date2"
-                        @input="menu4 = false"
-                        ></v-date-picker>
                     </v-menu>
                 </v-col>
                 <v-col cols="6">
@@ -112,9 +85,9 @@
                         ></v-time-picker>
                     </v-menu>
                 </v-col>
-                <v-col cols="12">
+                <v-col cols="6">
                     <v-select
-                  v-model="doctor"
+                  v-model="doctorSchedule"
                     :items="items2"
                     item-text="name"
                     item-value="id"
@@ -123,11 +96,21 @@
                     required
                   ></v-select>
                 </v-col>
+                <v-col cols="6">
+                    <v-select
+                        v-model="day"
+                        :items="items3"
+                        item-text="name"
+                        item-value="id"
+                        label="Día*"
+                        required
+                  ></v-select>
+                </v-col>
                 <v-col cols="12">
                     <v-btn
                         color="primary darken-1"
                         block
-                        @click="submit"
+                        @click="submitSchedule"
                     >
                         Guardar
                     </v-btn>
@@ -153,13 +136,32 @@ export default {
         time: null,
         time2: null,
         items2: [],
-        doctor: ''
+        items3: [
+            {name: 'Lunes',
+            id: '01'
+            },
+            {name: 'Martes',
+            id: '02'
+            },
+            {name: 'Miércoles',
+            id: '03'
+            },
+            {name: 'Jueves',
+            id: '04'
+            },
+            {name: 'Viernes',
+            id: '05'
+            },
+        ],
+        doctorSchedule: '',
+        day:'',
     }),
     computed: {...mapGetters(["doctorsInBd"])},
     methods:{
         ...mapActions(["createNewSchedule", "getUltimateSnackbarState"]), 
-        async submit(){
-            if(this.date || this.date2 || this.time || this.time2){
+        async submitSchedule(){
+            console.log(this.doctorSchedule, this.time,this.day,this.time2)
+            if(!this.doctorSchedule || !this.time || !this.day || !this.time2){
                 const snackbarData = {
                 timeout: 2000,
                 text: 'Por favor rellena todos los datos.',
@@ -168,11 +170,12 @@ export default {
             return this.getUltimateSnackbarState(snackbarData);
             }
             const dataToSend = {
-                dateStart: this.date,
+                //dateStart: this.date,
                 hourStart: this.time,
-                dateEnd: this.date2,
+                //dateEnd: this.date2,
                 hourEnd: this.time2,
-                doctor_id: this.doctor
+                doctor_id: this.doctorSchedule,
+                day: this.day
             }
         if(document.getElementById("cbtns").classList.contains("d-none")){
             document.getElementById("cbtns").classList.replace("d-none", "d-block");

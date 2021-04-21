@@ -90,6 +90,9 @@
             </v-form>
           <small>Escoja una fecha valida, por favor.</small><br>
           <small>Recuerda guardar el codigo que se presenta al final.</small>
+          <div v-if="charginDate">
+            <Loading/>
+          </div>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -115,6 +118,7 @@
 <script>
 import { mdiAccountClock} from '@mdi/js';
 import {mapGetters,mapActions} from 'vuex';
+import Loading from '../Loading';
   export default {
     data: () => ({
       dialog: false,
@@ -130,6 +134,7 @@ import {mapGetters,mapActions} from 'vuex';
       items: [],
       items2: []
     }),
+    components:{Loading},
     watch: {
       menu (val) {
         val && setTimeout(() => (this.$refs.picker.activePicker = 'YEAR'))
@@ -203,7 +208,7 @@ import {mapGetters,mapActions} from 'vuex';
       },
     },
     computed:{
-  ...mapGetters(["dayConsulted","especialititesInBd", "roomsByEspeciality"])
+  ...mapGetters(["dayConsulted","especialititesInBd", "roomsByEspeciality", "charginDate"])
 }
   }
 </script>

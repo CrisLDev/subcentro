@@ -51,10 +51,12 @@
                     required 
                     @input="$v.password2.$touch()" 
                     @blur="$v.password2.$touch()"></v-text-field>
-                </v-col><!--
-                    <div v-if="charginAuth" class="mb-4">
+                </v-col>
+                <v-col v-if="charginAuth" cols="12">
+                    <div>
                         <Loading/>
-                </div>-->
+                    </div>
+                </v-col>
                 <v-col cols="6" style="z-index: 999">
                         <v-btn block color="primary" elevation="2" @click="submit">Enviar</v-btn>
                 </v-col>
@@ -71,9 +73,11 @@ import { mdiAccountArrowRight, mdiKeyVariant} from '@mdi/js';
 import { validationMixin } from 'vuelidate';
 import { required, maxLength, email} from 'vuelidate/lib/validators';
 import {mapActions, mapGetters} from 'vuex';
+import Loading from '../Loading';
 export default {
-  name: 'home',
+  name: 'Register',
   components: {
+      Loading
   },
   mixins: [validationMixin],
   validations:{

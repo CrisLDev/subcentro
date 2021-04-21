@@ -1,5 +1,16 @@
 <template>
     <v-container class="lighten-5 mb-16">
+      <v-container v-if="!variable">
+          <v-overlay :value="overlay">
+          <p class="text-center"><v-progress-circular
+            indeterminate
+            :size="50"
+            color="primary"
+          ></v-progress-circular></p>
+          <p>Cargando...</p>
+        </v-overlay>
+        </v-container>
+      <v-container v-if="variable">
         <v-row align="center" justify="center">
           <v-col cols="12">
             <v-alert border="bottom" colored-border color="primary" elevation="2">
@@ -153,6 +164,9 @@
             </v-alert>
           </v-col>
           <v-col cols="12">
+            <div v-if="charginDate" class="mb-4">
+                <Loading/>
+            </div>
             <v-container v-if="consulting_roomsInBd.length == 0">
               No hay consultorios.
             </v-container>
@@ -290,6 +304,14 @@
             <v-container>
                 <AdminCreateScheduleDoctor/>
             </v-container>
+            <div v-if="charginSchedule" class="mb-4">
+                <Loading/>
+            </div>
+            <v-container v-if="doctorsInBd.length !== 0">
+              <v-chip v-for="doctor in doctorsInBd" :key="doctor._id" @click="searchSchedules(doctor._id)">
+                {{doctor.userName}}
+              </v-chip>
+            </v-container>
                 <AdminSchedule/>
           </v-col>
         </v-row>
@@ -315,7 +337,7 @@
               <v-col cols="12">
                 <v-text-field
                 v-model="code"
-                  label="Codigo del conusltorio*"
+                  label="Codigo del consultorio*"
                   required
                 ></v-text-field>
               </v-col>
@@ -332,6 +354,9 @@
             </v-row>
           </v-container>
           <small>* Indica campos requeridos. </small>
+          <div v-if="charginConsulting" class="mb-4">
+              <Loading/>
+          </div>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -382,6 +407,9 @@
             </v-row>
           </v-container>
           <small>* Indica campos requeridos. </small>
+          <div v-if="charginEspecialities" class="mb-4">
+              <Loading/>
+          </div>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -459,6 +487,7 @@
       </v-card>
           </v-dialog>
         </div>
+        </v-container>
     </v-container>
 </template>
 
@@ -477,6 +506,7 @@ import { mdiNewBox } from '@mdi/js';
 import { mdiHeart } from '@mdi/js';
 import { mdiChevronLeft } from '@mdi/js';
 import { mdiChevronRight } from '@mdi/js';
+import Loading from '../components/Loading';
 export default {
     name: "Admin",
     data: () => ({
@@ -517,7 +547,9 @@ export default {
       dateId: '',
       doctorName: '',
       dateForCheckColorInCard: '',
-      hourToCheck: ''
+      hourToCheck: '',
+      overlay: true,
+      variable: false
     }),
     components: {
         AdminUserEdit,
@@ -525,9 +557,10 @@ export default {
         AdminCreateEspecialityForm,
         AdminCreateDoctorForm,
         AdminCreateScheduleDoctor,
-        AdminSchedule
+        AdminSchedule,
+        Loading
     },
-    computed: {...mapGetters(["usersInBd", "consulting_roomsInBd", "especialititesInBd", "doctorsInBd"]),
+    computed: {...mapGetters(["usersInBd", "consulting_roomsInBd", "especialititesInBd", "doctorsInBd", "schedulesInBd", "charginConsulting", "charginEspecialities", "charginDate", "charginSchedule"]),
     usersRole(){
         return this.usersInBd.filter(user => user.role === "user")
     },
@@ -572,9 +605,16 @@ export default {
     },
     methods: {
         ...mapActions(["getusersFromBD","deleteUser","getDatesFromBD", "getConsultingFromBD", 
-        "getEspecialitiesFromBD", "getConsultingFromBDById", "updateRoom", "deleteRoom", "getEspecialityFromBDById", "updateEspeciality", "deleteEspeciality", "getUltimateSnackbarState", "getDatesForCodeRoom", "getDoctorsFromBD", "putDoctorId", "getSchedulesFromDb"]),
+        "getEspecialitiesFromBD", "getConsultingFromBDById", "updateRoom", "deleteRoom", "getEspecialityFromBDById", "updateEspeciality", "deleteEspeciality", "getUltimateSnackbarState", "getDatesForCodeRoom", "getDoctorsFromBD", "putDoctorId", "getSchedulesFromDbByUserId"]),
         putName(){
           this.doctorName = this.items2.filter(item => item.id == this.doctor)
+        },
+        async searchSchedules(doctor_id){ 
+          if(document.getElementById("cbtns").classList.contains("d-none")){
+            document.getElementById("cbtns").classList.replace("d-none", "d-block");
+            document.getElementById("cclndrs").classList.replace("d-block", "d-none");
+          }
+          this.getSchedulesFromDbByUserId(doctor_id);
         },
         async putDoctor(){
           const data = {
@@ -599,6 +639,7 @@ export default {
           this.getEspecialityFromBDById(especialityId);
         },
         submitDeleteEspeciality(){
+          this.dialog2 = false;
           this.deleteEspeciality(this.especialityIdToEdit)
         },
         submitEditEspeciality(){
@@ -622,6 +663,7 @@ export default {
         },
         submitDeleteRoom(){
           this.deleteRoom(this.roomIdToEdit)
+          this.dialog = false;
         },
         submitEditRoom(){
           const dataToSend = {
@@ -680,18 +722,18 @@ export default {
         this.events = events
       },
       async showCalendar(){
-        if(document.getElementById("cbtn").classList.contains("d-block")){
-            document.getElementById("cbtn").classList.replace("d-block", "d-none");
-            document.getElementById("cclndr").classList.replace("d-none", "d-block");
-          }
-          await this.getEvents();
-          if(this.events.length <= 0){
+        await this.getEvents();
+        if(this.events.length <= 0){
             const snackbarData = {
                 timeout: 2000,
                 text: 'No hay citas registradas.',
                 snackbar: true
             }
             return this.getUltimateSnackbarState(snackbarData);
+          }
+        if(document.getElementById("cbtn").classList.contains("d-block")){
+            document.getElementById("cbtn").classList.replace("d-block", "d-none");
+            document.getElementById("cclndr").classList.replace("d-none", "d-block");
           }
       },
       getEventColor (event) {
@@ -729,7 +771,6 @@ export default {
         this.getConsultingFromBD();
         this.getEspecialitiesFromBD();
         this.getDoctorsFromBD();
-        this.getSchedulesFromDb();
         let date = new Date()
 
 let day = date.getDate()
@@ -748,6 +789,14 @@ if(month < 10 && day < 10){
   this.dateForCheckColorInCard = `${year}-${month}-${day}`;
 }
     },
+    mounted() {
+        this.getusersFromBD();
+        this.getDatesFromBD();
+        this.getConsultingFromBD();
+        this.getEspecialitiesFromBD();
+        this.getDoctorsFromBD();
+        this.variable = true
+        },
     watch: {
         $route: {
             immediate: true,
@@ -755,6 +804,11 @@ if(month < 10 && day < 10){
                 document.title = to.meta.title || 'Admin';
             }
         },
+        overlay (val) {
+        val && setTimeout(() => {
+          this.overlay = false
+        }, 2000)
+      },
         especialititesInBd(){
         const items = []
         Object.values(this.especialititesInBd).map((especiality) => 

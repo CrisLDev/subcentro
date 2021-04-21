@@ -1,21 +1,39 @@
-import {createSchedule, getSchedules, deleteSchedule} from '../../services/ScheduleService';
+import {createSchedule, getSchedulesByUserId, deleteSchedule} from '../../services/ScheduleService';
 
 const state = {
-    schedules: {}
+    schedules: {},
+    charginSchedule: false,
 }
 
 const getters = {
     schedulesInBd: (state) => {
         return state.schedules
-    }
+    },
+    charginSchedule: (state) => {
+        return state.charginSchedule
+    },
 }
 
 const actions = {
-    async getSchedulesFromDb({commit}) {
+    async getSchedulesFromDbByUserId({dispatch, commit}, doctor_id) {
+        const snackbarData = {
+            timeout: 2000,
+            text: '',
+            snackbar: true
+        }
         try {
-            const response = await getSchedules()
+            commit('putLoadingSchedule')
+            const response = await getSchedulesByUserId(doctor_id)
+            if(response.data.length > 0){
+                snackbarData.text = 'Horarios consultados correctamente';
+                dispatch('getUltimateSnackbarState', snackbarData);
+            }else{
+                snackbarData.text = 'No hay horarios para mostrar';
+                dispatch('getUltimateSnackbarState', snackbarData);
+            }
             return commit('schedulesObtainedSuccessfully', response.data)
         } catch (err) {
+            commit('putUnloadingSchedule')
             return commit('schedulesObtainedFailed', err.response.data.msg)
         }
     },
@@ -59,10 +77,12 @@ const actions = {
 
 const mutations = {
     scheduleCreatedSuccessfully:(state, newEschedule) => state.schedules.unshift(newEschedule),
-    schedulesObtainedSuccessfully:(state, schedules) => (state.schedules = schedules),
+    schedulesObtainedSuccessfully:(state, schedules) => (state.schedules = schedules, state.charginSchedule = false),
     schedulesObtainedFailed:(state, error) => (state.schedulesa = error),
     deleteScheduleInStore: (state, id) => state.schedules = state.schedules.filter((schedule) => schedule._id !== id),
-    clearSchedules: (state) => {state.schedules = {}}
+    clearSchedules: (state) => {state.schedules = {}},
+    putLoadingSchedule: (state) => (state.charginSchedule = true),
+    putUnloadingSchedule: (state) => (state.charginSchedule = false),
 }
 
 export default {

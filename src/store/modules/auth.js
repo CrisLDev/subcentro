@@ -7,7 +7,8 @@ const state = {
     users: {},
     userToEdit:{},
     doctors: {},
-    charginAuth: false
+    charginAuth: false,
+    chargin: false
 }
 
 const getters = {
@@ -22,6 +23,9 @@ const getters = {
     },
     charginAuth: (state) => {
         return state.charginAuth
+    },
+    chargin: (state) => {
+        return state.chargin
     },
 }
 
@@ -50,6 +54,7 @@ const actions = {
             return router.push('/dashboard');
         } catch (err) {
             if(err)snackbarData.text = err.response.data.msg;
+            commit('putUnloading')
             return dispatch('getUltimateSnackbarState', snackbarData)
         }
     },
@@ -73,6 +78,7 @@ const actions = {
             snackbar: true
         }
         logout();
+        commit('putLoadingChargin')
         commit('UserDeslogedSuccessfylly');
         snackbarData.text = 'Usuario deslogeado correctamente';
         dispatch('getUltimateSnackbarState', snackbarData)
@@ -84,8 +90,8 @@ const actions = {
             text: '',
             snackbar: true
         }
-        dispatch('putLoading')
         try {
+            commit('putLoading')
             const response = await createUser(dataToSend)
             snackbarData.text = 'Usuario registrado correctamente';
             dispatch('getUltimateSnackbarState', snackbarData)
@@ -100,21 +106,26 @@ const actions = {
             }
         } catch (err) {
             if(err)snackbarData.text = err.response.data.msg;
+            commit('putUnloading')
             return dispatch('getUltimateSnackbarState', snackbarData)
         }
     },
-    async updateUserInfo({dispatch}, dataToSend){
+    async updateUserInfo({commit, dispatch}, dataToSend){
         const snackbarData = {
             timeout: 2000,
             text: '',
             snackbar: true
         }
         try {
-            await updateUser(dataToSend)
+            commit('putLoading')
+            await commit('putLoading')
+            const response = await updateUser(dataToSend)
+            commit('userEditedSuccesssfully', response.data)
             snackbarData.text = 'Información actualizada correctamente';
             return dispatch('getUltimateSnackbarState', snackbarData)
         } catch (err) {
             if(err)snackbarData.text = err.response.data.msg;
+            commit('putUnloading')
             return dispatch('getUltimateSnackbarState', snackbarData)
         }
     },
@@ -125,12 +136,14 @@ const actions = {
             snackbar: true
         }
         try {
+            commit('putLoadingChargin')
             const response = await deleteUserInBd(user_id);
             commit('deleteItemInStore', response.data._id)
             snackbarData.text = 'Usuario eliminado correctamente';
             dispatch('getUltimateSnackbarState', snackbarData)
         } catch (err) {
             if(err)snackbarData.text = err.response.data.msg;
+            commit('putUnloadingChargin')
             return dispatch('getUltimateSnackbarState', snackbarData)
         }
     },
@@ -140,6 +153,7 @@ const actions = {
             text: '',
             snackbar: true
         }
+        commit('putLoading')
         const response = await uploadPhoto(photo)
         console.log(response.data)
         snackbarData.text = 'Foto actualizada correctamente';
@@ -162,9 +176,10 @@ const mutations = {
     usersObtainedSuccessfully:(state, users) => (state.users = users),
     usersObtainedFailed:(state, error) => (state.user = error),
     UserLogedSuccessfully:(state, addUser) => (state.user = addUser, state.charginAuth = false),
-    UserPhotoSuccessfully:(state, photo) => (state.user = photo),
+    UserPhotoSuccessfully:(state, photo) => (state.user.imgUrl = photo.imgUrl,state.charginAuth = false),
     UserRelogedSuccessfully:(state, reAddUser) => (state.user = reAddUser),
-    UserDeslogedSuccessfylly:(state) => (state.user = {}),
+    UserDeslogedSuccessfylly:(state) => (state.user = {}, state.chargin = false),
+    putUnloading:(state) => (state.charginAuth = false),
     updateUsername (state, userName) {state.user.userName = userName},
     updateFullname (state, fullName) {state.user.fullName = fullName},
     updateEmail (state, email) {state.user.email = email},
@@ -178,10 +193,13 @@ const mutations = {
     userToEditUpdateAdress (state, adress) {state.userToEdit.adress = adress},
     userToEditUpdateDate (state, age) {state.userToEdit.age = age},
     userToEditUpdateTelephoneNumber (state, telephoneNumber) {state.userToEdit.telephoneNumber = telephoneNumber},
+    userEditedSuccesssfully: (state, userEdited) => (state.userToEdi = userEdited, state.charginAuth = false),
     userToEditUpdateRole (state, role) {state.userToEdit.role = role},
     loadUserToEdit: (state, id) => state.userToEdit = state.users.filter(user => user._id === id)[0],
-    deleteItemInStore: (state, id) => state.users = state.users.filter((user) => user._id !== id),
+    deleteItemInStore: (state, id) => state.users = state.users.filter((user) => user._id !== id, state.chargin = false),
     putLoading: (state) => (state.charginAuth = true),
+    putLoadingChargin: (state) => (state.chargin = true),
+    putUnloadingChargin: (state) => (state.chargin = false),
 }
 
 export default {

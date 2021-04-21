@@ -11,10 +11,9 @@
                 <v-col cols="12">
                     <v-text-field v-model="userName" solo label="Username" autofocus autocomplete="userName" required clearable></v-text-field>
                     <v-text-field type="password" v-model="password" solo label="Password" autocomplete="password" required clearable></v-text-field>
-                    <!--
                     <div v-if="charginAuth" class="mb-4">
                         <Loading/>
-                    </div>-->
+                    </div>
                     <v-btn block color="primary" elevation="2" @click="submit">Enviar</v-btn>
                     <v-divider class="mt-6 mb-6 grey"></v-divider>
                     <router-link to="/register" class="text-decoration-none" style="color: white;">
@@ -29,9 +28,11 @@
 <script>
 import { mdiAccountArrowRight, mdiKeyVariant} from '@mdi/js';
 import {mapActions, mapGetters} from 'vuex';
+import Loading from '../Loading';
 export default {
-  name: 'home',
+  name: 'Login',
   components: {
+      Loading
   },
   data: () => ({
       accountArrowRight: mdiAccountArrowRight,

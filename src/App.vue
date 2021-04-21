@@ -6,6 +6,14 @@
       <v-main>
         <v-container fluid>
           <router-view />
+          <v-overlay :value="overlay" v-if="chargin">
+          <p class="text-center"><v-progress-circular
+            indeterminate
+            :size="50"
+            color="primary"
+          ></v-progress-circular></p>
+          <p>Cargando...</p>
+        </v-overlay>
         </v-container>
       </v-main>
       <v-footer class="primary">
@@ -38,13 +46,14 @@
 <script>
 import Navbar from './components/Navbar.vue';
 import SnackBar from './components/SnackBar.vue';
-import {mapActions} from 'vuex';
+import {mapActions, mapGetters} from 'vuex';
 
 export default {
   components: {
     Navbar,
     SnackBar
   },
+  computed: {...mapGetters(["chargin"])},
   data: () => ({ value: 'recent' }),
   methods:{
   ...mapActions(["reloginUser", "logoutUser"])
@@ -54,6 +63,11 @@ export default {
     if(!localStorage.getItem('token')){
       this.logoutUser()
     }
+},
+mounted(){
+  this.reloginUser();
+    if(!localStorage.getItem('token')){
+      this.logoutUser()}
 }
 }
 </script>

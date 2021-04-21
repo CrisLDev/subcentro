@@ -123,6 +123,9 @@
             </v-row>
           </v-container>
           <small>* Indica campos requeridos. </small> <small>Solo rellenamos los datos que has rellenado previamente.</small>
+          <div v-if="charginAuth" class="mb-4">
+                <Loading/>
+            </div>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -147,8 +150,9 @@
 </template>
 
 <script>
-import {mapActions} from 'vuex';
+import {mapActions, mapGetters} from 'vuex';
 import { mdiCalendar } from '@mdi/js';
+import Loading from '../Loading';
   export default {
     data: () => ({
       mdiCalendar: mdiCalendar,
@@ -157,7 +161,9 @@ import { mdiCalendar } from '@mdi/js';
       passwordU: '',
       password2U: '',
     }),
+    components:{Loading},
     computed:{
+      ...mapGetters(["charginAuth"]),
         roleU: {
         get () {
           return this.$store.state.auth.userToEdit.role

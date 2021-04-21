@@ -33,6 +33,9 @@
             </v-row>
           </v-container>
           <small>* Indica campos requeridos. </small>
+          <div v-if="charginEspecialities" class="mb-4">
+              <Loading/>
+          </div>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -57,8 +60,9 @@
 </template>
 
 <script>
-import {mapActions} from 'vuex';
+import {mapActions, mapGetters} from 'vuex';
 import { mdiCalendar } from '@mdi/js';
+import Loading from '../Loading';
   export default {
     data: () => ({
       mdiCalendar: mdiCalendar,
@@ -66,6 +70,9 @@ import { mdiCalendar } from '@mdi/js';
       menu: false,
       name: '',
     }),
+    components:{
+      Loading
+    },
     methods:{
         ...mapActions(["createNewEspeciality"]),
         submit (){
@@ -74,6 +81,9 @@ import { mdiCalendar } from '@mdi/js';
             }
             this.createNewEspeciality(dataToSend)
         }
+    },
+    computed:{
+      ...mapGetters(["charginEspecialities"])
     }
   }
 </script>
