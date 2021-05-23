@@ -90,7 +90,6 @@
               <div v-if="selectedEvent.doctor" v-html="`Doctor: `+selectedEvent.doctor.userName"></div>
               <div v-if="!selectedEvent.doctor" v-html="`No se ha seleccionado un doctor.`"></div>
               <div v-if="selectedEvent.complete == 'no' && selectedEvent.date <= dateForCheckColorInCard && selectedEvent.hour < hourToCheck" v-html="`Click para marcar como completada.`" @click="completeDate(selectedEvent.id)" style="cursor: pointer"></div>
-              <div v-if="selectedEvent.complete == 'si'" v-html="`Cita terminada.`"></div>
             </v-card-text>
             <v-card-actions>
               <v-btn
@@ -98,7 +97,7 @@
                 color="secondary"
                 @click="selectedOpen = false"
               >
-                Cancel
+                Cancelar
               </v-btn>
             </v-card-actions>
           </v-card>
@@ -179,6 +178,7 @@ export default {
                     doctor:evento.doctor_id,
                     complete:evento.complete,
                     room:evento.consulting_room,
+                    patient_id: evento.patient_id._id,
                     //color: this.colors[this.rnd(0, this.colors.length - 1)]
                 });
                 events.forEach((item) => {
