@@ -11,176 +11,192 @@
                 <v-col
                 cols="12"
                 >
+                <label class="caption">Por favor, agregar una coma "," por cada item.</label>
                 <v-textarea
                     label="Enfermedades no transmisibles"
                     v-model="non_communicable_diseases"
                     placeholder="Ingrese enfermedades"
                     rows="2"
-                    filled
+                    outlined
                 ></v-textarea>
                 </v-col>
                 <v-col
                 cols="12"
                 >
+                <label class="caption">Por favor, agregar una coma "," por cada item.</label>
                 <v-textarea
                     label="Enfermedades transmisibles"
                     v-model="sexually_transmitted_diseases"
                     placeholder="Ingrese enfermedades"
                     rows="2"
-                    filled
+                    outlined
                 ></v-textarea>
                 </v-col>
                 <v-col
                 cols="12"
                 >
+                <label class="caption">Por favor, agregar una coma "," por cada item.</label>
                 <v-textarea
                     label="Enfermedades degenerativas"
                     v-model="degenerative_diseases"
                     placeholder="Ingrese enfermedades"
                     rows="2"
-                    filled
+                    outlined
                 ></v-textarea>
                 </v-col>
                 <v-col
                 cols="12"
                 >
+                <label class="caption">Por favor, agregar una coma "," por cada item.</label>
                 <v-textarea
                     label="Otras enfermedades"
                     v-model="others"
                     placeholder="Ingrese enfermedades"
                     rows="2"
-                    filled
+                    outlined
                 ></v-textarea>
                 </v-col>
                 <v-col
                 cols="12"
                 >
+                <label class="caption">Ingrese su tipo de sangre.</label>
                 <v-text-field
                     label="Tipo de sangre"
                     v-model="blood_type"
                     placeholder="Ingrese tipo"
                     rows="2"
-                    filled
+                    outlined
                 ></v-text-field>
                 </v-col>
                 <v-col
                 cols="12"
                 >
+                <label class="caption">Por favor, agregar una coma "," por cada item.</label>
                 <v-textarea
                     label="Adicciones"
                     v-model="adictions"
                     placeholder="Ingrese adicciones"
                     rows="2"
-                    filled
+                    outlined
                 ></v-textarea>
                 </v-col>
                 <v-col
                 cols="12"
                 >
+                <label class="caption">Por favor, agregar una coma "," por cada item.</label>
                 <v-textarea
                     label="Alergias"
                     v-model="allergies"
                     placeholder="Ingrese alergias"
                     rows="2"
-                    filled
+                    outlined
                 ></v-textarea>
                 </v-col>
                 <v-col
                 cols="12"
                 >
+                <label class="caption">Por favor, agregar una coma "," por cada item.</label>
                 <v-textarea
                     label="Antibioticos"
                     v-model="antibiotics"
                     placeholder="Ingrese antibioticos"
                     rows="2"
-                    filled
+                    outlined
                 ></v-textarea>
                 </v-col>
                 <v-col
                 cols="12"
                 >
+                <label class="caption">Puede contestar con un "Si" o "No".</label>
                 <v-text-field
                     label="Ha sido hospitalizado"
                     v-model="has_been_hospitalized"
                     placeholder="Ingrese dato"
-                    filled
+                    outlined
                 ></v-text-field>
                 </v-col>
                 <v-col
                 cols="12"
                 >
+                <label class="caption">Por favor, agregar una coma "," por cada item.</label>
                 <v-textarea
                     label="Respiratorias"
                     v-model="respiratory"
                     placeholder="Ingrese enfermedades"
                     rows="2"
-                    filled
+                    outlined
                 ></v-textarea>
                 </v-col>
                 <v-col
                 cols="12"
                 >
+                <label class="caption">Por favor, agregar una coma "," por cada item.</label>
                 <v-textarea
                     label="Cardiovasculares"
                     v-model="cardiovascular"
                     placeholder="Ingrese enfermedades"
                     rows="2"
-                    filled
+                    outlined
                 ></v-textarea>
                 </v-col>
                 <v-col
                 cols="12"
                 >
+                <label class="caption">Por favor, agregar una coma "," por cada item.</label>
                 <v-textarea
                     label="Genitourinarias"
                     v-model="genitourinary"
                     placeholder="Ingrese enfermedades"
                     rows="2"
-                    filled
+                    outlined
                 ></v-textarea>
                 </v-col>
                 <v-col
                 cols="12"
                 >
+                <label class="caption">Por favor, agregar una coma "," por cada item.</label>
                 <v-textarea
                     label="Endocrinas"
                     v-model="endocrine"
                     placeholder="Ingrese enfermedades"
                     rows="2"
-                    filled
+                    outlined
                 ></v-textarea>
                 </v-col>
                 <v-col
                 cols="12"
                 >
+                <label class="caption">Por favor, agregar una coma "," por cada item.</label>
                 <v-textarea
                     label="Nerviosas"
                     v-model="nervous"
                     placeholder="Ingrese enfermedades"
                     rows="2"
-                    filled
+                    outlined
                 ></v-textarea>
                 </v-col>
                 <v-col
                 cols="12"
                 >
+                <label class="caption">Por favor, agregar una coma "," por cada item.</label>
                 <v-textarea
                     label="Musculares"
                     v-model="muscular"
                     placeholder="Ingrese enfermedades"
                     rows="2"
-                    filled
+                    outlined
                 ></v-textarea>
                 </v-col>
                 <v-col
                 cols="12"
                 >
+                <label class="caption">Ingrese un texto con las conclusiones de la ficha médica.</label>
                 <v-textarea
                     label="Concluciones"
                     v-model="conclusions"
                     placeholder="Ingrese enfermedades"
                     rows="4"
-                    filled
+                    outlined
                 ></v-textarea>
                 </v-col>
                 <v-col
