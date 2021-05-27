@@ -34,7 +34,7 @@
           <v-form>
             <v-container>
               <v-row>
-                <v-col sm="6" cols="12">
+                <v-coln cols="12">
                   <v-menu
                     ref="menu"
                     v-model="menu"
@@ -61,7 +61,7 @@
                   </v-menu>
                 </v-col>
                 <v-col
-                  cols="6"
+                  cols="12"
                 >
                   <v-select
                   v-model="especiality"
