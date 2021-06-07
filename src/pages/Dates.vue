@@ -7,6 +7,11 @@
             <v-col cols="12" md="3" sm="12" class="mt-6" v-if="datesForDoctorLoged.length !== 0">
                 <TableDoctorTable/>
             </v-col>
+            <v-col cols="12" md="3" sm="12" class="mt-6" v-if="datesForDoctorLoged.length == 0">
+                <div class="font-weight-bold d-flex align-baseline">
+                    <p>Aún no tienes citas asignadas.</p>
+                </div>
+            </v-col>
             <div class="scroll">
                     <AdminSchedule/>
             </div>
