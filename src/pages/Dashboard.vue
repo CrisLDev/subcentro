@@ -13,6 +13,7 @@
               </v-alert>
               <DashboardAction />
             </v-col>
+              <div class="text-uppercase font-weight-bold" v-if="this.$store.getters.userLoged.role == 'doctor' && (!this.$store.state.auth.user.fullName || !this.$store.state.auth.user.adress ||!this.$store.state.auth.user.age || !this.$store.state.auth.user.telephoneNumber || !this.$store.state.auth.user.dni)">Debes completar toda tu información para las funciones de tu rol.</div>
         </v-row>
     </v-container>
 </template>

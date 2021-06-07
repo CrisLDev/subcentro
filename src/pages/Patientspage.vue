@@ -2,7 +2,7 @@
     <v-container class="lighten-5 mb-16">
         <v-row justify="space-between">
             <v-col cols="12" md="5" sm="12" class="mt-6">
-                <v-card elevation="2">
+                <v-card elevation="2" style="z-index: 5">
                     <v-list-item three-line>
                     <v-list-item-content>
                         <div class="overline mb-4" v-if="patientSelected.role === 'user'">
@@ -19,14 +19,20 @@
                             <p>{{patientSelected.age ? patientSelected.age : 'N/A'}}</p>
                             <strong>Número de teléfono</strong>
                             <p>{{patientSelected.telephoneNumber ? patientSelected.telephoneNumber : 'N/A'}}</p>
+                            <strong>Número de cédula</strong>
+                            <p>{{patientSelected.dni ? patientSelected.dni : 'N/A'}}</p>
                         </div>
                     </v-list-item-content>
 
                     <v-list-item-avatar
                         tile
                         size="80"
-                        color="grey"
-                    ></v-list-item-avatar>
+                    >
+                    <img
+                alt="user"
+                src="https://cdni.iconscout.com/illustration/premium/thumb/doctor-giving-advice-to-patient-2527798-2117453.png"
+              >
+                    </v-list-item-avatar>
                     </v-list-item>
                 </v-card>
             </v-col>

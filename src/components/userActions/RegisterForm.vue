@@ -129,6 +129,15 @@ export default {
   methods: {
       ...mapActions(["registerUser", "getUltimateSnackbarState"]),
       async submit() {
+          await this.$v.$touch();
+          if(this.userNameErrors.length >= 1 || this.emailErrors.length >= 1 || this.passwordErrors.length >= 1 || this.password2Errors.length >= 1){
+                const snackbarData = {
+                    timeout: 2000,
+                    text: 'Revisa los datos.',
+                    snackbar: true
+                }
+                return this.getUltimateSnackbarState(snackbarData);
+          }
         if(this.password !== this.password2){
             const snackbarData = {
                 timeout: 2000,

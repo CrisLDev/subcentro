@@ -79,7 +79,6 @@
                 v-model="password"
                   label="Contrasena*"
                   type="password"
-                  required
                   :counter="20"
                     :error-messages="passwordErrors" 
                     @input="$v.password.$touch()" 
@@ -91,7 +90,6 @@
                 v-model="password2"
                   label="Confirmar contrasena*"
                   type="password"
-                  required
                     :counter="20"
                     :error-messages="password2Errors" 
                     @input="$v.password2.$touch()" 
@@ -106,6 +104,10 @@
                 v-model="adress"
                   label="Direccion*"
                   required
+                  :counter="40"
+                  :error-messages="adressErrors" 
+                  @input="$v.adress.$touch()" 
+                  @blur="$v.adress.$touch()"
                 ></v-text-field>
               </v-col>
               <v-col sm="6" cols="12">
@@ -120,7 +122,7 @@
                   <template v-slot:activator="{ on, attrs }">
                     <v-text-field
                       v-model="date"
-                      label="Birthday date"
+                      label="Fecha de nacimiento"
                       readonly
                       v-bind="attrs"
                       v-on="on"
@@ -135,6 +137,19 @@
                   ></v-date-picker>
                 </v-menu>
               </v-col>
+              <v-col
+                cols="12"
+              >
+                <v-text-field
+                v-model="dni"
+                  label="Cédula*"
+                  :counter="10"
+                  :error-messages="dniErrors" 
+                  @input="$v.dni.$touch()" 
+                  @blur="$v.dni.$touch()"
+                  required
+                ></v-text-field>
+              </v-col>
             </v-row>
           </v-container>
           <small>* Indica campos requeridos. </small> <small>Solo rellenamos los datos que has rellenado previamente.</small>
@@ -145,9 +160,10 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn
+          v-if="saved"
             color="blue darken-1"
             text
-            @click="dialog = false"
+            @click="dialog = false, saved = false"
           >
             Cerrar
           </v-btn>
@@ -178,15 +194,18 @@ import Loading from '../Loading';
       menu: false,
       password: '',
       password2: '',
+      saved: false
     }),
     mixins: [validationMixin],
   validations:{
       userName: {required, maxLength: maxLength(10)},
       fullName: {maxLength: maxLength(50)},
       telephoneNumber: {maxLength: maxLength(10)},
-      password: {required, maxLength: maxLength(10)},
-      password2: {required, maxLength: maxLength(10)},
+      password: {maxLength: maxLength(10)},
+      password2: {maxLength: maxLength(10)},
       email: { required, email, maxLength: maxLength(50) },
+      adress: {required, maxLength: maxLength(40)},
+      dni: {required, maxLength: maxLength(10)},
   },
     computed:{
       userNameErrors (){
@@ -220,14 +239,24 @@ import Loading from '../Loading';
           const errors = []
           if(!this.$v.password.$dirty) return errors
             !this.$v.password.maxLength && errors.push('La contrasena no debe tener mas de 20 caracteres')
-            !this.$v.password.required && errors.push('La contrasena es requerida.')
             return errors
       },
       password2Errors (){
           const errors = []
             if(!this.$v.password2.$dirty) return errors
             !this.$v.password2.maxLength && errors.push('La contrasena de confirmacion no debe tener mas de 20 caracteres')
-            !this.$v.password2.required && errors.push('La contrasena es requerida.')
+            return errors
+      },
+      adressErrors (){
+          const errors = []
+            if(!this.$v.adress.$dirty) return errors
+            !this.$v.adress.maxLength && errors.push('La direccion no debe tener mas de 50 caracteres')
+            return errors
+      },
+      dniErrors (){
+          const errors = []
+            if(!this.$v.dni.$dirty) return errors
+            !this.$v.dni.maxLength && errors.push('El numero de cédula no debe tener mas de 10 numeros')
             return errors
       },
       userName: {
@@ -278,6 +307,14 @@ import Loading from '../Loading';
           this.$store.commit('updateTelephoneNumber', value)
         }
       },
+      dni: {
+        get () {
+          return this.$store.state.auth.user.dni
+        },
+        set (value) {
+          this.$store.commit('updateDni', value)
+        }
+      },
       ...mapGetters(["charginAuth"])
     },
     watch: {
@@ -291,6 +328,15 @@ import Loading from '../Loading';
         this.$refs.menu.save(date)
       },
       async submit () {
+        await this.$v.$touch();
+          if(this.userNameErrors.length >= 1 || this.fullNameErrors.length >= 1 || this.emailErrors.length >= 1 || this.telephoneNumberErrors.length >= 1 || this.passwordErrors.length >= 1 || this.password2Errors.length >= 1 || this.adressErrors.length >= 1 || this.dniErrors.length >= 1){
+                const snackbarData = {
+                    timeout: 2000,
+                    text: 'Revisa los datos.',
+                    snackbar: true
+                }
+                return this.getUltimateSnackbarState(snackbarData);
+          }
         if(this.password !== this.password2){
             const snackbarData = {
                 timeout: 2000,
@@ -307,11 +353,13 @@ import Loading from '../Loading';
             password2: this.password2,
             adress: this.adress,
             age: this.date,
+            dni: this.dni,
             role: this.$store.getters.userLoged.role,
             telephoneNumber: this.telephoneNumber,
             user_id: this.$store.getters.userLoged._id,
         }
         this.updateUserInfo(dataToSend)
+        this.saved = true;
       },
     }
   }
