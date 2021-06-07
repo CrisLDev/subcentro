@@ -24,10 +24,10 @@
         <v-list-item style="cursor: pointer" v-if="userLoged.role == 'admin'">
           <v-list-item-title><router-link to="/admin" class="text-decoration-none" style="color: black">Administracion</router-link></v-list-item-title>
         </v-list-item>
-        <v-list-item style="cursor: pointer" v-if="userLoged.role == 'doctor'">
+        <v-list-item style="cursor: pointer" v-if="userLoged.role == 'doctor' && this.$store.state.auth.user.fullName && this.$store.state.auth.user.adress && this.$store.state.auth.user.age && this.$store.state.auth.user.telephoneNumber && this.$store.state.auth.user.dni">
           <v-list-item-title><router-link to="/citas" class="text-decoration-none" style="color: black">Citas y Horarios</router-link></v-list-item-title>
           </v-list-item>
-        <v-list-item style="cursor: pointer" v-if="userLoged.role == 'doctor'">
+        <v-list-item style="cursor: pointer" v-if="userLoged.role == 'doctor' && this.$store.state.auth.user.fullName && this.$store.state.auth.user.adress && this.$store.state.auth.user.age && this.$store.state.auth.user.telephoneNumber && this.$store.state.auth.user.dni">
           <v-list-item-title><router-link to="/pacientes" class="text-decoration-none" style="color: black">Pacientes</router-link></v-list-item-title>
           </v-list-item>
            <v-list-item style="cursor: pointer" v-if="userLoged.role == 'doctor' || userLoged.role == 'admin'">
