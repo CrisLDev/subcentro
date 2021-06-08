@@ -13,7 +13,7 @@
           v-on="on"
           block
         >
-          Crear Usuario o Doctor
+          Crear Paciente o Doctor
         </v-btn>
       </template>
       <v-card>
@@ -26,7 +26,7 @@
               <v-col cols="12">
                 <v-radio-group class="mb-0 mt-0 pt-0 pb-0" v-model="radioGroup" @change="showOrNotInput">
                   <v-radio
-                    label="Crear usuario"
+                    label="Crear paciente"
                     name="radioGroup"
                     :value="1"
                   ></v-radio>
@@ -44,7 +44,7 @@
               >
                 <v-text-field
                 v-model="userNameN"
-                  label="Nombre de usuario*"
+                  label="Nombre del paciente*"
                   required
                   :counter="20"
                   :error-messages="userNameNErrors" 
