@@ -1,4 +1,4 @@
-import {createHistory, deleteHistoryById, getHistoryById, getHistoriesByPatientId, updateHistoryById} from '../../services/HistoryService';
+import {createHistory, deleteHistoryById, getHistoryById, getHistoriesByPatientId, updateHistoryById, updateOnlyOneItemFromHistory, deleteOnlyOneItemFromHistory, createOnlyOneItemFromHistory} from '../../services/HistoryService';
 import router from '../../router';
 
 const state = {
@@ -108,6 +108,57 @@ const actions = {
     },
     async clearEspecialities({commit}){
         return commit('clearEspecialities')
+    },
+    async updateOnlyOneItemFromHistoryById({dispatch, commit},dataToSend){
+        const snackbarData = {
+            timeout: 2000,
+            text: '',
+            snackbar: true
+        }
+        try {
+            const response = await updateOnlyOneItemFromHistory(dataToSend.historyId, dataToSend)
+            snackbarData.text = 'Historia clínica actualizada correctamente';
+            commit('OneHistoryUpdatedSuccessfully', response.data);
+            dispatch('getUltimateSnackbarState', snackbarData)
+        } catch (err) {
+            if(err)snackbarData.text = err.response.data.msg;
+            commit('putUnLoadingEspecialities');
+            return dispatch('getUltimateSnackbarState', snackbarData)
+        }
+    },
+    async deleteOnlyOneItemFromHistoryById({dispatch, commit},dataToSend){
+        const snackbarData = {
+            timeout: 2000,
+            text: '',
+            snackbar: true
+        }
+        try {
+            const response = await deleteOnlyOneItemFromHistory(dataToSend.historyId, dataToSend.itemId, dataToSend.type)
+            snackbarData.text = 'Historia clínica actualizada correctamente';
+            commit('OneHistoryUpdatedSuccessfully', response.data);
+            dispatch('getUltimateSnackbarState', snackbarData)
+        } catch (err) {
+            if(err)snackbarData.text = err.response.data.msg;
+            commit('putUnLoadingEspecialities');
+            return dispatch('getUltimateSnackbarState', snackbarData)
+        }
+    },
+    async createOnlyOneItemFromHistoryById({dispatch, commit},dataToSend){
+        const snackbarData = {
+            timeout: 2000,
+            text: '',
+            snackbar: true
+        }
+        try {
+            const response = await createOnlyOneItemFromHistory(dataToSend.historyId, dataToSend)
+            snackbarData.text = 'Historia clínica actualizada correctamente';
+            commit('OneHistoryUpdatedSuccessfully', response.data);
+            dispatch('getUltimateSnackbarState', snackbarData)
+        } catch (err) {
+            if(err)snackbarData.text = err.response.data.msg;
+            commit('putUnLoadingEspecialities');
+            return dispatch('getUltimateSnackbarState', snackbarData)
+        }
     }
 }
 
@@ -143,6 +194,7 @@ const mutations = {
           state.historiesByPatientId.splice(index, 1, historyUpdated);
         }
     },
+    OneHistoryUpdatedSuccessfully:(state, editedHistory) => (state.historyToEdit = editedHistory),
 }
 
 export default {
