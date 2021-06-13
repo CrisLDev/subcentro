@@ -4,12 +4,14 @@
             <v-row class="pl-5 pr-5 pt-5 pb-5">
                 <v-col
                 cols="12"
+                v-if="this.$route.params.patient_id"
                 class="text-center"
                 >
                 <h2 class="text-uppercase">Ficha médica</h2>
                 </v-col>
                 <v-col
                 cols="12"
+                v-if="this.$route.params.patient_id"
                 >
                 <label class="caption">Por favor, agregar una coma "," por cada item.</label>
                 <v-textarea
@@ -22,6 +24,7 @@
                 </v-col>
                 <v-col
                 cols="12"
+                v-if="this.$route.params.patient_id"
                 >
                 <label class="caption">Por favor, agregar una coma "," por cada item.</label>
                 <v-textarea
@@ -34,6 +37,7 @@
                 </v-col>
                 <v-col
                 cols="12"
+                v-if="this.$route.params.patient_id"
                 >
                 <label class="caption">Por favor, agregar una coma "," por cada item.</label>
                 <v-textarea
@@ -46,6 +50,7 @@
                 </v-col>
                 <v-col
                 cols="12"
+                v-if="this.$route.params.patient_id"
                 >
                 <label class="caption">Por favor, agregar una coma "," por cada item.</label>
                 <v-textarea
@@ -70,6 +75,7 @@
                 </v-col>
                 <v-col
                 cols="12"
+                v-if="this.$route.params.patient_id"
                 >
                 <label class="caption">Por favor, agregar una coma "," por cada item.</label>
                 <v-textarea
@@ -82,6 +88,7 @@
                 </v-col>
                 <v-col
                 cols="12"
+                v-if="this.$route.params.patient_id"
                 >
                 <label class="caption">Por favor, agregar una coma "," por cada item.</label>
                 <v-textarea
@@ -94,6 +101,7 @@
                 </v-col>
                 <v-col
                 cols="12"
+                v-if="this.$route.params.patient_id"
                 >
                 <label class="caption">Por favor, agregar una coma "," por cada item.</label>
                 <v-textarea
@@ -117,6 +125,7 @@
                 </v-col>
                 <v-col
                 cols="12"
+                v-if="this.$route.params.patient_id"
                 >
                 <label class="caption">Por favor, agregar una coma "," por cada item.</label>
                 <v-textarea
@@ -129,6 +138,7 @@
                 </v-col>
                 <v-col
                 cols="12"
+                v-if="this.$route.params.patient_id"
                 >
                 <label class="caption">Por favor, agregar una coma "," por cada item.</label>
                 <v-textarea
@@ -141,6 +151,7 @@
                 </v-col>
                 <v-col
                 cols="12"
+                v-if="this.$route.params.patient_id"
                 >
                 <label class="caption">Por favor, agregar una coma "," por cada item.</label>
                 <v-textarea
@@ -153,6 +164,7 @@
                 </v-col>
                 <v-col
                 cols="12"
+                v-if="this.$route.params.patient_id"
                 >
                 <label class="caption">Por favor, agregar una coma "," por cada item.</label>
                 <v-textarea
@@ -165,6 +177,7 @@
                 </v-col>
                 <v-col
                 cols="12"
+                v-if="this.$route.params.patient_id"
                 >
                 <label class="caption">Por favor, agregar una coma "," por cada item.</label>
                 <v-textarea
@@ -177,6 +190,7 @@
                 </v-col>
                 <v-col
                 cols="12"
+                v-if="this.$route.params.patient_id"
                 >
                 <label class="caption">Por favor, agregar una coma "," por cada item.</label>
                 <v-textarea

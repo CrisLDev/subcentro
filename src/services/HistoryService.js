@@ -23,3 +23,15 @@ export const deleteHistoryById = async (id) => {
 export const updateHistoryById = async (id, dataToSend) => {
     return await axios.put(`${API}/histories/${id}`, dataToSend);
 }
+
+export const updateOnlyOneItemFromHistory = async (historyId, dataToSend) => {
+    return await axios.put(`${API}/histories/${historyId}/item`, dataToSend);
+}
+
+export const deleteOnlyOneItemFromHistory = async (historyId, itemId, type) => {
+    return await axios.put(`${API}/histories/${historyId}/${itemId}/${type}`);
+}
+
+export const createOnlyOneItemFromHistory = async (historyId, dataToSend) => {
+    return await axios.put(`${API}/histories/${historyId}/create`, dataToSend);
+}
