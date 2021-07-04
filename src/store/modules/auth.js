@@ -160,7 +160,15 @@ const actions = {
         dispatch('getUltimateSnackbarState', snackbarData)
         return commit('UserPhotoSuccessfully', response.data);
     },
-     async getDoctorsFromBD({commit}) {
+    async getDoctorsFromBD({commit}) {
+        try {
+            const response = await getAllDoctors()
+            return commit('doctorsObtainedSuccessfully', response.data)
+        } catch (err) {
+            return commit('usersObtainedFailed', err.response.data.msg)
+        }
+    },
+    async availableDoctors({commit}) {
         try {
             const response = await getAllDoctors()
             return commit('doctorsObtainedSuccessfully', response.data)
