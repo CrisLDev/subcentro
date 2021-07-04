@@ -6,16 +6,18 @@ const state = {
         disabledh: true,
         disablede: true,
         disabledc: true,
+        disabledoctor: true,
         nueve: 0,
         once: 0, 
         unaTarde: 0,
         tresTarde: 0,
-        roomsNumber: 0
+        roomsNumber: 0,
     },
     charginDate: false,
     dateByCode: {},
     datesForUserLoged: {},
-    datesForDoctorLoged: {}
+    datesForDoctorLoged: {},
+    doctorsAvaliable: []
 }
 
 const getters = {
@@ -36,6 +38,9 @@ const getters = {
     },
     datesForDoctorLoged: (state) => {
         return state.datesForDoctorLoged
+    },
+    doctorsAvaliable: (state) => {
+        return state.doctorsAvaliable
     },
 }
 
@@ -72,7 +77,6 @@ const actions = {
     async consultDate({commit}, dataToSend) {
         try {
             const response = await consultDate(dataToSend)
-            console.log(response.data)
             return await commit('dateConsultedSuccessfyully', response.data)
         } catch (err) {
             await consultDate(dataToSend)
@@ -154,7 +158,6 @@ const actions = {
             const response = await putDoctorId(data.id, data)
             snackbarData.text = 'Cita editada correctamente.';
             dispatch('getUltimateSnackbarState', snackbarData)
-            console.log(response.data)
             await commit('doctorEstablished', response.data);
         } catch (err) {
             if(err)snackbarData.text = err.response.data.msg;
@@ -212,53 +215,62 @@ const mutations = {
         disabledh: false,
         disablede: false,
         disabledc: false,
+        disabledoctor: false,
         nueve: dayConsulted.book.filter(hour => hour.hour === "09:00").length,
         once: dayConsulted.book.filter(hour => hour.hour === "11:00").length,
         unaTarde: dayConsulted.book.filter(hour => hour.hour === "13:00").length,
         tresTarde: dayConsulted.book.filter(hour => hour.hour === "15:00").length,
-        roomsNumber: dayConsulted.rooms.length
-    }),
+        roomsNumber: dayConsulted.rooms.length,
+    }, state.doctorsAvaliable = dayConsulted.doctors),
     dateConsulteGoneEmpty:(state) => (state.dayConsulted = {
         disabledh: false,
         disablede: false,
         disabledc: false,
+        disabledoctor: false,
         nueve: 0,
         once: 0,
         unaTarde: 0,
         tresTarde: 0,
         consultorios: 0,
-        roomsNumber: 0
+        roomsNumber: 0,
+        doctorsAvaliable: []
     }),
     activateEspecialityInputa:(state) => (state.dayConsulted = {
         disabledh: true,
         disablede: false,
         disabledc: true,
+        disabledoctor: true,
         roomsNumber: 0,
         nueve: 0,
         once: 0,
         unaTarde: 0,
         tresTarde: 0,
-        consultorios: 0}),
+        consultorios: 0,
+        doctorsAvaliable: []}),
     activateRoomsInputa:(state) => (state.dayConsulted = {
         disabledh: true,
         disablede: false,
         disabledc: false,
+        disabledoctor: true,
         roomsNumber: 0,
         nueve: 0,
         once: 0,
         unaTarde: 0,
         tresTarde: 0,
-        consultorios: 0}),
+        consultorios: 0,
+        doctorsAvaliable: []}),
     dateInputIsEmpty:(state) => (state.dayConsulted = {
         disabledh: false,
         disablede: false,
         disabledc: false,
+        disabledoctor: true,
         roomsNumber: 0,
         nueve: 0,
         once: 0,
         unaTarde: 0,
         tresTarde: 0,
-        consultorios: 0
+        consultorios: 0,
+        doctorsAvaliable: []
     }),
     dateCreatedSuccessfyully:(state) => (state.charginDate = false),
     datesObtainedFailed:(state, error) => (state.user = error),
