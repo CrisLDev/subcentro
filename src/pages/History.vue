@@ -13,6 +13,75 @@
                 cols="12"
                 v-if="this.$route.params.patient_id"
                 >
+                <span class="text-uppercase">Paciente: </span>
+                <span class="text-uppercase">{{this.$store.state.patients.patientSelected.userName}} | </span>
+                <span class="text-uppercase">{{this.$store.state.patients.patientSelected.fullName ? this.$store.state.patients.patientSelected.fullName : 'N/A'}}</span>
+                </v-col>
+                <v-col
+                cols="12"
+                >
+                <label class="caption">Ingrese temperatura.</label>
+                <v-text-field
+                    label="Ingrese temperatura"
+                    v-model="temperature"
+                    placeholder="Ingrese algo"
+                    rows="2"
+                    outlined
+                ></v-text-field>
+                </v-col>
+                <v-col
+                cols="12"
+                >
+                <label class="caption">Ingrese frecuencia respiratoria.</label>
+                <v-text-field
+                    label="Frecuencia respiratoria"
+                    v-model="frequency"
+                    placeholder="Ingrese frecuencia"
+                    rows="2"
+                    outlined
+                ></v-text-field>
+                </v-col>
+                <v-col
+                cols="12"
+                >
+                <label class="caption">Ingrese pulso.</label>
+                <v-text-field
+                    label="Pulso"
+                    v-model="pulse"
+                    placeholder="Ingrese el pulso"
+                    rows="2"
+                    outlined
+                ></v-text-field>
+                </v-col>
+                <v-col
+                cols="12"
+                >
+                <label class="caption">Ingrese presion arterial.</label>
+                <v-text-field
+                    label="Presión arterial"
+                    v-model="presure"
+                    placeholder="Ingrese presión"
+                    rows="2"
+                    outlined
+                ></v-text-field>
+                </v-col>
+                <v-col
+                cols="12"
+                v-if="this.$route.params.patient_id"
+                >
+                <label class="caption">Por favor, agregar una coma "," por cada item.</label>
+                <v-textarea
+                    label="Síntomas"
+                    v-model="symptom"
+                    placeholder="Ingrese síntomas"
+                    rows="2"
+                    outlined
+                ></v-textarea>
+                </v-col>
+                <v-col
+                cols="12"
+                v-if="this.$route.params.patient_id"
+                >
                 <label class="caption">Por favor, agregar una coma "," por cada item.</label>
                 <v-textarea
                     label="Enfermedades no transmisibles"
@@ -203,6 +272,32 @@
                 </v-col>
                 <v-col
                 cols="12"
+                v-if="this.$route.params.patient_id"
+                >
+                <label class="caption">Por favor, agregar una coma "," por cada item.</label>
+                <v-textarea
+                    label="Hereditarias"
+                    v-model="hereditary"
+                    placeholder="Ingrese enfermedades hereditarias"
+                    rows="2"
+                    outlined
+                ></v-textarea>
+                </v-col>
+                <v-col
+                cols="12"
+                v-if="this.$route.params.patient_id"
+                >
+                <label class="caption">Por favor, agregar una coma "," por cada item.</label>
+                <v-textarea
+                    label="Discapacidades"
+                    v-model="disabilities"
+                    placeholder="Ingrese discapacidades"
+                    rows="2"
+                    outlined
+                ></v-textarea>
+                </v-col>
+                <v-col
+                cols="12"
                 >
                 <label class="caption">Ingrese un texto con las conclusiones de la ficha médica.</label>
                 <v-textarea
@@ -213,6 +308,7 @@
                     outlined
                 ></v-textarea>
                 </v-col>
+                <HistoryEditSub />
                 <v-col
                 cols="12"
                 >
@@ -221,13 +317,16 @@
             </v-row>
         </v-card>
     </v-container>
+
 </template>
 
 <script>
 import {mapActions} from 'vuex';
+import HistoryEditSub from './HistoryEditSub';
   export default {
-    data: () => ({
-    }),
+    components: {
+        HistoryEditSub
+    },
     computed:{
         non_communicable_diseases: {
             get () {
@@ -357,6 +456,62 @@ import {mapActions} from 'vuex';
             this.$store.commit('updateConclusions', value)
             }
         },
+        symptom: {
+            get () {
+                return this.$store.state.histories.historyToEdit.symptom
+            },
+            set (value) {
+            this.$store.commit('updateSymptom', value)
+            }
+        },
+        hereditary: {
+            get () {
+                return this.$store.state.histories.historyToEdit.hereditary
+            },
+            set (value) {
+            this.$store.commit('updateHereditary', value)
+            }
+        },
+        disabilities: {
+            get () {
+                return this.$store.state.histories.historyToEdit.disabilities
+            },
+            set (value) {
+            this.$store.commit('updateDisabilities', value)
+            }
+        },
+        temperature: {
+            get () {
+                return this.$store.state.histories.historyToEdit.temperature
+            },
+            set (value) {
+            this.$store.commit('updateTemperature', value)
+            }
+        },
+        frequency: {
+            get () {
+                return this.$store.state.histories.historyToEdit.frequency
+            },
+            set (value) {
+            this.$store.commit('updateBreathingFrequency', value)
+            }
+        },
+        pulse: {
+            get () {
+                return this.$store.state.histories.historyToEdit.pulse
+            },
+            set (value) {
+            this.$store.commit('updatePulse', value)
+            }
+        },
+        presure: {
+            get () {
+                return this.$store.state.histories.historyToEdit.presure
+            },
+            set (value) {
+            this.$store.commit('updateBloodPresure', value)
+            }
+        }
     },
     methods: {
       ...mapActions(["createNewHistory", "updateHistoryById", "getHistoryById"]),
@@ -367,7 +522,6 @@ import {mapActions} from 'vuex';
             const dataToSend = this.$store.state.histories.historyToEdit;
             dataToSend["patient_id"] = this.$route.params.patient_id;
             dataToSend["user_id"] = this.$store.getters.userLoged._id;
-            console.log(dataToSend)
             this.createNewHistory(dataToSend);
         }else{
             const dataToSend = {
@@ -389,7 +543,14 @@ import {mapActions} from 'vuex';
                 muscular: this.muscular.toString(),
                 conclusions: this.conclusions.toString(),
                 patient_id: this.$store.state.histories.historyToEdit.patient_id,
-                user_id: this.$store.getters.userLoged._id
+                user_id: this.$store.getters.userLoged._id,
+                temperature: this.$store.histories.historyToEdit.temperature,
+                frequency: this.$store.histories.historyToEdit.frequency,
+                pulse: this.$store.histories.historyToEdit.pulse,
+                presure: this.$store.histories.historyToEdit.presure,
+                symptom: this.$store.histories.historyToEdit.symptom.toString(),
+                hereditary: this.$store.histories.historyToEdit.hereditary.toString(),
+                disabilities: this.$store.histories.historyToEdit.disabilities.toString(),
             };
             this.updateHistoryById(dataToSend);
         }

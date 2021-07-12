@@ -33,7 +33,6 @@ export default {
     },
     created() {
         this.consultDateByDoctorId(this.userLoged._id);
-        console.log(this.datesInBd)
     },
 }
 </script>

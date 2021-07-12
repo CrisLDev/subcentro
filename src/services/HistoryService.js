@@ -1,8 +1,8 @@
 import axios from 'axios';
 
-//const API = process.env.API || 'http://localhost:4123/api';
+const API = process.env.API || 'http://localhost:4123/api';
 
-const API = 'https://subcentroback.herokuapp.com/api';
+//const API = 'https://subcentroback.herokuapp.com/api';
 
 export const createHistory = async (dataToSend) => {
     return await axios.post(`${API}/histories`, dataToSend);
