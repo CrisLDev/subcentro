@@ -3,7 +3,7 @@
     <v-dialog v-model="dialog" persistent max-width="600px">
       <template v-slot:activator="{ on, attrs }">
         <v-btn color="primary" dark v-bind="attrs" v-on="on" block>
-          Crear Paciente o Doctor
+          Crear Usuario
         </v-btn>
       </template>
       <v-card>
@@ -34,7 +34,7 @@
               <v-col cols="12" sm="6" md="6">
                 <v-text-field
                   v-model="userNameN"
-                  label="Nombre del paciente*"
+                  label="Nombre del usuario*"
                   required
                   :counter="20"
                   :error-messages="userNameNErrors"

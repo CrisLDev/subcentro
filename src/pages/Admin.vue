@@ -56,7 +56,7 @@
         </v-col>
         <v-col cols="12">
           <v-alert border="bottom" colored-border color="primary" elevation="2">
-            <v-icon medium>{{ mdiInformation }}</v-icon> Crear paciente o doctor
+            <v-icon medium>{{ mdiInformation }}</v-icon> Crear usuario
           </v-alert>
         </v-col>
         <v-col>
@@ -136,7 +136,8 @@
                     <div><AdminUserEdit :user_id="user._id" /></div>
                     <br />
                     <div>
-                      <v-btn outlined rounded text @click="deleteU(user._id)">
+                      <AdminViewDoctorReport :doctor_id="user._id" />
+                      <v-btn class="ml-2" outlined rounded text @click="deleteU(user._id)">
                         Eliminar
                       </v-btn>
                     </div>
@@ -454,6 +455,7 @@ import AdminCreateDoctorForm from "../components/admin/AdminCreateDoctorForm";
 import AdminCreateScheduleDoctor from "../components/admin/AdminCreateScheduleDoctor";
 import AdminSchedule from "../components/admin/AdminSchedule";
 import DashboardCreateDateForm from "../components/dashboard/DashboardCreateDateForm";
+import AdminViewDoctorReport from "../components/admin/AdminViewDoctorReport";
 import {
   mdiBorderColor,
   mdiDotsVertical,
@@ -534,6 +536,7 @@ export default {
     AdminSchedule,
     Loading,
     DashboardCreateDateForm,
+    AdminViewDoctorReport
   },
   computed: {
     ...mapGetters([

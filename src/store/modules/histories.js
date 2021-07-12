@@ -20,6 +20,13 @@ const state = {
                 nervous: '',
                 muscular: '',
                 conclusions: '',
+                temperature: '',
+                pulse: '',
+                frequency: '',
+                presure: '',
+                symptom: '',
+                hereditary: '',
+                disabilities: ''
     },
     charginHistories: false
 }
@@ -53,10 +60,9 @@ const actions = {
             snackbar: true
         }
         try {
-            const response = await createHistory(dataToSend)
+            await createHistory(dataToSend)
             snackbarData.text = 'Historia clínica agregada correctamente';
             dispatch('getUltimateSnackbarState', snackbarData);
-            commit('historyCreatedSuccessfully', response.data)
             return router.push('/pacientes');
         } catch (err) {
             if(err)snackbarData.text = err.response.data.msg;
@@ -184,6 +190,13 @@ const mutations = {
     updateNervous (state, nervous) {state.historyToEdit.nervous = nervous},
     updateMuscular (state, muscular) {state.historyToEdit.muscular = muscular},
     updateConclusions (state, conclusions) {state.historyToEdit.conclusions = conclusions},
+    updateTemperature (state, temperature) {state.historyToEdit.temperature = temperature},
+    updateSymptom (state, symptom) {state.historyToEdit.symptom = symptom},
+    updateHereditary (state, hereditary) {state.historyToEdit.hereditary = hereditary},
+    updateDisabilities (state, disabilities) {state.historyToEdit.disabilities = disabilities},
+    updateBreathingFrequency (state, frequency) {state.historyToEdit.frequency = frequency},
+    updatePulse (state, pulse) {state.historyToEdit.pulse = pulse},
+    updateBloodPresure (state, presure) {state.historyToEdit.presure = presure},
     deleteHistoryInStore: (state, id) => (state.historiesByPatientId = state.historiesByPatientId.filter((history) => history._id !== id), state.charginEspecialities = false),
     putHistoryToEdit (state, data)  {state.historyToEdit = data},
     clearHistoryToEdit: (state) => {state.historyToEdit = {}},
