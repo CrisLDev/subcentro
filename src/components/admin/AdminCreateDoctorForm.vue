@@ -1,9 +1,8 @@
 <template>
-  <v-row justify="center">
     <v-dialog v-model="dialog" persistent max-width="600px">
       <template v-slot:activator="{ on, attrs }">
-        <v-btn color="primary" dark v-bind="attrs" v-on="on" block>
-          Crear Usuario
+        <v-btn color="primary" dark v-bind="attrs" v-on="on" block class="mb-2">
+          Crear {{roleUser === 'user' ? 'Usuario' : roleUser}}
         </v-btn>
       </template>
       <v-card>
@@ -13,24 +12,6 @@
         <v-card-text>
           <v-container>
             <v-row>
-              <v-col cols="12">
-                <v-radio-group
-                  class="mb-0 mt-0 pt-0 pb-0"
-                  v-model="radioGroup"
-                  @change="showOrNotInput"
-                >
-                  <v-radio
-                    label="Crear paciente"
-                    name="radioGroup"
-                    :value="1"
-                  ></v-radio>
-                  <v-radio
-                    label="Crear doctor"
-                    name="radioGroup"
-                    :value="2"
-                  ></v-radio>
-                </v-radio-group>
-              </v-col>
               <v-col cols="12" sm="6" md="6">
                 <v-text-field
                   v-model="userNameN"
@@ -173,7 +154,6 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-  </v-row>
 </template>
 
 <script>
@@ -196,7 +176,6 @@ export default {
     adressN: "",
     dniN: "",
     dateN: "",
-    radioGroup: 1,
   }),
   components: {
     Loading,
@@ -294,6 +273,9 @@ export default {
     ...mapGetters(["charginAuth"]),
   },
   methods: {
+    save(date) {
+      this.$refs.menu.save(date);
+    },
     ...mapActions(["getUltimateSnackbarState", "registerUser"]),
     async submit() {
       await this.$v.$touch();
@@ -334,12 +316,7 @@ export default {
         dni: this.dniN,
         telephoneNumber: this.telephoneNumberN,
       };
-      if (this.radioGroup == 1) {
-        dataToSend.role = "user";
-      }
-      if (this.radioGroup == 2) {
-        dataToSend.role = "doctor";
-      }
+      dataToSend.role = this.roleUser;
       this.registerUser(dataToSend);
     },
   },
@@ -348,5 +325,8 @@ export default {
       val && setTimeout(() => (this.$refs.picker.activePicker = "YEAR"));
     },
   },
+  props: {
+    roleUser: String
+  }
 };
 </script>

@@ -44,7 +44,7 @@
                     <v-list-item v-for="history in historiesInBd" :key="history._id">
                     <v-list-item-content>
                         <v-list-item-title class="d-flex align-center">
-                            <span>Historia clinica {{moment(history.createdAt).format('DD/MM/YYYY HH:ss')}}</span>
+                            <span>Historia clinica {{moment(history.createdAt).format('DD/MM/YYYY hh:mm:ss')}}</span>
                             <div class="ml-auto">
                                 <v-btn icon @click="goToViewHistory(history._id, history)">
                                     <v-icon>{{mdiEye}}</v-icon>

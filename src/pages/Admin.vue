@@ -61,7 +61,8 @@
         </v-col>
         <v-col>
           <v-container>
-            <AdminCreateDoctorForm />
+            <AdminCreateDoctorForm roleUser='user' />
+            <AdminCreateDoctorForm roleUser='doctor' />
           </v-container>
         </v-col>
         <v-col cols="12" class="mt-6 mb-1">
