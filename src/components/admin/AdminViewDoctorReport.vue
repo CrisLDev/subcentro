@@ -42,11 +42,11 @@
                 </div>
                 <div>
                   <p class="font-weight-bold">Última cita</p>
-                  <p>{{last ? last.patient_id.userName : ''}} - {{last ? moment(last.date).utc().format('DD/MM/YYYY hh:mm:ss') : ''}}</p>
+                  <p>{{last ? last.patient_id.userName : 'N/A'}} - {{last ? moment(last.date).utc().format('DD/MM/YYYY hh:mm:ss') : 'N/A'}}</p>
                 </div>
                 <div>
                   <p class="font-weight-bold">Próxima cita</p>
-                  <p>{{theFND ? theFND.patient_id.userName : ''}} - {{theFND ? (theFND.date + ' ' + theFND.hour ) : ''}}</p>
+                  <p>{{theFND ? theFND.patient_id.userName : 'N/A'}} - {{theFND ? (theFND.date + ' ' + theFND.hour ) : 'N/A'}}</p>
                 </div>
               </v-col>
             </v-row>
