@@ -40,6 +40,14 @@
                   <p class="font-weight-bold">Citas no completadas</p>
                   <p>{{incomplete}}</p>
                 </div>
+                <div>
+                  <p class="font-weight-bold">Última cita</p>
+                  <p>{{last ? last.patient_id.userName : 'N/A'}} - {{last ? moment(last.date).utc().format('DD/MM/YYYY hh:mm:ss') : 'N/A'}}</p>
+                </div>
+                <div>
+                  <p class="font-weight-bold">Próxima cita</p>
+                  <p>{{theFND ? theFND.patient_id.userName : 'N/A'}} - {{theFND ? (theFND.date + ' ' + theFND.hour ) : 'N/A'}}</p>
+                </div>
               </v-col>
             </v-row>
           </v-container>
@@ -65,7 +73,10 @@ import { mapActions, mapGetters } from 'vuex'
       dialog: false,
       total: '',
       complete: '',
-      incomplete: ''
+      incomplete: '',
+      last: '',
+      theFND: '',
+      dateForCheck: ''
     }),
     props: {
       doctor_id: String
@@ -77,9 +88,24 @@ import { mapActions, mapGetters } from 'vuex'
     },
     watch: {
       datesForDoctorLoged() {
+        let date = new Date()
+        let day = date.getDate()
+        let month = date.getMonth() + 1
+        let year = date.getFullYear();
+        if(month < 10 && day < 10){
+          this.dateForCheck = `${year}-0${month}-0${day}`;
+        }else if(month < 10){
+          this.dateForCheck = `${year}-0${month}-${day}`;
+        }else if(day < 10){
+          this.dateForCheck = `${year}-${month}-0${day}`;
+        }else{
+          this.dateForCheck = `${year}-${month}-${day}`;
+        }
         this.total = this.datesForDoctorLoged.length;
         this.complete = this.datesForDoctorLoged.filter((item) => item.complete === 'si').length;
         this.incomplete = this.datesForDoctorLoged.filter((item) => item.complete === 'no').length;
+        this.last = this.datesForDoctorLoged[0];
+        this.theFND = this.datesForDoctorLoged.find((item) => item.date > this.dateForCheck);
       }
     },
     methods: {
@@ -87,7 +113,6 @@ import { mapActions, mapGetters } from 'vuex'
       "consultDateByDoctorId"
     ]),
     getDates(){
-      console.log(this.doctor_id)
       this.consultDateByDoctorId(this.doctor_id);
     }
     },

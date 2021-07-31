@@ -7,10 +7,24 @@
                     <v-list-item-content>
                         <div class="overline mb-1">
                             <div class="d-flex">
+                                <strong>Última actualización</strong>
+                            </div>
+                            <p>{{moment(historyToEdit.updatedAt).format('DD/MM/YYYY hh:mm:ss')}}</p>
+                        </div>
+                    </v-list-item-content>
+                    </v-list-item>
+                </v-card>
+            </v-col>
+            <v-col cols="12" style="z-index: 3">
+                <v-card elevation="2" height="100%">
+                    <v-list-item three-line>
+                    <v-list-item-content>
+                        <div class="overline mb-1">
+                            <div class="d-flex">
                                 <strong>Síntomas</strong>
                             </div>
                             <p class="d-flex" v-for="(item, index) in historyToEdit.symptom" :key="index">
-                                <span>{{item.data}}</span>
+                                <span>{{item.data}} - {{moment(item.date).format('DD/MM/YYYY hh:mm:ss')}}</span>
                             </p>
                             <p v-if="historyToEdit.symptom.length <= 0">N/A</p>
                         </div>
@@ -91,7 +105,7 @@
                                 <strong>Enfermedades hereditarias</strong>
                             </div>
                             <p class="d-flex" v-for="(item, index) in historyToEdit.hereditary" :key="index">
-                                <span>{{item.data}}</span>
+                                <span>{{item.data}} - {{moment(item.date).format('DD/MM/YYYY hh:mm:ss')}}</span>
                             </p>
                             <p v-if="historyToEdit.hereditary.length <= 0">N/A</p>
                         </div>
@@ -108,7 +122,7 @@
                                 <strong>Discapacidades</strong>
                             </div>
                             <p class="d-flex" v-for="(item, index) in historyToEdit.disabilities" :key="index">
-                                <span>{{item.data}}</span>
+                                <span>{{item.data}} - {{moment(item.date).format('DD/MM/YYYY hh:mm:ss')}}</span>
                             </p>
                             <p v-if="historyToEdit.disabilities.length <= 0">N/A</p>
                         </div>
@@ -125,7 +139,7 @@
                                 <strong>Enfermedades no Transmisibles</strong>
                             </div>
                             <p class="d-flex" v-for="(item, index) in historyToEdit.non_communicable_diseases" :key="index">
-                                <span>{{item.data}}</span>
+                                <span>{{item.data}} - {{moment(item.date).format('DD/MM/YYYY hh:mm:ss')}}</span>
                             </p>
                             <p v-if="historyToEdit.non_communicable_diseases.length <= 0">N/A</p>
                         </div>
@@ -142,7 +156,7 @@
                             <strong>Enfermedades Transmisibles</strong>
                             </div>
                             <p class="d-flex" v-for="(item, index) in historyToEdit.sexually_transmitted_diseases" :key="index">
-                                <span>{{item.data}}</span>
+                                <span>{{item.data}} - {{moment(item.date).format('DD/MM/YYYY hh:mm:ss')}}</span>
                             </p>
                             <p v-if="historyToEdit.sexually_transmitted_diseases.length <= 0">N/A</p>
                         </div>
@@ -159,7 +173,7 @@
                             <strong>Enfermedades Degenerativas</strong>
                             </div>
                             <p class="d-flex" v-for="(item, index) in historyToEdit.degenerative_diseases" :key="index">
-                                <span>{{item.data}}</span>
+                                <span>{{item.data}} - {{moment(item.date).format('DD/MM/YYYY hh:mm:ss')}}</span>
                             </p>
                             <p v-if="historyToEdit.degenerative_diseases.length <= 0">N/A</p>
                         </div>
@@ -176,7 +190,7 @@
                             <strong>Adicciones</strong>
                             </div>
                             <p class="d-flex" v-for="(item, index) in historyToEdit.adictions" :key="index">
-                                <span>{{item.data}}</span>
+                                <span>{{item.data}} - {{moment(item.date).format('DD/MM/YYYY hh:mm:ss')}}</span>
                             </p>
                             <p v-if="historyToEdit.adictions.length <= 0">N/A</p>
                         </div>
@@ -193,7 +207,7 @@
                             <strong>Alergias</strong>
                             </div>
                             <p class="d-flex" v-for="(item, index) in historyToEdit.allergies" :key="index">
-                                <span>{{item.data}}</span>
+                                <span>{{item.data}} - {{moment(item.date).format('DD/MM/YYYY hh:mm:ss')}}</span>
                             </p>
                             <p v-if="historyToEdit.allergies.length <= 0">N/A</p>
                         </div>
@@ -210,7 +224,7 @@
                             <strong>Antibióticos</strong>
                             </div>
                             <p class="d-flex" v-for="(item, index) in historyToEdit.antibiotics" :key="index">
-                                <span>{{item.data}}</span>
+                                <span>{{item.data}} - {{moment(item.date).utc().format('DD/MM/YYYY hh:mm:ss')}}</span>
                             </p>
                             <p v-if="historyToEdit.antibiotics.length <= 0">N/A</p>
                         </div>
@@ -226,10 +240,7 @@
                             <div class="d-flex">
                             <strong>Ha sido Hospitalizado</strong>
                             </div>
-                            <p class="d-flex" v-for="(item, index) in historyToEdit.has_been_hospitalized" :key="index">
-                                <span>{{item.data}}</span>
-                            </p>
-                            <p v-if="historyToEdit.has_been_hospitalized.length <= 0">N/A</p>
+                            {{historyToEdit.has_been_hospitalized}}
                         </div>
                     </v-list-item-content>
                     </v-list-item>
@@ -244,7 +255,7 @@
                             <strong>Enfermedades Respiratorias</strong>
                             </div>
                             <p class="d-flex" v-for="(item, index) in historyToEdit.respiratory" :key="index">
-                                <span>{{item.data}}</span>
+                                <span>{{item.data}} - {{moment(item.date).format('DD/MM/YYYY hh:mm:ss')}}</span>
                             </p>
                             <p v-if="historyToEdit.respiratory.length <= 0">N/A</p>
                         </div>
@@ -261,7 +272,7 @@
                             <strong>Enfermedades Cardiovasculares</strong>
                             </div>
                             <p class="d-flex" v-for="(item, index) in historyToEdit.cardiovascular" :key="index">
-                                <span>{{item.data}}</span>
+                                <span>{{item.data}} - {{moment(item.date).format('DD/MM/YYYY hh:mm:ss')}}</span>
                             </p>
                             <p v-if="historyToEdit.cardiovascular.length <= 0">N/A</p>
                         </div>
@@ -278,7 +289,7 @@
                             <strong>Enfermedades Genitourinarias</strong>
                             </div>
                             <p class="d-flex" v-for="(item, index) in historyToEdit.genitourinary" :key="index">
-                                <span>{{item.data}}</span>
+                                <span>{{item.data}} - {{moment(item.date).format('DD/MM/YYYY hh:mm:ss')}}</span>
                             </p>
                             <p v-if="historyToEdit.genitourinary.length <= 0">N/A</p>
                         </div>
@@ -295,7 +306,7 @@
                             <strong>Enfermedades Endocrinas</strong>>
                             </div>
                             <p class="d-flex" v-for="(item, index) in historyToEdit.endocrine" :key="index">
-                                <span>{{item.data}}</span>
+                                <span>{{item.data}} - {{moment(item.date).format('DD/MM/YYYY hh:mm:ss')}}</span>
                             </p>
                             <p v-if="historyToEdit.endocrine.length <= 0">N/A</p>
                         </div>
@@ -312,7 +323,7 @@
                             <strong>Enfermedades Nerviosas</strong>
                             </div>
                             <p class="d-flex" v-for="(item, index) in historyToEdit.nervous" :key="index">
-                                <span>{{item.data}}</span>
+                                <span>{{item.data}} - {{moment(item.date).format('DD/MM/YYYY hh:mm:ss')}}</span>
                             </p>
                             <p v-if="historyToEdit.nervous.length <= 0">N/A</p>
                         </div>
@@ -329,7 +340,7 @@
                             <strong>Enfermedades Musculares</strong>
                             </div>
                             <p class="d-flex" v-for="(item, index) in historyToEdit.muscular" :key="index">
-                                <span>{{item.data}}</span>
+                                <span>{{item.data}} - {{moment(item.date).format('DD/MM/YYYY hh:mm:ss')}}</span>
                             </p>
                             <p v-if="historyToEdit.muscular.length <= 0">N/A</p>
                         </div>
