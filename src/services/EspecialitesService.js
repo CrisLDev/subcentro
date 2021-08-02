@@ -1,8 +1,5 @@
 import axios from 'axios';
-
-const API_URL = process.env.API_URL || 'http://localhost:4123/apiL';
-
-//const API_URL = 'https://subcentroback.herokuapp.com/api';
+import { API_URL } from '../../api';
 
 export const getEspecialities = async () => {
     return await axios.get(`${API_URL}/especialities`);

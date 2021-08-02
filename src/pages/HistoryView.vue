@@ -38,11 +38,12 @@
                     <v-list-item-content>
                         <div class="overline mb-1">
                             <div class="d-flex">
-                            <strong>Temperatura</strong>
+                                <strong>Temperatura</strong>
                             </div>
-                            <p>
-                                {{historyToEdit.temperature}}
+                            <p class="d-flex" v-for="(item, index) in historyToEdit.temperature" :key="index">
+                                <span>{{item.data}} - {{moment(item.date).format('DD/MM/YYYY hh:mm:ss')}}</span>
                             </p>
+                            <p v-if="historyToEdit.temperature.length <= 0">N/A</p>
                         </div>
                     </v-list-item-content>
                     </v-list-item>
@@ -54,11 +55,12 @@
                     <v-list-item-content>
                         <div class="overline mb-1">
                             <div class="d-flex">
-                            <strong>Pulso</strong>
+                                <strong>Pulso</strong>
                             </div>
-                            <p>
-                                {{historyToEdit.pulse}}
+                            <p class="d-flex" v-for="(item, index) in historyToEdit.pulse" :key="index">
+                                <span>{{item.data}} - {{moment(item.date).format('DD/MM/YYYY hh:mm:ss')}}</span>
                             </p>
+                            <p v-if="historyToEdit.pulse.length <= 0">N/A</p>
                         </div>
                     </v-list-item-content>
                     </v-list-item>
@@ -70,11 +72,12 @@
                     <v-list-item-content>
                         <div class="overline mb-1">
                             <div class="d-flex">
-                            <strong>Presión sanguinea</strong>
+                                <strong>Presión sanguinea</strong>
                             </div>
-                            <p>
-                                {{historyToEdit.presure}}
+                            <p class="d-flex" v-for="(item, index) in historyToEdit.presure" :key="index">
+                                <span>{{item.data}} - {{moment(item.date).format('DD/MM/YYYY hh:mm:ss')}}</span>
                             </p>
+                            <p v-if="historyToEdit.presure.length <= 0">N/A</p>
                         </div>
                     </v-list-item-content>
                     </v-list-item>
@@ -86,11 +89,12 @@
                     <v-list-item-content>
                         <div class="overline mb-1">
                             <div class="d-flex">
-                            <strong>Frecuencia cardiaca</strong>
+                                <strong>Frecuencia cardiaca</strong>
                             </div>
-                            <p>
-                                {{historyToEdit.frequency}}
+                            <p class="d-flex" v-for="(item, index) in historyToEdit.frequency" :key="index">
+                                <span>{{item.data}} - {{moment(item.date).format('DD/MM/YYYY hh:mm:ss')}}</span>
                             </p>
+                            <p v-if="historyToEdit.frequency.length <= 0">N/A</p>
                         </div>
                     </v-list-item-content>
                     </v-list-item>

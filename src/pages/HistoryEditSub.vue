@@ -7,6 +7,102 @@
                     <v-list-item-content>
                         <div class="overline mb-1">
                             <div class="d-flex">
+                                <strong>Pulso:</strong>
+                            <strong style="cursor: pointer" class="ml-auto" @click="sendToNew('pulse', editOrNew = 'new')">Nuevo</strong>
+                            </div>
+                            <p class="d-flex" v-for="(item, index) in historyToEdit.pulse" :key="index">
+                                <span>{{item.data}}</span>
+                                <v-btn icon class="ml-2" @click="goToEditItem(item._id, item, 'pulse', editOrNew = 'edit')">
+                                    <v-icon>{{mdiPencil}}</v-icon>
+                                </v-btn>
+                                <v-btn icon class="ml-2" @click="deleteItem(item._id, 'pulse')">
+                                    <v-icon>{{mdiTrashCan}}</v-icon>
+                                </v-btn>
+                            </p>
+                            <p v-if="historyToEdit.pulse.length <= 0">N/A</p>
+                        </div>
+                    </v-list-item-content>
+                    </v-list-item>
+                </v-card>
+            </v-col>
+            <v-col cols="12" style="z-index: 3">
+                <v-card elevation="2" height="100%">
+                    <v-list-item three-line>
+                    <v-list-item-content>
+                        <div class="overline mb-1">
+                            <div class="d-flex">
+                                <strong>Temperatura:</strong>
+                            <strong style="cursor: pointer" class="ml-auto" @click="sendToNew('temperature', editOrNew = 'new')">Nuevo</strong>
+                            </div>
+                            <p class="d-flex" v-for="(item, index) in historyToEdit.temperature" :key="index">
+                                <span>{{item.data}}</span>
+                                <v-btn icon class="ml-2" @click="goToEditItem(item._id, item, 'temperature', editOrNew = 'edit')">
+                                    <v-icon>{{mdiPencil}}</v-icon>
+                                </v-btn>
+                                <v-btn icon class="ml-2" @click="deleteItem(item._id, 'temperature')">
+                                    <v-icon>{{mdiTrashCan}}</v-icon>
+                                </v-btn>
+                            </p>
+                            <p v-if="historyToEdit.temperature.length <= 0">N/A</p>
+                        </div>
+                    </v-list-item-content>
+                    </v-list-item>
+                </v-card>
+            </v-col>
+            <v-col cols="12" style="z-index: 3">
+                <v-card elevation="2" height="100%">
+                    <v-list-item three-line>
+                    <v-list-item-content>
+                        <div class="overline mb-1">
+                            <div class="d-flex">
+                                <strong>Presión sanguínea:</strong>
+                            <strong style="cursor: pointer" class="ml-auto" @click="sendToNew('presure', editOrNew = 'new')">Nuevo</strong>
+                            </div>
+                            <p class="d-flex" v-for="(item, index) in historyToEdit.presure" :key="index">
+                                <span>{{item.data}}</span>
+                                <v-btn icon class="ml-2" @click="goToEditItem(item._id, item, 'presure', editOrNew = 'edit')">
+                                    <v-icon>{{mdiPencil}}</v-icon>
+                                </v-btn>
+                                <v-btn icon class="ml-2" @click="deleteItem(item._id, 'presure')">
+                                    <v-icon>{{mdiTrashCan}}</v-icon>
+                                </v-btn>
+                            </p>
+                            <p v-if="historyToEdit.presure.length <= 0">N/A</p>
+                        </div>
+                    </v-list-item-content>
+                    </v-list-item>
+                </v-card>
+            </v-col>
+            <v-col cols="12" style="z-index: 3">
+                <v-card elevation="2" height="100%">
+                    <v-list-item three-line>
+                    <v-list-item-content>
+                        <div class="overline mb-1">
+                            <div class="d-flex">
+                                <strong>Frecuencia cardiaca:</strong>
+                            <strong style="cursor: pointer" class="ml-auto" @click="sendToNew('frequency', editOrNew = 'new')">Nuevo</strong>
+                            </div>
+                            <p class="d-flex" v-for="(item, index) in historyToEdit.frequency" :key="index">
+                                <span>{{item.data}}</span>
+                                <v-btn icon class="ml-2" @click="goToEditItem(item._id, item, 'frequency', editOrNew = 'edit')">
+                                    <v-icon>{{mdiPencil}}</v-icon>
+                                </v-btn>
+                                <v-btn icon class="ml-2" @click="deleteItem(item._id, 'frequency')">
+                                    <v-icon>{{mdiTrashCan}}</v-icon>
+                                </v-btn>
+                            </p>
+                            <p v-if="historyToEdit.frequency.length <= 0">N/A</p>
+                        </div>
+                    </v-list-item-content>
+                    </v-list-item>
+                </v-card>
+            </v-col>
+            <v-col cols="12" style="z-index: 3">
+                <v-card elevation="2" height="100%">
+                    <v-list-item three-line>
+                    <v-list-item-content>
+                        <div class="overline mb-1">
+                            <div class="d-flex">
                                 <strong>Síntomas</strong>
                             <strong style="cursor: pointer" class="ml-auto" @click="sendToNew('symptom', editOrNew = 'new')">Nuevo</strong>
                             </div>

@@ -19,8 +19,9 @@
                 </v-col>
                 <v-col
                 cols="12"
+                v-if="this.$route.params.patient_id"
                 >
-                <label class="caption">Ingrese temperatura.</label>
+                <label class="caption">Por favor, agregar una coma "," por cada item.</label>
                 <v-text-field
                     label="Ingrese temperatura"
                     v-model="temperature"
@@ -31,8 +32,9 @@
                 </v-col>
                 <v-col
                 cols="12"
+                v-if="this.$route.params.patient_id"
                 >
-                <label class="caption">Ingrese frecuencia respiratoria.</label>
+                <label class="caption">Por favor, agregar una coma "," por cada item.</label>
                 <v-text-field
                     label="Frecuencia respiratoria"
                     v-model="frequency"
@@ -43,8 +45,9 @@
                 </v-col>
                 <v-col
                 cols="12"
+                v-if="this.$route.params.patient_id"
                 >
-                <label class="caption">Ingrese pulso.</label>
+                <label class="caption">Por favor, agregar una coma "," por cada item.</label>
                 <v-text-field
                     label="Pulso"
                     v-model="pulse"
@@ -55,8 +58,9 @@
                 </v-col>
                 <v-col
                 cols="12"
+                v-if="this.$route.params.patient_id"
                 >
-                <label class="caption">Ingrese presion arterial.</label>
+                <label class="caption">Por favor, agregar una coma "," por cada item.</label>
                 <v-text-field
                     label="Presión arterial"
                     v-model="presure"
@@ -544,10 +548,10 @@ import HistoryEditSub from './HistoryEditSub';
                 conclusions: this.conclusions.toString(),
                 patient_id: this.$store.state.histories.historyToEdit.patient_id,
                 user_id: this.$store.getters.userLoged._id,
-                temperature: this.$store.histories.historyToEdit.temperature,
-                frequency: this.$store.histories.historyToEdit.frequency,
-                pulse: this.$store.histories.historyToEdit.pulse,
-                presure: this.$store.histories.historyToEdit.presure,
+                temperature: this.$store.histories.historyToEdit.temperature.toString(),
+                frequency: this.$store.histories.historyToEdit.frequency.toString(),
+                pulse: this.$store.histories.historyToEdit.pulse.toString(),
+                presure: this.$store.histories.historyToEdit.presure.toString(),
                 symptom: this.$store.histories.historyToEdit.symptom.toString(),
                 hereditary: this.$store.histories.historyToEdit.hereditary.toString(),
                 disabilities: this.$store.histories.historyToEdit.disabilities.toString(),
