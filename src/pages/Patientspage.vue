@@ -39,7 +39,7 @@
             <v-col cols="12" md="5" sm="12" class="mt-6">
                 <v-card elevation="2">
                     <v-btn block color="primary" @click="goToNewHistory(patientSelected._id)">
-                        Crear Historia Clínica
+                        {{historiesInBd.length > 0 ? 'Agregar historia clínica' : 'Crear Historia Clínica'}}
                     </v-btn>
                     <v-list-item v-for="history in historiesInBd" :key="history._id">
                     <v-list-item-content>
