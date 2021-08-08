@@ -3,7 +3,7 @@
     <v-dialog v-model="dialog" persistent max-width="600px">
       <template v-slot:activator="{ on, attrs }">
         <v-btn color="primary" dark v-bind="attrs" v-on="on">
-          Editar Informacion
+          Editar Información
         </v-btn>
       </template>
       <v-card>
@@ -49,7 +49,7 @@
               <v-col cols="6">
                 <v-text-field
                   v-model="telephoneNumber"
-                  label="Numero telefonico*"
+                  label="Número telefónico*"
                   required
                   :counter="10"
                   :error-messages="telephoneNumberErrors"
@@ -82,7 +82,7 @@
               <v-col cols="12" sm="6">
                 <v-text-field
                   v-model="adress"
-                  label="Direccion*"
+                  label="Dirección*"
                   required
                   :counter="40"
                   :error-messages="adressErrors"
@@ -132,7 +132,7 @@
           </v-container>
           <small>* Indica campos requeridos. </small>
           <small
-            >Solo rellenamos los datos que has rellenado previamente.</small
+            >Solo autocompletamos los datos que has rellenado previamente.</small
           >
           <div v-if="charginAuth" class="mb-4">
             <Loading />

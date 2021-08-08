@@ -18,10 +18,10 @@
             <v-card-text>
                 <div class="subtitle-2">
                     <span>Nombre completo:</span> {{this.$store.getters.userLoged.fullName ? this.$store.getters.userLoged.fullName : 'N/A'}}<br>
-                    <span>Numero telefonico:</span> {{this.$store.getters.userLoged.telephoneNumber ? '0' + this.$store.getters.userLoged.telephoneNumber : 'N/A'}}<br>
+                    <span>Número telefónico:</span> {{this.$store.getters.userLoged.telephoneNumber ? '0' + this.$store.getters.userLoged.telephoneNumber : 'N/A'}}<br>
                     <span>E-mail:</span> {{this.$store.getters.userLoged.email}}<br>
                     <span>Fecha de nacimiento:</span> {{this.$store.getters.userLoged.age ? this.$store.getters.userLoged.age : 'N/A'}}<br>
-                    <span>Direccion:</span> {{this.$store.getters.userLoged.adress ? this.$store.getters.userLoged.adress : 'N/A'}}<br>
+                    <span>Dirección:</span> {{this.$store.getters.userLoged.adress ? this.$store.getters.userLoged.adress : 'N/A'}}<br>
                     <span>Cédula:</span> {{this.$store.getters.userLoged.dni ? this.$store.getters.userLoged.dni : 'N/A'}}<br>
                 </div>
             </v-card-text>

@@ -7,7 +7,7 @@
       </template>
       <v-card>
         <v-card-title>
-          <span class="headline">Informacion de registro</span>
+          <span class="headline">Información de registro</span>
         </v-card-title>
         <v-card-text>
           <v-container>
@@ -48,7 +48,7 @@
               <v-col cols="6">
                 <v-text-field
                   v-model="telephoneNumberN"
-                  label="Numero telefonico*"
+                  label="Número telefónico*"
                   required
                   :counter="10"
                   :error-messages="telephoneNumberNErrors"
@@ -137,7 +137,7 @@
           </v-container>
           <small>* Indica campos requeridos. </small>
           <small
-            >Solo rellenamos los datos que has rellenado previamente.</small
+            >Solo autocompletamos los datos que has rellenado previamente.</small
           >
           <div v-if="charginAuth" class="mb-4">
             <Loading />

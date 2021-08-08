@@ -150,7 +150,7 @@
         </v-col>
         <v-col cols="12">
           <v-alert border="bottom" colored-border color="primary" elevation="2">
-            <v-icon medium>{{ mdiInformation }}</v-icon> Ver informacion de las
+            <v-icon medium>{{ mdiInformation }}</v-icon> Ver información de las
             citas
           </v-alert>
         </v-col>
@@ -240,20 +240,7 @@
                 offset-x
               >
                 <v-card color="grey lighten-4" min-width="350px" flat>
-                  <v-toolbar :color="selectedEvent.color" dark
-                    ><!--
-              <v-btn icon>
-                <v-icon>{{mdiBorderColor}}</v-icon>
-              </v-btn>
-              <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
-              <v-spacer></v-spacer>
-              <v-btn icon>
-                <v-icon>{{mdiHeart}}</v-icon>
-              </v-btn>
-              <v-btn icon>
-                <v-icon>{{mdiDotsVertical}}</v-icon>
-              </v-btn>
-              -->
+                  <v-toolbar :color="selectedEvent.color" dark>
                     <v-toolbar-title
                       v-html="selectedEvent.name"
                     ></v-toolbar-title>
