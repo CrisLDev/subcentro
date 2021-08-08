@@ -2,31 +2,6 @@
     <v-row>
         <v-col cols="12">
             <v-row>
-                <!--
-                <v-col cols="6">
-                    <v-menu
-                        v-model="menu4"
-                        :close-on-content-click="false"
-                        :nudge-right="40"
-                        transition="scale-transition"
-                        offset-y
-                        min-width="auto"
-                    >
-                        <template v-slot:activator="{ on, attrs }">
-                        <v-text-field
-                            v-model="date2"
-                            label="Fecha de fin"
-                            readonly
-                            v-bind="attrs"
-                            v-on="on"
-                        ></v-text-field>
-                        </template>
-                        <v-date-picker
-                        v-model="date2"
-                        @input="menu4 = false"
-                        ></v-date-picker>
-                    </v-menu>
-                </v-col>-->
                 <v-col cols="6">
                     <v-menu
                         ref="menu1"

@@ -145,14 +145,7 @@ export default {
     methods: {
       getEvents () {
         const events = []
-
-        //const min = new Date(`${start.date}T00:00:00`)
-        //const max = new Date(`${end.date}T23:59:59`)
-        //const days = (max.getTime() - min.getTime()) / 86400000
-        //const eventCount = this.rnd(days, days + 20)
         const dates = this.$store.getters.datesForUserLoged;
-        //const eventCount = dates;
-
         Object.values(dates).map((evento) => 
             {
                 const timestamp = evento.date + ' ' + evento.possible_hour;

@@ -12,7 +12,7 @@
                     <v-text-field 
                     v-model="userName" 
                     solo 
-                    label="Username" 
+                    label="Nombre de ususario" 
                     clearable 
                     :counter="20"
                     :error-messages="userNameErrors" 
@@ -33,7 +33,7 @@
                     v-model="password" 
                     type="password" 
                     solo 
-                    label="Password"
+                    label="Contraseña"
                     clearable 
                     :counter="20"
                     :error-messages="passwordErrors" 
@@ -44,7 +44,7 @@
                     v-model="password2" 
                     type="password" 
                     solo 
-                    label="Repeat yout Password" 
+                    label="Repite tu Contraseña" 
                     clearable 
                     :counter="20"
                     :error-messages="password2Errors" 

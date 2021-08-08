@@ -115,7 +115,7 @@
           </v-container>
         </v-form>
         <small>Escoja una fecha valida, por favor.</small><br />
-        <small>Recuerda guardar el codigo que se presenta al final.</small>
+        <small>Recuerda guardar el código que se presenta al final.</small>
         <div v-if="charginDate">
           <Loading />
         </div>

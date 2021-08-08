@@ -23,9 +23,9 @@
                 >
                 <label class="caption">Por favor, agregar una coma "," por cada item.</label>
                 <v-text-field
-                    label="Ingrese temperatura"
+                    label="Temperatura"
                     v-model="temperature"
-                    placeholder="Ingrese algo"
+                    placeholder="Ingrese temperatura"
                     rows="2"
                     outlined
                 ></v-text-field>
@@ -36,9 +36,9 @@
                 >
                 <label class="caption">Por favor, agregar una coma "," por cada item.</label>
                 <v-text-field
-                    label="Frecuencia respiratoria"
-                    v-model="frequency"
-                    placeholder="Ingrese frecuencia"
+                    label="Peso"
+                    v-model="weight"
+                    placeholder="Ingrese el peso"
                     rows="2"
                     outlined
                 ></v-text-field>
@@ -75,6 +75,19 @@
                 >
                 <label class="caption">Por favor, agregar una coma "," por cada item.</label>
                 <v-textarea
+                    label="Frecuencia respiratoria"
+                    v-model="breathe"
+                    placeholder="Ingrese respiración"
+                    rows="2"
+                    outlined
+                ></v-textarea>
+                </v-col>
+                <v-col
+                cols="12"
+                v-if="this.$route.params.patient_id"
+                >
+                <label class="caption">Por favor, agregar una coma "," por cada item.</label>
+                <v-textarea
                     label="Síntomas"
                     v-model="symptom"
                     placeholder="Ingrese síntomas"
@@ -88,9 +101,9 @@
                 >
                 <label class="caption">Por favor, agregar una coma "," por cada item.</label>
                 <v-textarea
-                    label="Enfermedades no transmisibles"
-                    v-model="non_communicable_diseases"
-                    placeholder="Ingrese enfermedades"
+                    label="Observaciones"
+                    v-model="observations"
+                    placeholder="Ingrese observaciones"
                     rows="2"
                     outlined
                 ></v-textarea>
@@ -101,214 +114,10 @@
                 >
                 <label class="caption">Por favor, agregar una coma "," por cada item.</label>
                 <v-textarea
-                    label="Enfermedades transmisibles"
-                    v-model="sexually_transmitted_diseases"
-                    placeholder="Ingrese enfermedades"
+                    label="Diagnóstico"
+                    v-model="diagnostic"
+                    placeholder="Ingrese diagnóstico"
                     rows="2"
-                    outlined
-                ></v-textarea>
-                </v-col>
-                <v-col
-                cols="12"
-                v-if="this.$route.params.patient_id"
-                >
-                <label class="caption">Por favor, agregar una coma "," por cada item.</label>
-                <v-textarea
-                    label="Enfermedades degenerativas"
-                    v-model="degenerative_diseases"
-                    placeholder="Ingrese enfermedades"
-                    rows="2"
-                    outlined
-                ></v-textarea>
-                </v-col>
-                <v-col
-                cols="12"
-                v-if="this.$route.params.patient_id"
-                >
-                <label class="caption">Por favor, agregar una coma "," por cada item.</label>
-                <v-textarea
-                    label="Otras enfermedades"
-                    v-model="others"
-                    placeholder="Ingrese enfermedades"
-                    rows="2"
-                    outlined
-                ></v-textarea>
-                </v-col>
-                <v-col
-                cols="12"
-                >
-                <label class="caption">Ingrese su tipo de sangre.</label>
-                <v-text-field
-                    label="Tipo de sangre"
-                    v-model="blood_type"
-                    placeholder="Ingrese tipo"
-                    rows="2"
-                    outlined
-                ></v-text-field>
-                </v-col>
-                <v-col
-                cols="12"
-                v-if="this.$route.params.patient_id"
-                >
-                <label class="caption">Por favor, agregar una coma "," por cada item.</label>
-                <v-textarea
-                    label="Adicciones"
-                    v-model="adictions"
-                    placeholder="Ingrese adicciones"
-                    rows="2"
-                    outlined
-                ></v-textarea>
-                </v-col>
-                <v-col
-                cols="12"
-                v-if="this.$route.params.patient_id"
-                >
-                <label class="caption">Por favor, agregar una coma "," por cada item.</label>
-                <v-textarea
-                    label="Alergias"
-                    v-model="allergies"
-                    placeholder="Ingrese alergias"
-                    rows="2"
-                    outlined
-                ></v-textarea>
-                </v-col>
-                <v-col
-                cols="12"
-                v-if="this.$route.params.patient_id"
-                >
-                <label class="caption">Por favor, agregar una coma "," por cada item.</label>
-                <v-textarea
-                    label="Antibioticos"
-                    v-model="antibiotics"
-                    placeholder="Ingrese antibioticos"
-                    rows="2"
-                    outlined
-                ></v-textarea>
-                </v-col>
-                <v-col
-                cols="12"
-                >
-                <label class="caption">Puede contestar con un "Si" o "No".</label>
-                <v-text-field
-                    label="Ha sido hospitalizado"
-                    v-model="has_been_hospitalized"
-                    placeholder="Ingrese dato"
-                    outlined
-                ></v-text-field>
-                </v-col>
-                <v-col
-                cols="12"
-                v-if="this.$route.params.patient_id"
-                >
-                <label class="caption">Por favor, agregar una coma "," por cada item.</label>
-                <v-textarea
-                    label="Respiratorias"
-                    v-model="respiratory"
-                    placeholder="Ingrese enfermedades"
-                    rows="2"
-                    outlined
-                ></v-textarea>
-                </v-col>
-                <v-col
-                cols="12"
-                v-if="this.$route.params.patient_id"
-                >
-                <label class="caption">Por favor, agregar una coma "," por cada item.</label>
-                <v-textarea
-                    label="Cardiovasculares"
-                    v-model="cardiovascular"
-                    placeholder="Ingrese enfermedades"
-                    rows="2"
-                    outlined
-                ></v-textarea>
-                </v-col>
-                <v-col
-                cols="12"
-                v-if="this.$route.params.patient_id"
-                >
-                <label class="caption">Por favor, agregar una coma "," por cada item.</label>
-                <v-textarea
-                    label="Genitourinarias"
-                    v-model="genitourinary"
-                    placeholder="Ingrese enfermedades"
-                    rows="2"
-                    outlined
-                ></v-textarea>
-                </v-col>
-                <v-col
-                cols="12"
-                v-if="this.$route.params.patient_id"
-                >
-                <label class="caption">Por favor, agregar una coma "," por cada item.</label>
-                <v-textarea
-                    label="Endocrinas"
-                    v-model="endocrine"
-                    placeholder="Ingrese enfermedades"
-                    rows="2"
-                    outlined
-                ></v-textarea>
-                </v-col>
-                <v-col
-                cols="12"
-                v-if="this.$route.params.patient_id"
-                >
-                <label class="caption">Por favor, agregar una coma "," por cada item.</label>
-                <v-textarea
-                    label="Nerviosas"
-                    v-model="nervous"
-                    placeholder="Ingrese enfermedades"
-                    rows="2"
-                    outlined
-                ></v-textarea>
-                </v-col>
-                <v-col
-                cols="12"
-                v-if="this.$route.params.patient_id"
-                >
-                <label class="caption">Por favor, agregar una coma "," por cada item.</label>
-                <v-textarea
-                    label="Musculares"
-                    v-model="muscular"
-                    placeholder="Ingrese enfermedades"
-                    rows="2"
-                    outlined
-                ></v-textarea>
-                </v-col>
-                <v-col
-                cols="12"
-                v-if="this.$route.params.patient_id"
-                >
-                <label class="caption">Por favor, agregar una coma "," por cada item.</label>
-                <v-textarea
-                    label="Hereditarias"
-                    v-model="hereditary"
-                    placeholder="Ingrese enfermedades hereditarias"
-                    rows="2"
-                    outlined
-                ></v-textarea>
-                </v-col>
-                <v-col
-                cols="12"
-                v-if="this.$route.params.patient_id"
-                >
-                <label class="caption">Por favor, agregar una coma "," por cada item.</label>
-                <v-textarea
-                    label="Discapacidades"
-                    v-model="disabilities"
-                    placeholder="Ingrese discapacidades"
-                    rows="2"
-                    outlined
-                ></v-textarea>
-                </v-col>
-                <v-col
-                cols="12"
-                >
-                <label class="caption">Ingrese un texto con las conclusiones de la ficha médica.</label>
-                <v-textarea
-                    label="Concluciones"
-                    v-model="conclusions"
-                    placeholder="Ingrese enfermedades"
-                    rows="4"
                     outlined
                 ></v-textarea>
                 </v-col>
@@ -332,132 +141,20 @@ import HistoryEditSub from './HistoryEditSub';
         HistoryEditSub
     },
     computed:{
-        non_communicable_diseases: {
+        diagnostic: {
             get () {
-                return this.$store.state.histories.historyToEdit.non_communicable_diseases
+                return this.$store.state.histories.historyToEdit.diagnostic
             },
             set (value) {
-            this.$store.commit('updateNon_communicable_diseases', value)
+            this.$store.commit('updateDiagnostic', value)
             }
         },
-        sexually_transmitted_diseases: {
+        breathe: {
             get () {
-                return this.$store.state.histories.historyToEdit.sexually_transmitted_diseases
+                return this.$store.state.histories.historyToEdit.breathe
             },
             set (value) {
-            this.$store.commit('updateSexually_transmitted_diseases', value)
-            }
-        },
-        degenerative_diseases: {
-            get () {
-                return this.$store.state.histories.historyToEdit.degenerative_diseases
-            },
-            set (value) {
-            this.$store.commit('updateDegenerative_diseases', value)
-            }
-        },
-        others: {
-            get () {
-                return this.$store.state.histories.historyToEdit.others
-            },
-            set (value) {
-            this.$store.commit('updateOthers', value)
-            }
-        },
-        blood_type: {
-            get () {
-                return this.$store.state.histories.historyToEdit.blood_type
-            },
-            set (value) {
-            this.$store.commit('updateBlood_type', value)
-            }
-        },
-        adictions: {
-            get () {
-                return this.$store.state.histories.historyToEdit.adictions
-            },
-            set (value) {
-            this.$store.commit('updateAdictions', value)
-            }
-        },
-        allergies: {
-            get () {
-                return this.$store.state.histories.historyToEdit.allergies
-            },
-            set (value) {
-            this.$store.commit('updateAllergies', value)
-            }
-        },
-        antibiotics: {
-            get () {
-                return this.$store.state.histories.historyToEdit.antibiotics
-            },
-            set (value) {
-            this.$store.commit('updateAntibiotics', value)
-            }
-        },
-        has_been_hospitalized: {
-            get () {
-                return this.$store.state.histories.historyToEdit.has_been_hospitalized
-            },
-            set (value) {
-            this.$store.commit('updateHas_been_hospitalized', value)
-            }
-        },
-        respiratory: {
-            get () {
-                return this.$store.state.histories.historyToEdit.respiratory
-            },
-            set (value) {
-            this.$store.commit('updateRespiratory', value)
-            }
-        },
-        cardiovascular: {
-            get () {
-                return this.$store.state.histories.historyToEdit.cardiovascular
-            },
-            set (value) {
-            this.$store.commit('updateCardiovascular', value)
-            }
-        },
-        genitourinary: {
-            get () {
-                return this.$store.state.histories.historyToEdit.genitourinary
-            },
-            set (value) {
-            this.$store.commit('updateGenitourinary', value)
-            }
-        },
-        endocrine: {
-            get () {
-                return this.$store.state.histories.historyToEdit.endocrine
-            },
-            set (value) {
-            this.$store.commit('updateEndocrine', value)
-            }
-        },
-        nervous: {
-            get () {
-                return this.$store.state.histories.historyToEdit.nervous
-            },
-            set (value) {
-            this.$store.commit('updateNervous', value)
-            }
-        },
-        muscular: {
-            get () {
-                return this.$store.state.histories.historyToEdit.muscular
-            },
-            set (value) {
-            this.$store.commit('updateMuscular', value)
-            }
-        },
-        conclusions: {
-            get () {
-                return this.$store.state.histories.historyToEdit.conclusions
-            },
-            set (value) {
-            this.$store.commit('updateConclusions', value)
+            this.$store.commit('updateBreathe', value)
             }
         },
         symptom: {
@@ -468,20 +165,12 @@ import HistoryEditSub from './HistoryEditSub';
             this.$store.commit('updateSymptom', value)
             }
         },
-        hereditary: {
+        observations: {
             get () {
-                return this.$store.state.histories.historyToEdit.hereditary
+                return this.$store.state.histories.historyToEdit.observations
             },
             set (value) {
-            this.$store.commit('updateHereditary', value)
-            }
-        },
-        disabilities: {
-            get () {
-                return this.$store.state.histories.historyToEdit.disabilities
-            },
-            set (value) {
-            this.$store.commit('updateDisabilities', value)
+            this.$store.commit('updateObservations', value)
             }
         },
         temperature: {
@@ -492,12 +181,12 @@ import HistoryEditSub from './HistoryEditSub';
             this.$store.commit('updateTemperature', value)
             }
         },
-        frequency: {
+        weight: {
             get () {
-                return this.$store.state.histories.historyToEdit.frequency
+                return this.$store.state.histories.historyToEdit.weight
             },
             set (value) {
-            this.$store.commit('updateBreathingFrequency', value)
+            this.$store.commit('updateWeight', value)
             }
         },
         pulse: {
@@ -530,31 +219,16 @@ import HistoryEditSub from './HistoryEditSub';
         }else{
             const dataToSend = {
                 _id: this.$store.state.histories.historyToEdit._id,
-                non_communicable_diseases: this.non_communicable_diseases.toString(),
-                sexually_transmitted_diseases: this.sexually_transmitted_diseases.toString(),
-                degenerative_diseases: this.degenerative_diseases.toString(),
-                others: this.others.toString(),
-                blood_type: this.blood_type.toString(),
-                adictions: this.adictions.toString(),
-                allergies: this.allergies.toString(),
-                antibiotics: this.antibiotics.toString(),
-                has_been_hospitalized: this.has_been_hospitalized.toString(),
-                respiratory: this.respiratory.toString(),
-                cardiovascular: this.cardiovascular.toString(),
-                genitourinary: this.genitourinary.toString(),
-                endocrine: this.endocrine.toString(),
-                nervous: this.nervous.toString(),
-                muscular: this.muscular.toString(),
-                conclusions: this.conclusions.toString(),
+                observations: this.observations.toString(),
+                diagnostic: this.diagnostic.toString(),
+                weight: this.weight.toString(),
                 patient_id: this.$store.state.histories.historyToEdit.patient_id,
                 user_id: this.$store.getters.userLoged._id,
                 temperature: this.$store.histories.historyToEdit.temperature.toString(),
-                frequency: this.$store.histories.historyToEdit.frequency.toString(),
+                breathe: this.$store.histories.historyToEdit.breathe.toString(),
                 pulse: this.$store.histories.historyToEdit.pulse.toString(),
                 presure: this.$store.histories.historyToEdit.presure.toString(),
                 symptom: this.$store.histories.historyToEdit.symptom.toString(),
-                hereditary: this.$store.histories.historyToEdit.hereditary.toString(),
-                disabilities: this.$store.histories.historyToEdit.disabilities.toString(),
             };
             this.updateHistoryById(dataToSend);
         }

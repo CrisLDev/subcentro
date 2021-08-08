@@ -7,41 +7,10 @@
                     <v-list-item-content>
                         <div class="overline mb-1">
                             <div class="d-flex">
-                                <strong>Última actualización</strong>
-                            </div>
-                            <p>{{moment(historyToEdit.updatedAt).format('DD/MM/YYYY hh:mm:ss')}}</p>
-                        </div>
-                    </v-list-item-content>
-                    </v-list-item>
-                </v-card>
-            </v-col>
-            <v-col cols="12" style="z-index: 3">
-                <v-card elevation="2" height="100%">
-                    <v-list-item three-line>
-                    <v-list-item-content>
-                        <div class="overline mb-1">
-                            <div class="d-flex">
-                                <strong>Síntomas</strong>
-                            </div>
-                            <p class="d-flex" v-for="(item, index) in historyToEdit.symptom" :key="index">
-                                <span>{{item.data}} - {{moment(item.date).format('DD/MM/YYYY hh:mm:ss')}}</span>
-                            </p>
-                            <p v-if="historyToEdit.symptom.length <= 0">N/A</p>
-                        </div>
-                    </v-list-item-content>
-                    </v-list-item>
-                </v-card>
-            </v-col>
-            <v-col cols="12" style="z-index: 3">
-                <v-card elevation="2" height="100%">
-                    <v-list-item three-line>
-                    <v-list-item-content>
-                        <div class="overline mb-1">
-                            <div class="d-flex">
-                                <strong>Temperatura</strong>
+                            <strong>Temperatura</strong>
                             </div>
                             <p class="d-flex" v-for="(item, index) in historyToEdit.temperature" :key="index">
-                                <span>{{item.data}} - {{moment(item.date).format('DD/MM/YYYY hh:mm:ss')}}</span>
+                                <span>{{item.data}}</span>
                             </p>
                             <p v-if="historyToEdit.temperature.length <= 0">N/A</p>
                         </div>
@@ -55,10 +24,27 @@
                     <v-list-item-content>
                         <div class="overline mb-1">
                             <div class="d-flex">
-                                <strong>Pulso</strong>
+                            <strong>Peso</strong>
+                            </div>
+                            <p class="d-flex" v-for="(item, index) in historyToEdit.weight" :key="index">
+                                <span>{{item.data}}</span>
+                            </p>
+                            <p v-if="historyToEdit.weight.length <= 0">N/A</p>
+                        </div>
+                    </v-list-item-content>
+                    </v-list-item>
+                </v-card>
+            </v-col>
+            <v-col cols="12" style="z-index: 3">
+                <v-card elevation="2" height="100%">
+                    <v-list-item three-line>
+                    <v-list-item-content>
+                        <div class="overline mb-1">
+                            <div class="d-flex">
+                            <strong>Pulso</strong>
                             </div>
                             <p class="d-flex" v-for="(item, index) in historyToEdit.pulse" :key="index">
-                                <span>{{item.data}} - {{moment(item.date).format('DD/MM/YYYY hh:mm:ss')}}</span>
+                                <span>{{item.data}}</span>
                             </p>
                             <p v-if="historyToEdit.pulse.length <= 0">N/A</p>
                         </div>
@@ -72,10 +58,10 @@
                     <v-list-item-content>
                         <div class="overline mb-1">
                             <div class="d-flex">
-                                <strong>Presión sanguinea</strong>
+                            <strong>Presión Sanguinea</strong>
                             </div>
                             <p class="d-flex" v-for="(item, index) in historyToEdit.presure" :key="index">
-                                <span>{{item.data}} - {{moment(item.date).format('DD/MM/YYYY hh:mm:ss')}}</span>
+                                <span>{{item.data}}</span>
                             </p>
                             <p v-if="historyToEdit.presure.length <= 0">N/A</p>
                         </div>
@@ -89,12 +75,12 @@
                     <v-list-item-content>
                         <div class="overline mb-1">
                             <div class="d-flex">
-                                <strong>Frecuencia cardiaca</strong>
+                            <strong>Frecuencia Respiratoria</strong>
                             </div>
-                            <p class="d-flex" v-for="(item, index) in historyToEdit.frequency" :key="index">
-                                <span>{{item.data}} - {{moment(item.date).format('DD/MM/YYYY hh:mm:ss')}}</span>
+                            <p class="d-flex" v-for="(item, index) in historyToEdit.breathe" :key="index">
+                                <span>{{item.data}}</span>
                             </p>
-                            <p v-if="historyToEdit.frequency.length <= 0">N/A</p>
+                            <p v-if="historyToEdit.breathe.length <= 0">N/A</p>
                         </div>
                     </v-list-item-content>
                     </v-list-item>
@@ -106,12 +92,12 @@
                     <v-list-item-content>
                         <div class="overline mb-1">
                             <div class="d-flex">
-                                <strong>Enfermedades hereditarias</strong>
+                            <strong>Sintomas</strong>
                             </div>
-                            <p class="d-flex" v-for="(item, index) in historyToEdit.hereditary" :key="index">
-                                <span>{{item.data}} - {{moment(item.date).format('DD/MM/YYYY hh:mm:ss')}}</span>
+                            <p class="d-flex" v-for="(item, index) in historyToEdit.symptom" :key="index">
+                                <span>{{item.data}}</span>
                             </p>
-                            <p v-if="historyToEdit.hereditary.length <= 0">N/A</p>
+                            <p v-if="historyToEdit.symptom.length <= 0">N/A</p>
                         </div>
                     </v-list-item-content>
                     </v-list-item>
@@ -123,12 +109,12 @@
                     <v-list-item-content>
                         <div class="overline mb-1">
                             <div class="d-flex">
-                                <strong>Discapacidades</strong>
+                            <strong>Observaciones</strong>
                             </div>
-                            <p class="d-flex" v-for="(item, index) in historyToEdit.disabilities" :key="index">
-                                <span>{{item.data}} - {{moment(item.date).format('DD/MM/YYYY hh:mm:ss')}}</span>
+                            <p class="d-flex" v-for="(item, index) in historyToEdit.observations" :key="index">
+                                <span>{{item.data}}</span>
                             </p>
-                            <p v-if="historyToEdit.disabilities.length <= 0">N/A</p>
+                            <p v-if="historyToEdit.observations.length <= 0">N/A</p>
                         </div>
                     </v-list-item-content>
                     </v-list-item>
@@ -140,245 +126,12 @@
                     <v-list-item-content>
                         <div class="overline mb-1">
                             <div class="d-flex">
-                                <strong>Enfermedades no Transmisibles</strong>
+                            <strong>Diagnóstico</strong>
                             </div>
-                            <p class="d-flex" v-for="(item, index) in historyToEdit.non_communicable_diseases" :key="index">
-                                <span>{{item.data}} - {{moment(item.date).format('DD/MM/YYYY hh:mm:ss')}}</span>
+                            <p class="d-flex" v-for="(item, index) in historyToEdit.diagnostic" :key="index">
+                                <span>{{item.data}}</span>
                             </p>
-                            <p v-if="historyToEdit.non_communicable_diseases.length <= 0">N/A</p>
-                        </div>
-                    </v-list-item-content>
-                    </v-list-item>
-                </v-card>
-            </v-col>
-            <v-col cols="12" style="z-index: 3">
-                <v-card elevation="2" height="100%">
-                    <v-list-item three-line>
-                    <v-list-item-content>
-                        <div class="overline mb-1">
-                            <div class="d-flex">
-                            <strong>Enfermedades Transmisibles</strong>
-                            </div>
-                            <p class="d-flex" v-for="(item, index) in historyToEdit.sexually_transmitted_diseases" :key="index">
-                                <span>{{item.data}} - {{moment(item.date).format('DD/MM/YYYY hh:mm:ss')}}</span>
-                            </p>
-                            <p v-if="historyToEdit.sexually_transmitted_diseases.length <= 0">N/A</p>
-                        </div>
-                    </v-list-item-content>
-                    </v-list-item>
-                </v-card>
-            </v-col>
-            <v-col cols="12" style="z-index: 3">
-                <v-card elevation="2" height="100%">
-                    <v-list-item three-line>
-                    <v-list-item-content>
-                        <div class="overline mb-1">
-                            <div class="d-flex">
-                            <strong>Enfermedades Degenerativas</strong>
-                            </div>
-                            <p class="d-flex" v-for="(item, index) in historyToEdit.degenerative_diseases" :key="index">
-                                <span>{{item.data}} - {{moment(item.date).format('DD/MM/YYYY hh:mm:ss')}}</span>
-                            </p>
-                            <p v-if="historyToEdit.degenerative_diseases.length <= 0">N/A</p>
-                        </div>
-                    </v-list-item-content>
-                    </v-list-item>
-                </v-card>
-            </v-col>
-            <v-col cols="12" style="z-index: 3">
-                <v-card elevation="2" height="100%">
-                    <v-list-item three-line>
-                    <v-list-item-content>
-                        <div class="overline mb-1">
-                            <div class="d-flex">
-                            <strong>Adicciones</strong>
-                            </div>
-                            <p class="d-flex" v-for="(item, index) in historyToEdit.adictions" :key="index">
-                                <span>{{item.data}} - {{moment(item.date).format('DD/MM/YYYY hh:mm:ss')}}</span>
-                            </p>
-                            <p v-if="historyToEdit.adictions.length <= 0">N/A</p>
-                        </div>
-                    </v-list-item-content>
-                    </v-list-item>
-                </v-card>
-            </v-col>
-            <v-col cols="12" style="z-index: 3">
-                <v-card elevation="2" height="100%">
-                    <v-list-item three-line>
-                    <v-list-item-content>
-                        <div class="overline mb-1">
-                            <div class="d-flex">
-                            <strong>Alergias</strong>
-                            </div>
-                            <p class="d-flex" v-for="(item, index) in historyToEdit.allergies" :key="index">
-                                <span>{{item.data}} - {{moment(item.date).format('DD/MM/YYYY hh:mm:ss')}}</span>
-                            </p>
-                            <p v-if="historyToEdit.allergies.length <= 0">N/A</p>
-                        </div>
-                    </v-list-item-content>
-                    </v-list-item>
-                </v-card>
-            </v-col>
-            <v-col cols="12" style="z-index: 3">
-                <v-card elevation="2" height="100%">
-                    <v-list-item three-line>
-                    <v-list-item-content>
-                        <div class="overline mb-1">
-                            <div class="d-flex">
-                            <strong>Antibióticos</strong>
-                            </div>
-                            <p class="d-flex" v-for="(item, index) in historyToEdit.antibiotics" :key="index">
-                                <span>{{item.data}} - {{moment(item.date).utc().format('DD/MM/YYYY hh:mm:ss')}}</span>
-                            </p>
-                            <p v-if="historyToEdit.antibiotics.length <= 0">N/A</p>
-                        </div>
-                    </v-list-item-content>
-                    </v-list-item>
-                </v-card>
-            </v-col>
-            <v-col cols="12" style="z-index: 3">
-                <v-card elevation="2" height="100%">
-                    <v-list-item three-line>
-                    <v-list-item-content>
-                        <div class="overline mb-1">
-                            <div class="d-flex">
-                            <strong>Ha sido Hospitalizado</strong>
-                            </div>
-                            {{historyToEdit.has_been_hospitalized}}
-                        </div>
-                    </v-list-item-content>
-                    </v-list-item>
-                </v-card>
-            </v-col>
-            <v-col cols="12" style="z-index: 3">
-                <v-card elevation="2" height="100%">
-                    <v-list-item three-line>
-                    <v-list-item-content>
-                        <div class="overline mb-1">
-                            <div class="d-flex">
-                            <strong>Enfermedades Respiratorias</strong>
-                            </div>
-                            <p class="d-flex" v-for="(item, index) in historyToEdit.respiratory" :key="index">
-                                <span>{{item.data}} - {{moment(item.date).format('DD/MM/YYYY hh:mm:ss')}}</span>
-                            </p>
-                            <p v-if="historyToEdit.respiratory.length <= 0">N/A</p>
-                        </div>
-                    </v-list-item-content>
-                    </v-list-item>
-                </v-card>
-            </v-col>
-            <v-col cols="12" style="z-index: 3">
-                <v-card elevation="2" height="100%">
-                    <v-list-item three-line>
-                    <v-list-item-content>
-                        <div class="overline mb-1">
-                            <div class="d-flex">
-                            <strong>Enfermedades Cardiovasculares</strong>
-                            </div>
-                            <p class="d-flex" v-for="(item, index) in historyToEdit.cardiovascular" :key="index">
-                                <span>{{item.data}} - {{moment(item.date).format('DD/MM/YYYY hh:mm:ss')}}</span>
-                            </p>
-                            <p v-if="historyToEdit.cardiovascular.length <= 0">N/A</p>
-                        </div>
-                    </v-list-item-content>
-                    </v-list-item>
-                </v-card>
-            </v-col>
-            <v-col cols="12" style="z-index: 3">
-                <v-card elevation="2" height="100%">
-                    <v-list-item three-line>
-                    <v-list-item-content>
-                        <div class="overline mb-1">
-                            <div class="d-flex">
-                            <strong>Enfermedades Genitourinarias</strong>
-                            </div>
-                            <p class="d-flex" v-for="(item, index) in historyToEdit.genitourinary" :key="index">
-                                <span>{{item.data}} - {{moment(item.date).format('DD/MM/YYYY hh:mm:ss')}}</span>
-                            </p>
-                            <p v-if="historyToEdit.genitourinary.length <= 0">N/A</p>
-                        </div>
-                    </v-list-item-content>
-                    </v-list-item>
-                </v-card>
-            </v-col>
-            <v-col cols="12" style="z-index: 3">
-                <v-card elevation="2" height="100%">
-                    <v-list-item three-line>
-                    <v-list-item-content>
-                        <div class="overline mb-1">
-                            <div class="d-flex">
-                            <strong>Enfermedades Endocrinas</strong>>
-                            </div>
-                            <p class="d-flex" v-for="(item, index) in historyToEdit.endocrine" :key="index">
-                                <span>{{item.data}} - {{moment(item.date).format('DD/MM/YYYY hh:mm:ss')}}</span>
-                            </p>
-                            <p v-if="historyToEdit.endocrine.length <= 0">N/A</p>
-                        </div>
-                    </v-list-item-content>
-                    </v-list-item>
-                </v-card>
-            </v-col>
-            <v-col cols="12" style="z-index: 3">
-                <v-card elevation="2" height="100%">
-                    <v-list-item three-line>
-                    <v-list-item-content>
-                        <div class="overline mb-1">
-                            <div class="d-flex">
-                            <strong>Enfermedades Nerviosas</strong>
-                            </div>
-                            <p class="d-flex" v-for="(item, index) in historyToEdit.nervous" :key="index">
-                                <span>{{item.data}} - {{moment(item.date).format('DD/MM/YYYY hh:mm:ss')}}</span>
-                            </p>
-                            <p v-if="historyToEdit.nervous.length <= 0">N/A</p>
-                        </div>
-                    </v-list-item-content>
-                    </v-list-item>
-                </v-card>
-            </v-col>
-            <v-col cols="12" style="z-index: 3">
-                <v-card elevation="2" height="100%">
-                    <v-list-item three-line>
-                    <v-list-item-content>
-                        <div class="overline mb-1">
-                            <div class="d-flex">
-                            <strong>Enfermedades Musculares</strong>
-                            </div>
-                            <p class="d-flex" v-for="(item, index) in historyToEdit.muscular" :key="index">
-                                <span>{{item.data}} - {{moment(item.date).format('DD/MM/YYYY hh:mm:ss')}}</span>
-                            </p>
-                            <p v-if="historyToEdit.muscular.length <= 0">N/A</p>
-                        </div>
-                    </v-list-item-content>
-                    </v-list-item>
-                </v-card>
-            </v-col>
-            <v-col cols="12" style="z-index: 3">
-                <v-card elevation="2" height="100%">
-                    <v-list-item three-line>
-                    <v-list-item-content>
-                        <div class="overline mb-1">
-                            <div class="d-flex">
-                            <strong>Tipo de Sangre</strong>
-                            </div>
-                            <p>
-                                {{historyToEdit.blood_type}}
-                            </p>
-                        </div>
-                    </v-list-item-content>
-                    </v-list-item>
-                </v-card>
-            </v-col>
-            <v-col cols="12" style="z-index: 3">
-                <v-card elevation="2" height="100%">
-                    <v-list-item three-line>
-                    <v-list-item-content>
-                        <div class="overline mb-1">
-                            <div class="d-flex">
-                            <strong>Conclusiones</strong>
-                            </div>
-                            <p>
-                                {{historyToEdit.conclusions}}
-                            </p>
+                            <p v-if="historyToEdit.diagnostic.length <= 0">N/A</p>
                         </div>
                     </v-list-item-content>
                     </v-list-item>

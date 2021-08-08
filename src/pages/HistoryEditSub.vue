@@ -7,31 +7,7 @@
                     <v-list-item-content>
                         <div class="overline mb-1">
                             <div class="d-flex">
-                                <strong>Pulso:</strong>
-                            <strong style="cursor: pointer" class="ml-auto" @click="sendToNew('pulse', editOrNew = 'new')">Nuevo</strong>
-                            </div>
-                            <p class="d-flex" v-for="(item, index) in historyToEdit.pulse" :key="index">
-                                <span>{{item.data}}</span>
-                                <v-btn icon class="ml-2" @click="goToEditItem(item._id, item, 'pulse', editOrNew = 'edit')">
-                                    <v-icon>{{mdiPencil}}</v-icon>
-                                </v-btn>
-                                <v-btn icon class="ml-2" @click="deleteItem(item._id, 'pulse')">
-                                    <v-icon>{{mdiTrashCan}}</v-icon>
-                                </v-btn>
-                            </p>
-                            <p v-if="historyToEdit.pulse.length <= 0">N/A</p>
-                        </div>
-                    </v-list-item-content>
-                    </v-list-item>
-                </v-card>
-            </v-col>
-            <v-col cols="12" style="z-index: 3">
-                <v-card elevation="2" height="100%">
-                    <v-list-item three-line>
-                    <v-list-item-content>
-                        <div class="overline mb-1">
-                            <div class="d-flex">
-                                <strong>Temperatura:</strong>
+                            <strong>Temperatura</strong>
                             <strong style="cursor: pointer" class="ml-auto" @click="sendToNew('temperature', editOrNew = 'new')">Nuevo</strong>
                             </div>
                             <p class="d-flex" v-for="(item, index) in historyToEdit.temperature" :key="index">
@@ -55,7 +31,55 @@
                     <v-list-item-content>
                         <div class="overline mb-1">
                             <div class="d-flex">
-                                <strong>Presión sanguínea:</strong>
+                            <strong>Peso</strong>
+                            <strong style="cursor: pointer" class="ml-auto" @click="sendToNew('weight', editOrNew = 'new')">Nuevo</strong>
+                            </div>
+                            <p class="d-flex" v-for="(item, index) in historyToEdit.weight" :key="index">
+                                <span>{{item.data}}</span>
+                                <v-btn icon class="ml-2" @click="goToEditItem(item._id, item, 'weight', editOrNew = 'edit')">
+                                    <v-icon>{{mdiPencil}}</v-icon>
+                                </v-btn>
+                                <v-btn icon class="ml-2" @click="deleteItem(item._id, 'antibiotics')">
+                                    <v-icon>{{mdiTrashCan}}</v-icon>
+                                </v-btn>
+                            </p>
+                            <p v-if="historyToEdit.weight.length <= 0">N/A</p>
+                        </div>
+                    </v-list-item-content>
+                    </v-list-item>
+                </v-card>
+            </v-col>
+            <v-col cols="12" style="z-index: 3">
+                <v-card elevation="2" height="100%">
+                    <v-list-item three-line>
+                    <v-list-item-content>
+                        <div class="overline mb-1">
+                            <div class="d-flex">
+                            <strong>Pulso</strong>
+                            <strong style="cursor: pointer" class="ml-auto" @click="sendToNew('pulse', editOrNew = 'new')">Nuevo</strong>
+                            </div>
+                            <p class="d-flex" v-for="(item, index) in historyToEdit.pulse" :key="index">
+                                <span>{{item.data}}</span>
+                                <v-btn icon class="ml-2" @click="goToEditItem(item._id, item, 'pulse', editOrNew = 'edit')">
+                                    <v-icon>{{mdiPencil}}</v-icon>
+                                </v-btn>
+                                <v-btn icon class="ml-2" @click="deleteItem(item._id, 'pulse')">
+                                    <v-icon>{{mdiTrashCan}}</v-icon>
+                                </v-btn>
+                            </p>
+                            <p v-if="historyToEdit.pulse.length <= 0">N/A</p>
+                        </div>
+                    </v-list-item-content>
+                    </v-list-item>
+                </v-card>
+            </v-col>
+            <v-col cols="12" style="z-index: 3">
+                <v-card elevation="2" height="100%">
+                    <v-list-item three-line>
+                    <v-list-item-content>
+                        <div class="overline mb-1">
+                            <div class="d-flex">
+                            <strong>Presión Sanguinea</strong>
                             <strong style="cursor: pointer" class="ml-auto" @click="sendToNew('presure', editOrNew = 'new')">Nuevo</strong>
                             </div>
                             <p class="d-flex" v-for="(item, index) in historyToEdit.presure" :key="index">
@@ -63,7 +87,7 @@
                                 <v-btn icon class="ml-2" @click="goToEditItem(item._id, item, 'presure', editOrNew = 'edit')">
                                     <v-icon>{{mdiPencil}}</v-icon>
                                 </v-btn>
-                                <v-btn icon class="ml-2" @click="deleteItem(item._id, 'presure')">
+                                <v-btn icon class="ml-2" @click="deleteItem(item._id,  'presure')">
                                     <v-icon>{{mdiTrashCan}}</v-icon>
                                 </v-btn>
                             </p>
@@ -79,19 +103,19 @@
                     <v-list-item-content>
                         <div class="overline mb-1">
                             <div class="d-flex">
-                                <strong>Frecuencia cardiaca:</strong>
-                            <strong style="cursor: pointer" class="ml-auto" @click="sendToNew('frequency', editOrNew = 'new')">Nuevo</strong>
+                            <strong>Frecuencia Respiratoria</strong>
+                            <strong style="cursor: pointer" class="ml-auto" @click="sendToNew('breathe', editOrNew = 'new')">Nuevo</strong>
                             </div>
-                            <p class="d-flex" v-for="(item, index) in historyToEdit.frequency" :key="index">
+                            <p class="d-flex" v-for="(item, index) in historyToEdit.breathe" :key="index">
                                 <span>{{item.data}}</span>
-                                <v-btn icon class="ml-2" @click="goToEditItem(item._id, item, 'frequency', editOrNew = 'edit')">
+                                <v-btn icon class="ml-2" @click="goToEditItem(item._id, item, 'breathe', editOrNew = 'edit')">
                                     <v-icon>{{mdiPencil}}</v-icon>
                                 </v-btn>
-                                <v-btn icon class="ml-2" @click="deleteItem(item._id, 'frequency')">
+                                <v-btn icon class="ml-2" @click="deleteItem(item._id, 'breathe')">
                                     <v-icon>{{mdiTrashCan}}</v-icon>
                                 </v-btn>
                             </p>
-                            <p v-if="historyToEdit.frequency.length <= 0">N/A</p>
+                            <p v-if="historyToEdit.breathe.length <= 0">N/A</p>
                         </div>
                     </v-list-item-content>
                     </v-list-item>
@@ -103,7 +127,7 @@
                     <v-list-item-content>
                         <div class="overline mb-1">
                             <div class="d-flex">
-                                <strong>Síntomas</strong>
+                            <strong>Sintomas</strong>
                             <strong style="cursor: pointer" class="ml-auto" @click="sendToNew('symptom', editOrNew = 'new')">Nuevo</strong>
                             </div>
                             <p class="d-flex" v-for="(item, index) in historyToEdit.symptom" :key="index">
@@ -127,19 +151,19 @@
                     <v-list-item-content>
                         <div class="overline mb-1">
                             <div class="d-flex">
-                                <strong>Enfermedades hereditarias</strong>
-                            <strong style="cursor: pointer" class="ml-auto" @click="sendToNew('hereditary', editOrNew = 'new')">Nuevo</strong>
+                            <strong>Observaciones</strong>
+                            <strong style="cursor: pointer" class="ml-auto" @click="sendToNew('observations', editOrNew = 'new')">Nuevo</strong>
                             </div>
-                            <p class="d-flex" v-for="(item, index) in historyToEdit.hereditary" :key="index">
+                            <p class="d-flex" v-for="(item, index) in historyToEdit.observations" :key="index">
                                 <span>{{item.data}}</span>
-                                <v-btn icon class="ml-2" @click="goToEditItem(item._id, item, 'hereditary', editOrNew = 'edit')">
+                                <v-btn icon class="ml-2" @click="goToEditItem(item._id, item, 'observations', editOrNew = 'edit')">
                                     <v-icon>{{mdiPencil}}</v-icon>
                                 </v-btn>
-                                <v-btn icon class="ml-2" @click="deleteItem(item._id, 'hereditary')">
+                                <v-btn icon class="ml-2" @click="deleteItem(item._id, 'observations')">
                                     <v-icon>{{mdiTrashCan}}</v-icon>
                                 </v-btn>
                             </p>
-                            <p v-if="historyToEdit.hereditary.length <= 0">N/A</p>
+                            <p v-if="historyToEdit.observations.length <= 0">N/A</p>
                         </div>
                     </v-list-item-content>
                     </v-list-item>
@@ -151,331 +175,19 @@
                     <v-list-item-content>
                         <div class="overline mb-1">
                             <div class="d-flex">
-                                <strong>Discapacidades</strong>
-                            <strong style="cursor: pointer" class="ml-auto" @click="sendToNew('disabilities', editOrNew = 'new')">Nuevo</strong>
+                            <strong>Diagnóstico</strong>
+                            <strong style="cursor: pointer" class="ml-auto" @click="sendToNew('diagnostic', editOrNew = 'new')">Nuevo</strong>
                             </div>
-                            <p class="d-flex" v-for="(item, index) in historyToEdit.disabilities" :key="index">
+                            <p class="d-flex" v-for="(item, index) in historyToEdit.diagnostic" :key="index">
                                 <span>{{item.data}}</span>
-                                <v-btn icon class="ml-2" @click="goToEditItem(item._id, item, 'disabilities', editOrNew = 'edit')">
+                                <v-btn icon class="ml-2" @click="goToEditItem(item._id, item, 'diagnostic', editOrNew = 'edit')">
                                     <v-icon>{{mdiPencil}}</v-icon>
                                 </v-btn>
-                                <v-btn icon class="ml-2" @click="deleteItem(item._id, 'disabilities')">
+                                <v-btn icon class="ml-2" @click="deleteItem(item._id, 'diagnostic')">
                                     <v-icon>{{mdiTrashCan}}</v-icon>
                                 </v-btn>
                             </p>
-                            <p v-if="historyToEdit.disabilities.length <= 0">N/A</p>
-                        </div>
-                    </v-list-item-content>
-                    </v-list-item>
-                </v-card>
-            </v-col>
-            <v-col cols="12" style="z-index: 3">
-                <v-card elevation="2" height="100%">
-                    <v-list-item three-line>
-                    <v-list-item-content>
-                        <div class="overline mb-1">
-                            <div class="d-flex">
-                                <strong>Enfermedades no Transmisibles</strong>
-                            <strong style="cursor: pointer" class="ml-auto" @click="sendToNew('non_communicable_diseases', editOrNew = 'new')">Nuevo</strong>
-                            </div>
-                            <p class="d-flex" v-for="(item, index) in historyToEdit.non_communicable_diseases" :key="index">
-                                <span>{{item.data}}</span>
-                                <v-btn icon class="ml-2" @click="goToEditItem(item._id, item, 'non_communicable_diseases', editOrNew = 'edit')">
-                                    <v-icon>{{mdiPencil}}</v-icon>
-                                </v-btn>
-                                <v-btn icon class="ml-2" @click="deleteItem(item._id, 'non_communicable_diseases')">
-                                    <v-icon>{{mdiTrashCan}}</v-icon>
-                                </v-btn>
-                            </p>
-                            <p v-if="historyToEdit.non_communicable_diseases.length <= 0">N/A</p>
-                        </div>
-                    </v-list-item-content>
-                    </v-list-item>
-                </v-card>
-            </v-col>
-            <v-col cols="12" style="z-index: 3">
-                <v-card elevation="2" height="100%">
-                    <v-list-item three-line>
-                    <v-list-item-content>
-                        <div class="overline mb-1">
-                            <div class="d-flex">
-                            <strong>Enfermedades Transmisibles</strong>
-                            <strong style="cursor: pointer" class="ml-auto" @click="sendToNew('sexually_transmitted_diseases', editOrNew = 'new')">Nuevo</strong>
-                            </div>
-                            <p class="d-flex" v-for="(item, index) in historyToEdit.sexually_transmitted_diseases" :key="index">
-                                <span>{{item.data}}</span>
-                                <v-btn icon class="ml-2" @click="goToEditItem(item._id, item, 'sexually_transmitted_diseases', editOrNew = 'edit')">
-                                    <v-icon>{{mdiPencil}}</v-icon>
-                                </v-btn>
-                                <v-btn icon class="ml-2" @click="deleteItem(item._id, 'sexually_transmitted_diseases')">
-                                    <v-icon>{{mdiTrashCan}}</v-icon>
-                                </v-btn>
-                            </p>
-                            <p v-if="historyToEdit.sexually_transmitted_diseases.length <= 0">N/A</p>
-                        </div>
-                    </v-list-item-content>
-                    </v-list-item>
-                </v-card>
-            </v-col>
-            <v-col cols="12" style="z-index: 3">
-                <v-card elevation="2" height="100%">
-                    <v-list-item three-line>
-                    <v-list-item-content>
-                        <div class="overline mb-1">
-                            <div class="d-flex">
-                            <strong>Enfermedades Degenerativas</strong>
-                            <strong style="cursor: pointer" class="ml-auto" @click="sendToNew('degenerative_diseases', editOrNew = 'new')">Nuevo</strong>
-                            </div>
-                            <p class="d-flex" v-for="(item, index) in historyToEdit.degenerative_diseases" :key="index">
-                                <span>{{item.data}}</span>
-                                <v-btn icon class="ml-2" @click="goToEditItem(item._id, item, 'degenerative_diseases', editOrNew = 'edit')">
-                                    <v-icon>{{mdiPencil}}</v-icon>
-                                </v-btn>
-                                <v-btn icon class="ml-2" @click="deleteItem(item._id, 'degenerative_diseases')">
-                                    <v-icon>{{mdiTrashCan}}</v-icon>
-                                </v-btn>
-                            </p>
-                            <p v-if="historyToEdit.degenerative_diseases.length <= 0">N/A</p>
-                        </div>
-                    </v-list-item-content>
-                    </v-list-item>
-                </v-card>
-            </v-col>
-            <v-col cols="12" style="z-index: 3">
-                <v-card elevation="2" height="100%">
-                    <v-list-item three-line>
-                    <v-list-item-content>
-                        <div class="overline mb-1">
-                            <div class="d-flex">
-                            <strong>Adicciones</strong>
-                            <strong style="cursor: pointer" class="ml-auto" @click="sendToNew('adictions', editOrNew = 'new')">Nuevo</strong>
-                            </div>
-                            <p class="d-flex" v-for="(item, index) in historyToEdit.adictions" :key="index">
-                                <span>{{item.data}}</span>
-                                <v-btn icon class="ml-2" @click="goToEditItem(item._id, item, 'adictions', editOrNew = 'edit')">
-                                    <v-icon>{{mdiPencil}}</v-icon>
-                                </v-btn>
-                                <v-btn icon class="ml-2" @click="deleteItem(item._id, 'adictions')">
-                                    <v-icon>{{mdiTrashCan}}</v-icon>
-                                </v-btn>
-                            </p>
-                            <p v-if="historyToEdit.adictions.length <= 0">N/A</p>
-                        </div>
-                    </v-list-item-content>
-                    </v-list-item>
-                </v-card>
-            </v-col>
-            <v-col cols="12" style="z-index: 3">
-                <v-card elevation="2" height="100%">
-                    <v-list-item three-line>
-                    <v-list-item-content>
-                        <div class="overline mb-1">
-                            <div class="d-flex">
-                            <strong>Alergias</strong>
-                            <strong style="cursor: pointer" class="ml-auto" @click="sendToNew('allergies', editOrNew = 'new')">Nuevo</strong>
-                            </div>
-                            <p class="d-flex" v-for="(item, index) in historyToEdit.allergies" :key="index">
-                                <span>{{item.data}}</span>
-                                <v-btn icon class="ml-2" @click="goToEditItem(item._id, item, 'allergies', editOrNew = 'edit')">
-                                    <v-icon>{{mdiPencil}}</v-icon>
-                                </v-btn>
-                                <v-btn icon class="ml-2" @click="deleteItem(item._id, 'allergies')">
-                                    <v-icon>{{mdiTrashCan}}</v-icon>
-                                </v-btn>
-                            </p>
-                            <p v-if="historyToEdit.allergies.length <= 0">N/A</p>
-                        </div>
-                    </v-list-item-content>
-                    </v-list-item>
-                </v-card>
-            </v-col>
-            <v-col cols="12" style="z-index: 3">
-                <v-card elevation="2" height="100%">
-                    <v-list-item three-line>
-                    <v-list-item-content>
-                        <div class="overline mb-1">
-                            <div class="d-flex">
-                            <strong>Antibióticos</strong>
-                            <strong style="cursor: pointer" class="ml-auto" @click="sendToNew('antibiotics', editOrNew = 'new')">Nuevo</strong>
-                            </div>
-                            <p class="d-flex" v-for="(item, index) in historyToEdit.antibiotics" :key="index">
-                                <span>{{item.data}}</span>
-                                <v-btn icon class="ml-2" @click="goToEditItem(item._id, item, 'antibiotics', editOrNew = 'edit')">
-                                    <v-icon>{{mdiPencil}}</v-icon>
-                                </v-btn>
-                                <v-btn icon class="ml-2" @click="deleteItem(item._id, 'antibiotics')">
-                                    <v-icon>{{mdiTrashCan}}</v-icon>
-                                </v-btn>
-                            </p>
-                            <p v-if="historyToEdit.antibiotics.length <= 0">N/A</p>
-                        </div>
-                    </v-list-item-content>
-                    </v-list-item>
-                </v-card>
-            </v-col>
-            <v-col cols="12" style="z-index: 3">
-                <v-card elevation="2" height="100%">
-                    <v-list-item three-line>
-                    <v-list-item-content>
-                        <div class="overline mb-1">
-                            <div class="d-flex">
-                            <strong>Ha sido Hospitalizado</strong>
-                            <strong style="cursor: pointer" class="ml-auto" @click="goToEditHistory(historyToEdit._id)">Editar</strong>
-                            </div>
-                            <p class="d-flex" v-for="(item, index) in historyToEdit.has_been_hospitalized" :key="index">
-                                <span>{{item.data}}</span>
-                                <v-btn icon class="ml-2">
-                                    <v-icon>{{mdiPencil}}</v-icon>
-                                </v-btn>
-                                <v-btn icon class="ml-2">
-                                    <v-icon>{{mdiTrashCan}}</v-icon>
-                                </v-btn>
-                            </p>
-                            <p v-if="historyToEdit.has_been_hospitalized.length <= 0">N/A</p>
-                        </div>
-                    </v-list-item-content>
-                    </v-list-item>
-                </v-card>
-            </v-col>
-            <v-col cols="12" style="z-index: 3">
-                <v-card elevation="2" height="100%">
-                    <v-list-item three-line>
-                    <v-list-item-content>
-                        <div class="overline mb-1">
-                            <div class="d-flex">
-                            <strong>Enfermedades Respiratorias</strong>
-                            <strong style="cursor: pointer" class="ml-auto" @click="sendToNew('respiratory', editOrNew = 'new')">Nuevo</strong>
-                            </div>
-                            <p class="d-flex" v-for="(item, index) in historyToEdit.respiratory" :key="index">
-                                <span>{{item.data}}</span>
-                                <v-btn icon class="ml-2" @click="goToEditItem(item._id, item, 'respiratory', editOrNew = 'edit')">
-                                    <v-icon>{{mdiPencil}}</v-icon>
-                                </v-btn>
-                                <v-btn icon class="ml-2" @click="deleteItem(item._id, 'respiratory')">
-                                    <v-icon>{{mdiTrashCan}}</v-icon>
-                                </v-btn>
-                            </p>
-                            <p v-if="historyToEdit.respiratory.length <= 0">N/A</p>
-                        </div>
-                    </v-list-item-content>
-                    </v-list-item>
-                </v-card>
-            </v-col>
-            <v-col cols="12" style="z-index: 3">
-                <v-card elevation="2" height="100%">
-                    <v-list-item three-line>
-                    <v-list-item-content>
-                        <div class="overline mb-1">
-                            <div class="d-flex">
-                            <strong>Enfermedades Cardiovasculares</strong>
-                            <strong style="cursor: pointer" class="ml-auto" @click="sendToNew('cardiovascular', editOrNew = 'new')">Nuevo</strong>
-                            </div>
-                            <p class="d-flex" v-for="(item, index) in historyToEdit.cardiovascular" :key="index">
-                                <span>{{item.data}}</span>
-                                <v-btn icon class="ml-2" @click="goToEditItem(item._id, item, 'cardiovascular', editOrNew = 'edit')">
-                                    <v-icon>{{mdiPencil}}</v-icon>
-                                </v-btn>
-                                <v-btn icon class="ml-2" @click="deleteItem(item._id,  'cardiovascular')">
-                                    <v-icon>{{mdiTrashCan}}</v-icon>
-                                </v-btn>
-                            </p>
-                            <p v-if="historyToEdit.cardiovascular.length <= 0">N/A</p>
-                        </div>
-                    </v-list-item-content>
-                    </v-list-item>
-                </v-card>
-            </v-col>
-            <v-col cols="12" style="z-index: 3">
-                <v-card elevation="2" height="100%">
-                    <v-list-item three-line>
-                    <v-list-item-content>
-                        <div class="overline mb-1">
-                            <div class="d-flex">
-                            <strong>Enfermedades Genitourinarias</strong>
-                            <strong style="cursor: pointer" class="ml-auto" @click="sendToNew('genitourinary', editOrNew = 'new')">Nuevo</strong>
-                            </div>
-                            <p class="d-flex" v-for="(item, index) in historyToEdit.genitourinary" :key="index">
-                                <span>{{item.data}}</span>
-                                <v-btn icon class="ml-2" @click="goToEditItem(item._id, item, 'genitourinary', editOrNew = 'edit')">
-                                    <v-icon>{{mdiPencil}}</v-icon>
-                                </v-btn>
-                                <v-btn icon class="ml-2" @click="deleteItem(item._id, 'genitourinary')">
-                                    <v-icon>{{mdiTrashCan}}</v-icon>
-                                </v-btn>
-                            </p>
-                            <p v-if="historyToEdit.genitourinary.length <= 0">N/A</p>
-                        </div>
-                    </v-list-item-content>
-                    </v-list-item>
-                </v-card>
-            </v-col>
-            <v-col cols="12" style="z-index: 3">
-                <v-card elevation="2" height="100%">
-                    <v-list-item three-line>
-                    <v-list-item-content>
-                        <div class="overline mb-1">
-                            <div class="d-flex">
-                            <strong>Enfermedades Endocrinas</strong>
-                            <strong style="cursor: pointer" class="ml-auto" @click="sendToNew('endocrine', editOrNew = 'new')">Nuevo</strong>
-                            </div>
-                            <p class="d-flex" v-for="(item, index) in historyToEdit.endocrine" :key="index">
-                                <span>{{item.data}}</span>
-                                <v-btn icon class="ml-2" @click="goToEditItem(item._id, item, 'endocrine', editOrNew = 'edit')">
-                                    <v-icon>{{mdiPencil}}</v-icon>
-                                </v-btn>
-                                <v-btn icon class="ml-2" @click="deleteItem(item._id, 'endocrine')">
-                                    <v-icon>{{mdiTrashCan}}</v-icon>
-                                </v-btn>
-                            </p>
-                            <p v-if="historyToEdit.endocrine.length <= 0">N/A</p>
-                        </div>
-                    </v-list-item-content>
-                    </v-list-item>
-                </v-card>
-            </v-col>
-            <v-col cols="12" style="z-index: 3">
-                <v-card elevation="2" height="100%">
-                    <v-list-item three-line>
-                    <v-list-item-content>
-                        <div class="overline mb-1">
-                            <div class="d-flex">
-                            <strong>Enfermedades Nerviosas</strong>
-                            <strong style="cursor: pointer" class="ml-auto" @click="sendToNew('nervous', editOrNew = 'new')">Nuevo</strong>
-                            </div>
-                            <p class="d-flex" v-for="(item, index) in historyToEdit.nervous" :key="index">
-                                <span>{{item.data}}</span>
-                                <v-btn icon class="ml-2" @click="goToEditItem(item._id, item, 'nervous', editOrNew = 'edit')">
-                                    <v-icon>{{mdiPencil}}</v-icon>
-                                </v-btn>
-                                <v-btn icon class="ml-2" @click="deleteItem(item._id, 'nervous')">
-                                    <v-icon>{{mdiTrashCan}}</v-icon>
-                                </v-btn>
-                            </p>
-                            <p v-if="historyToEdit.nervous.length <= 0">N/A</p>
-                        </div>
-                    </v-list-item-content>
-                    </v-list-item>
-                </v-card>
-            </v-col>
-            <v-col cols="12" style="z-index: 3">
-                <v-card elevation="2" height="100%">
-                    <v-list-item three-line>
-                    <v-list-item-content>
-                        <div class="overline mb-1">
-                            <div class="d-flex">
-                            <strong>Enfermedades Musculares</strong>
-                            <strong style="cursor: pointer" class="ml-auto" @click="sendToNew('muscular', editOrNew = 'new')">Nuevo</strong>
-                            </div>
-                            <p class="d-flex" v-for="(item, index) in historyToEdit.muscular" :key="index">
-                                <span>{{item.data}}</span>
-                                <v-btn icon class="ml-2" @click="goToEditItem(item._id, item, 'muscular', editOrNew = 'edit')">
-                                    <v-icon>{{mdiPencil}}</v-icon>
-                                </v-btn>
-                                <v-btn icon class="ml-2" @click="deleteItem(item._id, 'muscular')">
-                                    <v-icon>{{mdiTrashCan}}</v-icon>
-                                </v-btn>
-                            </p>
-                            <p v-if="historyToEdit.muscular.length <= 0">N/A</p>
+                            <p v-if="historyToEdit.diagnostic.length <= 0">N/A</p>
                         </div>
                     </v-list-item-content>
                     </v-list-item>

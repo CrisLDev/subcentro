@@ -157,13 +157,7 @@ export default {
       ...mapActions(["consultDateByDoctorId", "updateCompleteDate"]),
       getEvents () {
         const events = []
-
-        //const min = new Date(`${start.date}T00:00:00`)
-        //const max = new Date(`${end.date}T23:59:59`)
-        //const days = (max.getTime() - min.getTime()) / 86400000
-        //const eventCount = this.rnd(days, days + 20)
         const dates = this.$store.getters.datesForDoctorLoged;
-        //const eventCount = dates;
         Object.values(dates).map((evento) => 
             {
                 const timestamp = evento.date + ' ' + evento.possible_hour;
@@ -179,7 +173,6 @@ export default {
                     complete:evento.complete,
                     room:evento.consulting_room,
                     patient_id: evento.patient_id._id,
-                    //color: this.colors[this.rnd(0, this.colors.length - 1)]
                 });
                 events.forEach((item) => {
                   if(item.date == this.dateForCheckColorInCard && item.hour < this.hourToCheck&& item.complete == 'no'){

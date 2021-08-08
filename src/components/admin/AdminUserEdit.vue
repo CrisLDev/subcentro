@@ -13,12 +13,12 @@
           v-on="on"
           @click="loadUserToEdit"
         >
-          Editar Informacion
+          Editar Información
         </v-btn>
       </template>
       <v-card>
         <v-card-title>
-          <span class="headline">Informacion de usuario</span>
+          <span class="headline">Información de usuario</span>
         </v-card-title>
         <v-card-text>
           <v-container>
@@ -66,7 +66,7 @@
               <v-col cols="6">
                 <v-text-field
                 v-model="telephoneNumberU"
-                  label="Numero telefonico*"
+                  label="Número telefónico*"
                   :counter="10"
                     :error-messages="telephoneNumberUErrors" 
                     @input="$v.telephoneNumberU.$touch()" 
@@ -158,7 +158,7 @@
               </v-col>
             </v-row>
           </v-container>
-          <small>* Indica campos requeridos. </small> <small>Solo rellenamos los datos que has rellenado previamente.</small>
+          <small>* Indica campos requeridos. </small> <small>Solo autocompletamos los datos que has rellenado previamente.</small>
           <div v-if="charginAuth" class="mb-4">
                 <Loading/>
             </div>
