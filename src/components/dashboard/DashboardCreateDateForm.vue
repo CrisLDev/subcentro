@@ -84,8 +84,8 @@
                   v-model="hour"
                   :items="[
                     dayConsulted.nueve < 4 * dayConsulted.roomsNumber
-                      ? '09:00'
-                      : '09:00 No disponible',
+                      ? '08:00'
+                      : '08:00 No disponible',
                     dayConsulted.once < 2 * dayConsulted.roomsNumber
                       ? '11:00'
                       : '11:00 No disponible',
