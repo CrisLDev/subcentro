@@ -216,7 +216,7 @@ const mutations = {
         disablede: false,
         disabledc: false,
         disabledoctor: false,
-        nueve: dayConsulted.book.filter(hour => hour.hour === "09:00").length,
+        nueve: dayConsulted.book.filter(hour => hour.hour === "08:00").length,
         once: dayConsulted.book.filter(hour => hour.hour === "11:00").length,
         unaTarde: dayConsulted.book.filter(hour => hour.hour === "13:00").length,
         tresTarde: dayConsulted.book.filter(hour => hour.hour === "15:00").length,

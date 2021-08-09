@@ -5,7 +5,7 @@
                 </v-btn>
                 <div id="cclndrs" class="d-none">
     <Schedule
-                      :time-ground="['09:00', '18:00']"
+                      :time-ground="['08:00', '18:00']"
       :week-ground="['LUN', 'MAR', 'MIE', 'JUE', 'VIE']"
       :color="[
         '#2B2E4A',
@@ -92,7 +92,7 @@ export default {
 					value.push(hour + ":00");
 				}
 			} else {
-				value = ["09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00"];
+				value = ["08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00"];
 			}
 			return value;
 		},

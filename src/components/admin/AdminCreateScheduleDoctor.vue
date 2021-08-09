@@ -26,7 +26,7 @@
                         <v-time-picker
                         v-if="menu3"
                         v-model="time"
-                        min="9:00"
+                        min="8:00"
                         max="17:30"
                         full-width
                         @click:minute="$refs.menu1.save(time)"
@@ -58,7 +58,7 @@
                         v-if="menu5"
                         v-model="time2"
                         full-width
-                        min="9:00"
+                        min="8:30"
                         max="18:00"
                         @click:minute="$refs.menu.save(time2)"
                         ></v-time-picker>
