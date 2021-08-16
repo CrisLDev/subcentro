@@ -1,4 +1,4 @@
-import { loginUser, reloginUserInReload, createUser, updateUser, getAllUsers, deleteUserInBd, uploadPhoto, getAllDoctors } from '../../services/AuthService';
+import { loginUser, reloginUserInReload, createUser, updateUser, getAllUsers, deleteUserInBd, uploadPhoto, getAllDoctors, getAllDoctorsWithEmptyConsultingRooms } from '../../services/AuthService';
 import router from '../../router';
 import {logout, setAuthToken} from '../../utils/auth';
 
@@ -7,6 +7,7 @@ const state = {
     users: {},
     userToEdit:{},
     doctors: {},
+    doctorsNoConsulting: {},
     charginAuth: false,
     chargin: false
 }
@@ -20,6 +21,9 @@ const getters = {
     },
     doctorsInBd: (state) => {
         return state.doctors
+    },
+    doctorsNoConsulting: (state) => {
+        return state.doctorsNoConsulting
     },
     charginAuth: (state) => {
         return state.charginAuth
@@ -176,11 +180,20 @@ const actions = {
             return commit('usersObtainedFailed', err.response.data.msg)
         }
     },
+    async getDoctorsWithEmptyConsultingRoomFromBD({commit}) {
+        try {
+            const response = await getAllDoctorsWithEmptyConsultingRooms()
+            return commit('doctorsNoConsultingObtainedSuccessfully', response.data)
+        } catch (err) {
+            return commit('usersObtainedFailed', err.response.data.msg)
+        }
+    },
 }
 
 const mutations = {
     UserRegisterSuccessfully:(state, newUser) => {state.users.push(newUser), state.charginAuth = false},
     doctorsObtainedSuccessfully:(state, doctors) => (state.doctors = doctors),
+    doctorsNoConsultingObtainedSuccessfully:(state, doctors) => (state.doctorsNoConsulting = doctors),
     usersObtainedSuccessfully:(state, users) => (state.users = users),
     usersObtainedFailed:(state, error) => (state.user = error),
     UserLogedSuccessfully:(state, addUser) => (state.user = addUser, state.charginAuth = false),

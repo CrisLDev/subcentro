@@ -1,4 +1,4 @@
-import {deleteRoomById, createConsulting, getConsulting, getConsultingById, updateRoomById, consultRooms} from '../../services/ConsultingService';
+import {deleteRoomById, createConsulting, getConsulting, getConsultingById, updateRoomById, consultRooms, deleteDoctorFromRoom} from '../../services/ConsultingService';
 
 const state = {
     consulting_rooms: {},
@@ -50,7 +50,6 @@ const actions = {
             commit('putLoadingConsulting')
             const response = await updateRoomById(dataToSend.id ,dataToSend)
             snackbarData.text = 'Consultorio actualizado correctamente';
-            console.log(response.data)
             commit('ConsultingUpdatedSuccessfully', response.data);
             return dispatch('getUltimateSnackbarState', snackbarData)
         } catch (err) {
@@ -110,6 +109,22 @@ const actions = {
             return dispatch('getUltimateSnackbarState', snackbarData)
         }
     },
+    async deleteDoctorFromRoom({commit, dispatch}, dataForSend){
+        const snackbarData = {
+            timeout: 2000,
+            text: '',
+            snackbar: true
+        }
+        try {
+            const response = await deleteDoctorFromRoom(dataForSend.room_id, dataForSend)
+            snackbarData.text = 'Consultorio actualizado correctamente';
+            commit('ConsultingUpdatedSuccessfully', response.data);
+            return dispatch('getUltimateSnackbarState', snackbarData)
+        } catch (err) {
+            if(err)snackbarData.text = err.response.data.msg;
+            return dispatch('getUltimateSnackbarState', snackbarData)
+        }
+    },
 }
 
 const mutations = {
@@ -120,6 +135,7 @@ const mutations = {
     consultingObtainedFailed:(state, error) => (state.consulting_rooms = error),
     updateRoomName (state, name) {state.roomToEdit.name = name},
     updateEspeciality (state, especiality) {state.roomToEdit.especiality = especiality},
+    updateDoctor (state, doctor) {state.roomToEdit.doctor = doctor},
     updateRoomCode (state, code) {state.roomToEdit.code = code},
     deleteRoomInStore: (state, id) => (state.consulting_rooms = state.consulting_rooms.filter((room) => room._id !== id), state.charginConsulting = false),
     ConsultingUpdatedSuccessfully: (state, roomUpdated) => {

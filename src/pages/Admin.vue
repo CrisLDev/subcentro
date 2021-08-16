@@ -334,6 +334,23 @@
                       required
                     ></v-select>
                   </v-col>
+                  <v-col cols="12" v-if="!consultingToEdit.doctor_id">
+                    <v-select
+                      v-model="doctorNoConsulting"
+                      :items="itemsDoctorsNoConsulting"
+                      label="Doctor*"
+                      required
+                      item-text="name"
+                      item-value="id"
+                    ></v-select>
+                  </v-col>
+                  <v-col cols="12" v-if="consultingToEdit.doctor_id">
+                    <h3>Doctor: </h3>
+                    <div style="display: flex; justify-content: space-between">
+                      <span>{{consultingToEdit.doctor_id.userName}}</span>
+                      <span style="cursor: pointer" @click="deleteDoctor(consultingToEdit.doctor_id._id, consultingToEdit._id)">&#x2715;</span>
+                    </div>
+                  </v-col>
                 </v-row>
               </v-container>
               <small>* Indica campos requeridos. </small>
@@ -505,6 +522,8 @@ export default {
     dialog3: false,
     items: [],
     items2: [],
+    itemsDoctorsNoConsulting: [],
+    doctorNoConsulting: "",
     roomIdToEdit: "",
     especialityIdToEdit: "",
     doctor: "",
@@ -537,6 +556,8 @@ export default {
       "charginEspecialities",
       "charginDate",
       "charginSchedule",
+      "doctorsNoConsulting",
+      "consultingToEdit"
     ]),
     usersRole() {
       return this.usersInBd.filter((user) => user.role === "user");
@@ -598,6 +619,8 @@ export default {
       "getDoctorsFromBD",
       "putDoctorId",
       "getSchedulesFromDbByUserId",
+      "getDoctorsWithEmptyConsultingRoomFromBD",
+      "deleteDoctorFromRoom"
     ]),
     putName() {
       this.doctorName = this.items2.filter((item) => item.id == this.doctor);
@@ -610,6 +633,14 @@ export default {
           .classList.replace("d-block", "d-none");
       }
       this.getSchedulesFromDbByUserId(doctor_id);
+    },
+    async deleteDoctor(doctor_id, room_id){
+      const dataToSend = {
+        doctor_id,
+        room_id
+      };
+      await this.deleteDoctorFromRoom(dataToSend);
+      this.dialog = false;
     },
     async putDoctor() {
       const data = {
@@ -648,6 +679,7 @@ export default {
       this.dialog = true;
       this.roomIdToEdit = roomId;
       this.getConsultingFromBDById(roomId);
+      this.getDoctorsWithEmptyConsultingRoomFromBD();
     },
     async searchByRoom(code) {
       if (document.getElementById("cbtn").classList.contains("d-none")) {
@@ -667,8 +699,10 @@ export default {
         name: this.name,
         code: this.code,
         especiality: this.especiality,
+        doctor_id: this.doctorNoConsulting,
         id: this.roomIdToEdit,
       };
+      this.dialog = false;
       this.updateRoom(dataToSend);
     },
     deleteU(id) {
@@ -676,14 +710,7 @@ export default {
     },
     getEvents() {
       const events = [];
-
-      //const min = new Date(`${start.date}T00:00:00`)
-      //const max = new Date(`${end.date}T23:59:59`)
-      //const days = (max.getTime() - min.getTime()) / 86400000
-      //const eventCount = this.rnd(days, days + 20)
       const dates = this.$store.getters.datesInBd;
-      //const eventCount = dates;
-
       Object.values(dates).map((evento) => {
         const timestamp = evento.date + " " + evento.possible_hour;
         events.push({
@@ -697,7 +724,6 @@ export default {
           date: evento.date,
           hour: evento.possible_hour,
           id: evento._id,
-          //color: this.colors[this.rnd(0, this.colors.length - 1)]
         });
         events.forEach((item) => {
           if (
@@ -834,6 +860,18 @@ export default {
         });
       });
       this.items2 = items2;
+    },
+    doctorsNoConsulting() {
+      const itemsDoctorsNoConsulting = [];
+      Object.values(this.doctorsNoConsulting).map((doctor) => {
+        itemsDoctorsNoConsulting.push({
+          name: !doctor.fullName
+            ? doctor.userName + " -  N/A"
+            : doctor.userName + " - " + doctor.fullName,
+          id: doctor._id,
+        });
+      });
+      this.itemsDoctorsNoConsulting = itemsDoctorsNoConsulting;
     },
   },
 };
