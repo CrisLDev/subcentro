@@ -1,7 +1,7 @@
 <template>
     <v-container fluid class="lighten-5 mb-16">
         <v-row justify="center" class="mb-16">
-            <v-col cols="12" md="3" sm="12" class="mt-6" v-for="patient in patientsInBd" :key="patient._id">
+            <v-col cols="12" md="3" sm="12" class="mt-6" v-for="patient in userLoged.patients_id" :key="patient._id">
                 <v-card
                     class="mx-auto"
                     max-width="344"
@@ -47,7 +47,7 @@ import {mapActions, mapGetters} from 'vuex';
 
 export default {
     name: "PatientsList",
-    computed: {...mapGetters(["patientsInBd"])},
+    computed: {...mapGetters(["userLoged"])},
     methods:{
         ...mapActions(["putPatientInPage"]),
         goToPatientPage(id){
@@ -55,6 +55,7 @@ export default {
             this.putPatientInPage(patient);
             this.$router.push('/pacientes/'+id);
         }
-    }
+    },
+
 }
 </script>
