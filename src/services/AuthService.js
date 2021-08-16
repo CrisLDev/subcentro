@@ -9,6 +9,10 @@ export const getAllDoctors = async () => {
     return await axios.get(`${API_URL}/auth/doctors`);
 }
 
+export const getAllDoctorsWithEmptyConsultingRooms = async () => {
+    return await axios.get(`${API_URL}/auth/doctorsnoconsultings`);
+}
+
 export const loginUser = async (dataToSend) => {
     return await axios.post(`${API_URL}/auth/login`, dataToSend)
 }

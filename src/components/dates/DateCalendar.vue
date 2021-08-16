@@ -92,6 +92,7 @@
               <div v-if="selectedEvent.complete == 'no' && selectedEvent.date <= dateForCheckColorInCard && selectedEvent.hour < hourToCheck" v-html="`Click para marcar como completada.`" @click="completeDate(selectedEvent.id)" style="cursor: pointer"></div>
             </v-card-text>
             <v-card-actions>
+              <DashboardCreateDateForm v-if="selectedEvent.complete == 'si'" :id_modal="selectedEvent.patient_id" />
               <v-btn
                 text
                 color="secondary"
@@ -116,6 +117,7 @@ import { mdiNewBox } from '@mdi/js';
 import { mdiHeart } from '@mdi/js';
 import { mdiChevronLeft } from '@mdi/js';
 import { mdiChevronRight } from '@mdi/js';
+import DashboardCreateDateForm from "../dashboard/DashboardCreateDateForm";
 export default {
     data: () => ({
       reveal: false,
@@ -147,6 +149,9 @@ export default {
       dateForCheckColorInCard: '',
       hourToCheck: ''
     }),
+    components: {
+    DashboardCreateDateForm
+  },
     computed: {...mapGetters(["datesForDoctorLoged", "userLoged"])},
     watch: {
       userLoged(){

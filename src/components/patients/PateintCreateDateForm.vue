@@ -110,6 +110,16 @@
                   :disabled="dayConsulted.disabledh"
                   required
                 ></v-select>
+                <v-select
+                      v-model="doctorDate"
+                      :items="doctorsItems"
+                      item-text="name"
+                      item-value="id"
+                      label="Doctor*"
+                      v-if="route === 'admin'"
+                      :disabled="dayConsulted.disabledoctor"
+                      required
+                    ></v-select>
               </v-col>
             </v-row>
           </v-container>
@@ -149,6 +159,7 @@ export default {
     hour: "",
     especiality: "",
     zIndex: 9999,
+    items: [],
     route: "",
     doctorDate: '',
     doctorsItems: [],
@@ -194,6 +205,18 @@ export default {
       this.items = items;
       this.especiality = null;
     },
+    doctorsInBd() {
+      const items2 = [];
+      Object.values(this.doctorsInBd).map((doctor) => {
+        items2.push({
+          name: !doctor.fullName
+            ? doctor.userName + " -  N/A"
+            : doctor.userName + " - " + doctor.fullName,
+          id: doctor._id,
+        });
+      });
+      this.doctors = items2;
+    }
   },
   methods: {
     ...mapActions([
@@ -215,12 +238,19 @@ export default {
         especiality: this.especiality,
         doctor_id: ''
       };
-      if ( this.route === 'admin' || this.route === 'dates' ) {
+      if ( this.route === 'admin' ) {
+       if( this.doctorDate === '' ) {
+         const snackbarData = {
+          timeout: 2000,
+          text: "Agrega un doctor.",
+          snackbar: true,
+        };
+        return this.getUltimateSnackbarState(snackbarData);
+       }
+       Object.assign(dataToSend, {doctor_id: this.doctorDate});
       if (this.id_modal != '') {
         dataToSend.patient_id = this.id_modal;
       }
-      if (this.route === 'dates')
-        dataToSend.doctor_id = this.$store.getters.userLoged._id;
       }
       this.createNewDate(dataToSend);
     },

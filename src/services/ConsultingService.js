@@ -21,6 +21,10 @@ export const updateRoomById = async (id, dataToSend) => {
     return await axios.put(`${API_URL}/consulting/${id}`, dataToSend);
 }
 
+export const deleteDoctorFromRoom = async (id, dataToSend) => {
+    return await axios.put(`${API_URL}/consulting/${id}/deletedoctor`, dataToSend);
+}
+
 export const consultDateByCodeService = async (code) => {
     return await axios.get(`${API_URL}/dates/consult/${code}`);
 }
