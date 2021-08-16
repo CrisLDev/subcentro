@@ -92,7 +92,7 @@
               <div v-if="selectedEvent.complete == 'no' && selectedEvent.date <= dateForCheckColorInCard && selectedEvent.hour < hourToCheck" v-html="`Click para marcar como completada.`" @click="completeDate(selectedEvent.id)" style="cursor: pointer"></div>
             </v-card-text>
             <v-card-actions>
-              <DashboardCreateDateForm v-if="selectedEvent.complete == 'si'" :id_modal="selectedEvent.patient_id" />
+              <DashboardCreateDateForm v-if="selectedEvent.complete == 'si' && this.$store.getters.userLoged.room_id != null" :id_modal="selectedEvent.patient_id" />
               <v-btn
                 text
                 color="secondary"
