@@ -1,7 +1,7 @@
 <template>
     <v-container fluid class="lighten-5 mb-16">
         <v-row justify="center" class="mb-16">
-            <v-col cols="12" md="3" sm="12" class="mt-6" v-for="patient in userLoged.patients_id" :key="patient._id">
+            <v-col cols="12" md="3" sm="12" class="mt-6" v-for="patient in userLoged.patients" :key="patient._id">
                 <v-card
                     class="mx-auto"
                     max-width="344"
@@ -38,6 +38,16 @@
                     </v-card-actions>
                 </v-card>
             </v-col>
+            <v-container v-if="userLoged.patients.length <= 0">
+                <v-card
+                class="mx-auto"
+                    max-width="344"
+                    outlined>
+                    <v-list-item-content class="ml-2">
+                    No hay citas.
+                    </v-list-item-content>
+                </v-card>
+            </v-container>
         </v-row>
     </v-container>
 </template>
@@ -47,7 +57,7 @@ import {mapActions, mapGetters} from 'vuex';
 
 export default {
     name: "PatientsList",
-    computed: {...mapGetters(["userLoged"])},
+    computed: {...mapGetters(["userLoged", "patientsInBd"])},
     methods:{
         ...mapActions(["putPatientInPage"]),
         goToPatientPage(id){
